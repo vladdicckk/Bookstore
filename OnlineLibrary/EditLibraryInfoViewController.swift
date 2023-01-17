@@ -13,8 +13,7 @@ class EditLibraryInfoViewController: UIViewController{
     @IBOutlet weak var editOwnerPhoneNumberTextField: UITextField!
     @IBOutlet weak var editLibraryLocationTextField: UITextField!
     @IBOutlet weak var mainView: UIView!
-    @IBOutlet weak var choosingExchangeButton: UIButton!
-    @IBOutlet weak var choosingTradeButton: UIButton!
+    @IBOutlet weak var editExchangeOrTradingPreferences: UITextField!
     var oldLibraryLocation: String?
     var oldOwnerPhoneNumber: String?
     var oldOwnerEmail: String?
@@ -51,7 +50,6 @@ class EditLibraryInfoViewController: UIViewController{
     
     override func updateViewConstraints() {
         self.view.frame.size.height = self.mainView.frame.size.height
-        self.view.frame.size.width = self.mainView.frame.size.width
         self.view.frame.origin.y = 150
         self.view.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 10.0)
         super.updateViewConstraints()

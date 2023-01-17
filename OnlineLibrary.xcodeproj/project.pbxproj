@@ -39,6 +39,7 @@
 		6AC0FDE029744BEB00ABDC5C /* EditLibraryNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC0FDDF29744BEB00ABDC5C /* EditLibraryNameViewController.swift */; };
 		6AC0FDE229744BFB00ABDC5C /* EditLibraryInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC0FDE129744BFB00ABDC5C /* EditLibraryInfoViewController.swift */; };
 		6AD58E952968B4F0000FF56F /* LibrariesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD58E942968B4F0000FF56F /* LibrariesViewController.swift */; };
+		6AEBA5082976E381003A2279 /* FilterByViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEBA5072976E380003A2279 /* FilterByViewController.swift */; };
 		6AF6ADA72976D9E000F85C53 /* AddBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF6ADA62976D9E000F85C53 /* AddBookViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +78,7 @@
 		6AC0FDDF29744BEB00ABDC5C /* EditLibraryNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLibraryNameViewController.swift; sourceTree = "<group>"; };
 		6AC0FDE129744BFB00ABDC5C /* EditLibraryInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLibraryInfoViewController.swift; sourceTree = "<group>"; };
 		6AD58E942968B4F0000FF56F /* LibrariesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrariesViewController.swift; sourceTree = "<group>"; };
+		6AEBA5072976E380003A2279 /* FilterByViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterByViewController.swift; sourceTree = "<group>"; };
 		6AF6ADA62976D9E000F85C53 /* AddBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -193,6 +195,7 @@
 				6A01231629704869006B8151 /* LibraryTabBar */,
 				6A01231729704899006B8151 /* SignInSignUp */,
 				6A7CAE2A2968758C00F16195 /* Main.storyboard */,
+				6AEBA5072976E380003A2279 /* FilterByViewController.swift */,
 				6AF6ADA62976D9E000F85C53 /* AddBookViewController.swift */,
 				6AC0FDDF29744BEB00ABDC5C /* EditLibraryNameViewController.swift */,
 				6AC0FDE129744BFB00ABDC5C /* EditLibraryInfoViewController.swift */,
@@ -290,6 +293,7 @@
 				6A93D748296DBEC000EE2763 /* FavouritesViewController.swift in Sources */,
 				6AD58E952968B4F0000FF56F /* LibrariesViewController.swift in Sources */,
 				6A0123272970808B006B8151 /* RecomendedBooksCollectionViewCell.swift in Sources */,
+				6AEBA5082976E381003A2279 /* FilterByViewController.swift in Sources */,
 				6A01232B29708447006B8151 /* Book.swift in Sources */,
 				6A93D746296DBD7700EE2763 /* Extension+UIApplication.swift in Sources */,
 				6A97078A29687EC0001F8629 /* Extension+UIView.swift in Sources */,

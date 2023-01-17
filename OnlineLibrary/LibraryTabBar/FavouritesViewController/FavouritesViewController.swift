@@ -245,7 +245,7 @@ class FavouritesViewController: UIViewController {
 
 // MARK: - UICollectionViewDataSource -
 
-extension FavouritesViewController: UICollectionViewDataSource {
+extension FavouritesViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     /// Tells the UICollectionView how many sections are needed
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return presenter.numberOfSections
@@ -255,7 +255,10 @@ extension FavouritesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return presenter.numberOfItems(for: section)
     }
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let bookInfo: BookInfoViewController = storyboard?.instantiateViewController(withIdentifier: "BookInfoViewController") as! BookInfoViewController
+        present(bookInfo, animated: true)
+    }
     /// Constructs and configures the item needed for the requested IndexPath
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // Checks what section type we should use for this indexPath so we use the right cells for that section

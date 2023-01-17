@@ -72,5 +72,10 @@ class LibrariesViewController: UIViewController, UITableViewDataSource, UITableV
         blurView.clipsToBounds = true
         return blurView
     }()
+    
+    @IBAction func filterButtonTapped(_ sender: Any) {
+        let filterVC: FilterByViewController = storyboard?.instantiateViewController(withIdentifier: "FilterByViewController") as! FilterByViewController
+        present(filterVC, animated: true)
+    }
 }
 
