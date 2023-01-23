@@ -25,6 +25,9 @@
 		6A7CAE2C2968758C00F16195 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A7CAE2A2968758C00F16195 /* Main.storyboard */; };
 		6A7CAE2E2968758D00F16195 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A7CAE2D2968758D00F16195 /* Assets.xcassets */; };
 		6A7CAE312968758D00F16195 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A7CAE2F2968758D00F16195 /* LaunchScreen.storyboard */; };
+		6A80362529799C5C00FA8160 /* SetLibraryOwnerName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A80362429799C5C00FA8160 /* SetLibraryOwnerName.swift */; };
+		6A8036272979A29400FA8160 /* AddBookAdditionalInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8036262979A29300FA8160 /* AddBookAdditionalInfoViewController.swift */; };
+		6A8D6D2A297EFB7700E05D39 /* EditUserMainInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8D6D29297EFB7700E05D39 /* EditUserMainInfoViewController.swift */; };
 		6A93D742296DA9EA00EE2763 /* UserSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A93D741296DA9EA00EE2763 /* UserSignUpViewController.swift */; };
 		6A93D744296DB82800EE2763 /* LibrarySignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A93D743296DB82800EE2763 /* LibrarySignUpViewController.swift */; };
 		6A93D746296DBD7700EE2763 /* Extension+UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A93D745296DBD7700EE2763 /* Extension+UIApplication.swift */; };
@@ -64,6 +67,9 @@
 		6A7CAE2D2968758D00F16195 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6A7CAE302968758D00F16195 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6A7CAE322968758D00F16195 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6A80362429799C5C00FA8160 /* SetLibraryOwnerName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetLibraryOwnerName.swift; sourceTree = "<group>"; };
+		6A8036262979A29300FA8160 /* AddBookAdditionalInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookAdditionalInfoViewController.swift; sourceTree = "<group>"; };
+		6A8D6D29297EFB7700E05D39 /* EditUserMainInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserMainInfoViewController.swift; sourceTree = "<group>"; };
 		6A93D741296DA9EA00EE2763 /* UserSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSignUpViewController.swift; sourceTree = "<group>"; };
 		6A93D743296DB82800EE2763 /* LibrarySignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySignUpViewController.swift; sourceTree = "<group>"; };
 		6A93D745296DBD7700EE2763 /* Extension+UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIApplication.swift"; sourceTree = "<group>"; };
@@ -98,10 +104,15 @@
 			children = (
 				6A01231D297078C1006B8151 /* FavouritesViewController */,
 				6A519B8A29699EB60045FB6F /* LibraryViewController.swift */,
+				6AC0FDE129744BFB00ABDC5C /* EditLibraryInfoViewController.swift */,
+				6A80362429799C5C00FA8160 /* SetLibraryOwnerName.swift */,
+				6AC0FDDF29744BEB00ABDC5C /* EditLibraryNameViewController.swift */,
 				6A93D749296DC0D600EE2763 /* TypesOfBookSortingViewController.swift */,
 				6AC0FDD9297418CF00ABDC5C /* SortedBooksInfoViewController.swift */,
 				6AC0FDDD29742DDD00ABDC5C /* BookInfoViewController.swift */,
 				6AC0FDDB2974195800ABDC5C /* SortedBooksCollectionViewCell.swift */,
+				6AF6ADA62976D9E000F85C53 /* AddBookViewController.swift */,
+				6A8036262979A29300FA8160 /* AddBookAdditionalInfoViewController.swift */,
 			);
 			path = LibraryTabBar;
 			sourceTree = "<group>";
@@ -191,14 +202,12 @@
 				6A7CAE262968758C00F16195 /* SceneDelegate.swift */,
 				6A7CAE282968758C00F16195 /* ViewController.swift */,
 				6AD58E942968B4F0000FF56F /* LibrariesViewController.swift */,
+				6AEBA5072976E380003A2279 /* FilterByViewController.swift */,
 				6AC0FDD52973000700ABDC5C /* UserProfileViewController.swift */,
+				6A8D6D29297EFB7700E05D39 /* EditUserMainInfoViewController.swift */,
 				6A01231629704869006B8151 /* LibraryTabBar */,
 				6A01231729704899006B8151 /* SignInSignUp */,
 				6A7CAE2A2968758C00F16195 /* Main.storyboard */,
-				6AEBA5072976E380003A2279 /* FilterByViewController.swift */,
-				6AF6ADA62976D9E000F85C53 /* AddBookViewController.swift */,
-				6AC0FDDF29744BEB00ABDC5C /* EditLibraryNameViewController.swift */,
-				6AC0FDE129744BFB00ABDC5C /* EditLibraryInfoViewController.swift */,
 				6A7CAE2D2968758D00F16195 /* Assets.xcassets */,
 				6A7CAE2F2968758D00F16195 /* LaunchScreen.storyboard */,
 				6A7CAE322968758D00F16195 /* Info.plist */,
@@ -279,6 +288,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6AC0FDDC2974195800ABDC5C /* SortedBooksCollectionViewCell.swift in Sources */,
+				6A80362529799C5C00FA8160 /* SetLibraryOwnerName.swift in Sources */,
 				6AF6ADA72976D9E000F85C53 /* AddBookViewController.swift in Sources */,
 				6AC0FDDE29742DDD00ABDC5C /* BookInfoViewController.swift in Sources */,
 				6A01232229707AC1006B8151 /* Section.swift in Sources */,
@@ -301,11 +311,13 @@
 				6A01231C29707891006B8151 /* UICollectionViewCell+Extension.swift in Sources */,
 				6A93D74A296DC0D600EE2763 /* TypesOfBookSortingViewController.swift in Sources */,
 				6AC0FDE229744BFB00ABDC5C /* EditLibraryInfoViewController.swift in Sources */,
+				6A8D6D2A297EFB7700E05D39 /* EditUserMainInfoViewController.swift in Sources */,
 				6A93D744296DB82800EE2763 /* LibrarySignUpViewController.swift in Sources */,
 				6A59048B296F1F7500FC3593 /* CollectionViewCell.swift in Sources */,
 				6A012329297083CA006B8151 /* Protocols.swift in Sources */,
 				6A01232429707C25006B8151 /* SectionHeader.swift in Sources */,
 				6A93D742296DA9EA00EE2763 /* UserSignUpViewController.swift in Sources */,
+				6A8036272979A29400FA8160 /* AddBookAdditionalInfoViewController.swift in Sources */,
 				6A519B8B29699EB60045FB6F /* LibraryViewController.swift in Sources */,
 				6A7CAE272968758C00F16195 /* SceneDelegate.swift in Sources */,
 				6A01232E297085FA006B8151 /* BooksPresenter.swift in Sources */,

@@ -7,11 +7,36 @@
 
 import UIKit
 
-class UserProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
+class UserProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MainInfoSendingDelegateProtocol{
+    func sendMainInfoDataToFirstViewController(email: String, phoneNumber: String, location: String, username: String) {
+        emailLabel.text = email
+        phoneNumberLabel.text = phoneNumber
+        addressLabel.text = location
+        usernameInfoLabel.text = username
+    }
+    
+    @IBOutlet weak var editMainInfoButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var userInfoView: UIView!
     @IBOutlet weak var tradingHistoryLabel: UILabel!
     @IBOutlet weak var greetingLabel: UILabel!
+    @IBOutlet weak var usernameInfoLabel: UILabel!
+    @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var phoneNumberLabel: UILabel!
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        if segue.identifier == "getMainInfoDataSegue"{
+            let editProfileInfoVC: EditUserMainInfoViewController = segue.destination as! EditUserMainInfoViewController
+            editProfileInfoVC.oldEmail = emailLabel.text
+            editProfileInfoVC.oldPhoneNumber = phoneNumberLabel.text
+            editProfileInfoVC.oldAddress = addressLabel.text
+            editProfileInfoVC.oldUsername = usernameInfoLabel.text
+            editProfileInfoVC.delegate = self
+        }
+    }
+    
     var arr: [String] = ["Object ","Object ","Object ","Object ","Object "]
     var showLibrariesButton: UIBarButtonItem = UIBarButtonItem()
     
@@ -23,20 +48,23 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         let backgroundBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.25
+            blurView.alpha = 0.45
             blurView.translatesAutoresizingMaskIntoConstraints = false
             blurView.layer.cornerRadius = 14
-            blurView.backgroundColor = UIColor.secondarySystemBackground
+            blurView.backgroundColor = UIColor.clear
             blurView.clipsToBounds = true
             return blurView
         }()
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "TradingHistoryCell", for: indexPath)
         var content = cell.defaultContentConfiguration()
-        cell.backgroundColor = .clear
-        cell.backgroundView = backgroundBlur
+        
         content.textProperties.color = UIColor(red: 0.3, green: 0.1, blue: 0.2, alpha: 1)
         content.textProperties.font = UIFont.boldSystemFont(ofSize: 17)
         content.text = arr[indexPath.row] + "\(indexPath.row + 1)"
+        
+        cell.backgroundColor = .clear
+        cell.backgroundView = backgroundBlur
         cell.contentConfiguration = content
         return cell
     }
@@ -51,13 +79,15 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     
     func viewProperties(){
         view.backgroundColor = UIColor(patternImage: UIImage(named: "libraryBackground")!)
+        editMainInfoButton.setImage(UIImage(systemName: "pencil.line"), for: .normal)
+        
         let backgroundBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.25
+            blurView.alpha = 0.6
             blurView.translatesAutoresizingMaskIntoConstraints = false
             blurView.layer.cornerRadius = 16
-            blurView.backgroundColor = UIColor.secondarySystemBackground
+            blurView.backgroundColor = UIColor.clear
             blurView.clipsToBounds = true
             return blurView
         }()
@@ -71,7 +101,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
             backgroundBlur.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             backgroundBlur.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-
+        
         userInfoViewProperties()
         //tableViewProperties()
         greetingLabelProperties()
@@ -82,16 +112,17 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         let backgroundNavBarBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.systemMaterial)
             let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.3
+            blurView.alpha = 0.5
             blurView.translatesAutoresizingMaskIntoConstraints = false
             blurView.layer.cornerRadius = 5
-            blurView.backgroundColor = UIColor.secondarySystemBackground
+            blurView.backgroundColor = UIColor.clear
             blurView.clipsToBounds = true
             return blurView
         }()
         
         self.navigationController?.navigationBar.addSubview(backgroundNavBarBlur)
         self.navigationController?.navigationBar.sendSubviewToBack(backgroundNavBarBlur)
+        
         backgroundNavBarBlur.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             backgroundNavBarBlur.topAnchor.constraint(equalTo: (self.navigationController?.navigationBar.topAnchor)!, constant: 0),
@@ -100,14 +131,15 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
             backgroundNavBarBlur.bottomAnchor.constraint(equalTo: (self.navigationController?.navigationBar.bottomAnchor)!, constant: 0)
         ])
     }
-    func userInfoViewProperties(){
+    
+    func userInfoViewProperties() {
         let backgroundBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.2
+            blurView.alpha = 0.4
             blurView.translatesAutoresizingMaskIntoConstraints = false
             blurView.layer.cornerRadius = 14
-            blurView.backgroundColor = UIColor.secondarySystemBackground
+            blurView.backgroundColor = UIColor.clear
             blurView.clipsToBounds = true
             return blurView
         }()
@@ -124,34 +156,35 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         ])
     }
     
-    func tableViewProperties(){
+    func tableViewProperties() {
         let backgroundBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.2
+            blurView.alpha = 0.4
             blurView.translatesAutoresizingMaskIntoConstraints = false
             blurView.layer.cornerRadius = 14
-            blurView.backgroundColor = UIColor.secondarySystemBackground
+            blurView.backgroundColor = UIColor.clear
             blurView.clipsToBounds = true
             return blurView
         }()
-        
         tableView.backgroundView = backgroundBlur
     }
     
-    func greetingLabelProperties(){
+   
+    
+    func greetingLabelProperties() {
         greetingLabel.font = UIFont.boldSystemFont(ofSize: 25)
         greetingLabel.textColor = UIColor(red: 0.3, green: 0.1, blue: 0.4, alpha: 1)
     }
     
-    func tradingHistoryLabelProperties(){
+    func tradingHistoryLabelProperties() {
         tradingHistoryLabel.font = UIFont.boldSystemFont(ofSize: 24)
         tradingHistoryLabel.textColor = UIColor(red: 0.3, green: 0.1, blue: 0.4, alpha: 1)
     }
     
-@objc func done() {
-    let librariesVC: LibrariesViewController = storyboard?.instantiateViewController(withIdentifier: "LibrariesViewController")  as! LibrariesViewController
-    navigationController?.pushViewController(librariesVC, animated: true)
-}
+    @objc func done() {
+        let librariesVC: LibrariesViewController = storyboard?.instantiateViewController(withIdentifier: "LibrariesViewController")  as! LibrariesViewController
+        navigationController?.pushViewController(librariesVC, animated: true)
+    }
     
 }

@@ -21,6 +21,7 @@ class RecomendedBooksCollectionViewCell: UICollectionViewCell, BookConfigurable 
         backgroundView = cellContentViewBackgroundBlur(cell: self, radius: 16)
         layer.borderWidth = 2
         layer.borderColor = UIColor.systemBrown.cgColor
+        layer.cornerRadius = 17
         
         let separator = UIView(frame: .zero)
         separator.translatesAutoresizingMaskIntoConstraints = false
@@ -41,7 +42,9 @@ class RecomendedBooksCollectionViewCell: UICollectionViewCell, BookConfigurable 
 //        outerStackView.alignment = .center
 //        outerStackView.spacing = 10
 //        outerStackView.distribution = .fillProportionally
-//
+        stackView.spacing = 10
+        stackView.alignment = .center
+        stackView.distribution = .fillProportionally
         stackView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(stackView)
         

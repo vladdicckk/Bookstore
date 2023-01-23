@@ -51,24 +51,26 @@ class LibrariesViewController: UIViewController, UITableViewDataSource, UITableV
                 view.alpha = 0.0
             }
         }
+        
         mainLibrariesView.addSubview(backgroundBlur)
         mainLibrariesView.sendSubviewToBack(backgroundBlur)
         backgroundBlurConstraints()
-        
     }
+    
     func backgroundBlurConstraints() {
         backgroundBlur.topAnchor.constraint(equalTo: mainLibrariesView.topAnchor, constant: 0).isActive = true
         backgroundBlur.leadingAnchor.constraint(equalTo: mainLibrariesView.leadingAnchor, constant: 0).isActive = true
         backgroundBlur.trailingAnchor.constraint(equalTo: mainLibrariesView.trailingAnchor, constant: 0).isActive = true
         backgroundBlur.bottomAnchor.constraint(equalTo: mainLibrariesView.bottomAnchor, constant: 0).isActive = true
     }
+    
     let backgroundBlur: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurView = UIVisualEffectView(effect: blurEffect)
-        blurView.alpha = 0.3
+        blurView.alpha = 0.5
         blurView.translatesAutoresizingMaskIntoConstraints = false
         blurView.layer.cornerRadius = 14
-        blurView.backgroundColor = UIColor.secondarySystemBackground
+        blurView.backgroundColor = UIColor.clear
         blurView.clipsToBounds = true
         return blurView
     }()

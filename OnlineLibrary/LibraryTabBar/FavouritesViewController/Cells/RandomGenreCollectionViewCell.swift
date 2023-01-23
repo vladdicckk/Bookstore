@@ -21,6 +21,7 @@ class RandomGenreCollectionViewCell: UICollectionViewCell, BookConfigurable {
         backgroundView = cellContentViewBackgroundBlur(cell: self, radius: 16)
         layer.borderWidth = 2
         layer.borderColor = UIColor.systemBrown.cgColor
+        layer.cornerRadius = 17
         
         let separator = UIView(frame: .zero)
         separator.translatesAutoresizingMaskIntoConstraints = false
@@ -28,6 +29,9 @@ class RandomGenreCollectionViewCell: UICollectionViewCell, BookConfigurable {
         
         let stackView = UIStackView(arrangedSubviews: [separator, nameLabel,
                                                                 subtitleLabel])
+        stackView.spacing = 10
+        stackView.alignment = .center
+        stackView.distribution = .fillProportionally
         stackView.axis = .vertical
         
         stackView.translatesAutoresizingMaskIntoConstraints = false

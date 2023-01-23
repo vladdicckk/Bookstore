@@ -11,10 +11,10 @@ extension UITabBar{
     func backgroundTabBarBlur(){
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.systemMaterialDark)
         let blurView = UIVisualEffectView(effect: blurEffect)
-        blurView.alpha = 0.4
+        blurView.alpha = 0.5
         blurView.translatesAutoresizingMaskIntoConstraints = false
         blurView.layer.cornerRadius = 16
-        blurView.backgroundColor = UIColor.secondarySystemBackground
+        blurView.backgroundColor = UIColor.clear
         blurView.clipsToBounds = true
         blurView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         blurView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true

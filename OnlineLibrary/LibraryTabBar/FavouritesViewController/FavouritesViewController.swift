@@ -17,7 +17,7 @@ class FavouritesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.prefersLargeTitles = true
-        self.title = "Some title"
+        self.title = "Books of the day"
         mainView.backgroundColor = UIColor(patternImage: UIImage(named: "libraryBackground")!)
         setupCollectionView()
         setupMainView()
@@ -30,10 +30,10 @@ class FavouritesViewController: UIViewController {
         let backgroundBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
             let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.1
+            blurView.alpha = 0.25
             blurView.translatesAutoresizingMaskIntoConstraints = false
             blurView.layer.cornerRadius = 16
-            blurView.backgroundColor = UIColor.secondarySystemBackground
+            blurView.backgroundColor = UIColor.clear
             blurView.clipsToBounds = true
             return blurView
         }()
@@ -255,6 +255,7 @@ extension FavouritesViewController: UICollectionViewDataSource, UICollectionView
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return presenter.numberOfItems(for: section)
     }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let bookInfo: BookInfoViewController = storyboard?.instantiateViewController(withIdentifier: "BookInfoViewController") as! BookInfoViewController
         present(bookInfo, animated: true)

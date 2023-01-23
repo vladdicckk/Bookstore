@@ -21,6 +21,7 @@ class RecentlyAddedBooksCollectionViewCell: UICollectionViewCell, BookConfigurab
         backgroundView = cellContentViewBackgroundBlur(cell: self, radius: 16)
         layer.borderWidth = 2
         layer.borderColor = UIColor.systemBrown.cgColor
+        layer.cornerRadius = 17
         
         let separator = UIView(frame: .zero)
         separator.translatesAutoresizingMaskIntoConstraints = false
@@ -29,7 +30,9 @@ class RecentlyAddedBooksCollectionViewCell: UICollectionViewCell, BookConfigurab
         let stackView = UIStackView(arrangedSubviews: [separator, nameLabel,
                                                                 subtitleLabel])
         stackView.axis = .vertical
-        
+        stackView.spacing = 10
+        stackView.alignment = .center
+        stackView.distribution = .fillProportionally
 //        let innerStackView = UIStackView(arrangedSubviews: [innerTextStackView])
 //        innerStackView.axis = .vertical
 //        innerStackView.spacing = 10

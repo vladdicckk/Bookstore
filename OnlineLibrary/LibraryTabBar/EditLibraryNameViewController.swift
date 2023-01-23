@@ -7,7 +7,12 @@
 
 import UIKit
 
+protocol TitleSendingDelegateProtocol {
+    func sendTitleDataToFirstViewController(myData: String)
+}
+
 class EditLibraryNameViewController: UIViewController{
+    var delegate: TitleSendingDelegateProtocol? = nil
     @IBOutlet weak var editLibraryTitleTextField: UITextField!
     var oldLibraryTitle: String?
     
@@ -24,7 +29,7 @@ class EditLibraryNameViewController: UIViewController{
             blurView.alpha = 0.9
             blurView.translatesAutoresizingMaskIntoConstraints = false
             blurView.layer.cornerRadius = 16
-            blurView.backgroundColor = UIColor.darkGray
+            blurView.backgroundColor = UIColor.clear
             blurView.clipsToBounds = true
             return blurView
         }()
@@ -38,7 +43,7 @@ class EditLibraryNameViewController: UIViewController{
             backgroundBlur.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         ])
     }
-
+    
     override func updateViewConstraints() {
         self.view.frame.size.height = UIScreen.main.bounds.height - 800
         self.view.frame.origin.y = 150
@@ -47,10 +52,10 @@ class EditLibraryNameViewController: UIViewController{
     }
     
     @IBAction func saveButtonTapped(_ sender: Any) {
-        let tabBarController: UITabBarController = self.storyboard?.instantiateViewController(withIdentifier: "LibraryTabBarController") as! UITabBarController
-        let navVC = tabBarController.viewControllers![0] as! UINavigationController
-        let libraryVC = navVC.topViewController as! LibraryViewController
-        libraryVC.editedLibraryTitleLabel = editLibraryTitleTextField.text
-        dismiss(animated: true)
+        if self.delegate != nil && self.editLibraryTitleTextField.text != nil {
+            let dataToBeSent: String  = editLibraryTitleTextField.text ?? ""
+            self.delegate?.sendTitleDataToFirstViewController(myData: dataToBeSent)
+            dismiss(animated: true, completion: nil)
+        }
     }
 }

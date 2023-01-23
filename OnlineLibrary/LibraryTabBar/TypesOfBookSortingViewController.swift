@@ -46,10 +46,10 @@ class TypesOfBookSortingViewController: UIViewController, UITableViewDelegate, U
         let backgroundMainViewBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.2
+            blurView.alpha = 0.35
             blurView.translatesAutoresizingMaskIntoConstraints = false
             blurView.layer.cornerRadius = 16
-            blurView.backgroundColor = UIColor.secondarySystemBackground
+            blurView.backgroundColor = UIColor.clear
             blurView.clipsToBounds = true
             return blurView
         }()
@@ -74,10 +74,10 @@ func tableViewProperties(){
     let backgroundBlur: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurView = UIVisualEffectView(effect: blurEffect)
-        blurView.alpha = 0.3
+        blurView.alpha = 0.4
         blurView.translatesAutoresizingMaskIntoConstraints = false
         blurView.layer.cornerRadius = 16
-        blurView.backgroundColor = UIColor.secondarySystemBackground
+        blurView.backgroundColor = UIColor.clear
         blurView.clipsToBounds = true
         return blurView
     }()

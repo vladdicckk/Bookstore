@@ -7,7 +7,9 @@
 
 import UIKit
 
-class LibraryViewController: UIViewController{
+class LibraryViewController: UIViewController, TitleSendingDelegateProtocol, MainSendingDelegateProtocol, NameSendingDelegateProtocol{
+    
+    
     @IBOutlet weak var upperView: UIView!
     @IBOutlet var mainLibraryView: UIView!
     @IBOutlet weak var lowerView: UIView!
@@ -21,23 +23,50 @@ class LibraryViewController: UIViewController{
     @IBOutlet weak var additionalInfoTextView: UITextView!
     @IBOutlet weak var editLibraryNameButton: UIButton!
     @IBOutlet weak var libraryInfoEditButton: UIButton!
-    var editedLibraryTitleLabel: String?
-    var editedOwnerEmailLabel: String?
-    var editedOwnerLocationLabel: String?
-    var editedOwnerPhoneNumberLabel: String?
+    @IBOutlet weak var setOwnersName: UIButton!
+
+    
+    func sendTitleDataToFirstViewController(myData: String) {
+        libraryTitleLabel.text = myData
+    }
+    
+    func sendNameDataToFirstViewController(name: String) {
+        ownersName.text = name
+    }
+    
+    func sendMainDataToFirstViewController(email: String, phoneNumber: String, location: String, preferences: String) {
+        emailLabel.text = email
+        contactPhoneLabel.text = phoneNumber
+        locationLabel.text = location
+        typeOfTrading.text = preferences
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "getTitleDataSegue" {
+            let editTitleVC: EditLibraryNameViewController = segue.destination as! EditLibraryNameViewController
+            editTitleVC.oldLibraryTitle = libraryTitleLabel.text
+            editTitleVC.delegate = self
+        }
+        if segue.identifier == "getMainDataSegue"{
+            let editLibraryInfoVC: EditLibraryInfoViewController = segue.destination as! EditLibraryInfoViewController
+            editLibraryInfoVC.oldOwnerEmail = emailLabel.text
+            editLibraryInfoVC.oldOwnerPhoneNumber = contactPhoneLabel.text
+            editLibraryInfoVC.oldLibraryLocation = locationLabel.text
+            editLibraryInfoVC.oldOwnerPreferences = typeOfTrading.text
+            editLibraryInfoVC.delegate = self
+        }
+        if segue.identifier == "getNameData"{
+            let setNameVC: SetLibraryOwnerName = segue.destination as! SetLibraryOwnerName
+            setNameVC.setName = ownersName.text
+            setNameVC.delegate = self
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         mainLibraryViewProperties()
     }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if editedLibraryTitleLabel != nil{
-            libraryTitleLabel.text = editedLibraryTitleLabel
-            
-        }
-    }
+    
     
     func mainLibraryViewProperties(){
         mainLibraryView.backgroundColor = .clear
@@ -45,10 +74,10 @@ class LibraryViewController: UIViewController{
         let backgroundMainViewBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
             let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.15
+            blurView.alpha = 0.35
             blurView.translatesAutoresizingMaskIntoConstraints = false
             blurView.layer.cornerRadius = 16
-            blurView.backgroundColor = UIColor.secondarySystemBackground
+            blurView.backgroundColor = UIColor.clear
             blurView.clipsToBounds = true
             return blurView
         }()
@@ -70,18 +99,18 @@ class LibraryViewController: UIViewController{
     }
     
     func upperViewProperties(){
-        
         upperView.backgroundColor = .clear
         editLibraryNameButton.setImage(UIImage(systemName: "pencil.line"), for: .normal)
         libraryInfoEditButton.setImage(UIImage(systemName: "pencil.line"), for: .normal)
+        setOwnersName.setImage(UIImage(systemName: "pencil.line"), for: .normal)
         
         let backgroundUpperViewBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
             let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.4
+            blurView.alpha = 0.55
             blurView.translatesAutoresizingMaskIntoConstraints = false
             blurView.layer.cornerRadius = 16
-            blurView.backgroundColor = UIColor.secondarySystemBackground
+            blurView.backgroundColor = UIColor.clear
             blurView.clipsToBounds = true
             return blurView
         }()
@@ -105,10 +134,10 @@ class LibraryViewController: UIViewController{
         let backgroundLowerViewBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.3
+            blurView.alpha = 0.45
             blurView.translatesAutoresizingMaskIntoConstraints = false
             blurView.layer.cornerRadius = 16
-            blurView.backgroundColor = UIColor.secondarySystemBackground
+            blurView.backgroundColor = UIColor.clear
             blurView.clipsToBounds = true
             return blurView
         }()
@@ -130,16 +159,16 @@ class LibraryViewController: UIViewController{
         let backgroundTextViewBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.extraLight)
             let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.5
+            blurView.alpha = 0.75
             blurView.translatesAutoresizingMaskIntoConstraints = false
             blurView.layer.cornerRadius = 16
-            blurView.backgroundColor = UIColor.secondarySystemBackground
+            blurView.backgroundColor = UIColor.clear
             blurView.clipsToBounds = true
             return blurView
         }()
         additionalInfoTextView.superview?.addSubview(backgroundTextViewBlur)
         additionalInfoTextView.superview?.sendSubviewToBack(backgroundTextViewBlur)
-
+        
         backgroundTextViewBlur.translatesAutoresizingMaskIntoConstraints  = false
         
         NSLayoutConstraint.activate([
@@ -153,10 +182,10 @@ class LibraryViewController: UIViewController{
         let backgroundLabelBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.systemMaterial)
             let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.1
+            blurView.alpha = 0.2
             blurView.translatesAutoresizingMaskIntoConstraints = false
             blurView.layer.cornerRadius = 5
-            blurView.backgroundColor = UIColor.secondarySystemBackground
+            blurView.backgroundColor = UIColor.clear
             blurView.clipsToBounds = true
             return blurView
         }()
@@ -168,18 +197,5 @@ class LibraryViewController: UIViewController{
             backgroundLabelBlur.trailingAnchor.constraint(equalTo: additionalInfoLabel.trailingAnchor, constant: 5),
             backgroundLabelBlur.bottomAnchor.constraint(equalTo: additionalInfoLabel.bottomAnchor, constant: 0)
         ])
-    }
-    
-    @IBAction func editLibraryTitleButtonTapped(_ sender: Any) {
-        let editLibraryTitleVC: EditLibraryNameViewController = self.storyboard?.instantiateViewController(withIdentifier: "EditLibraryNameViewController") as! EditLibraryNameViewController
-        editLibraryTitleVC.oldLibraryTitle = libraryTitleLabel.text
-        present(editLibraryTitleVC, animated: true)
-    }
-    @IBAction func editLibraryInfoButtonTapped(_ sender: Any) {
-        let editLibraryInfoVC: EditLibraryInfoViewController = self.storyboard?.instantiateViewController(withIdentifier: "EditLibraryInfoViewController") as! EditLibraryInfoViewController
-        editLibraryInfoVC.oldOwnerEmail = emailLabel.text
-        editLibraryInfoVC.oldOwnerPhoneNumber = contactPhoneLabel.text
-        editLibraryInfoVC.oldLibraryLocation = locationLabel.text
-        present(editLibraryInfoVC, animated: true)
     }
 }

@@ -7,19 +7,29 @@
 
 import UIKit
 
-class EditLibraryInfoViewController: UIViewController{
+protocol MainSendingDelegateProtocol {
+    func sendMainDataToFirstViewController(email: String, phoneNumber: String, location: String, preferences: String)
+}
 
+class EditLibraryInfoViewController: UIViewController {
     @IBOutlet weak var editOwnerEmailTextField: UITextField!
     @IBOutlet weak var editOwnerPhoneNumberTextField: UITextField!
     @IBOutlet weak var editLibraryLocationTextField: UITextField!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var editExchangeOrTradingPreferences: UITextField!
+    
     var oldLibraryLocation: String?
     var oldOwnerPhoneNumber: String?
     var oldOwnerEmail: String?
+    var oldOwnerPreferences: String?
+    var delegate: MainSendingDelegateProtocol? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        editOwnerEmailTextField.text = oldOwnerEmail
+        editOwnerPhoneNumberTextField.text = oldOwnerPhoneNumber
+        editLibraryLocationTextField.text = oldLibraryLocation
+        editExchangeOrTradingPreferences.text = oldOwnerPreferences
         mainViewProperties()
     }
     
@@ -30,7 +40,7 @@ class EditLibraryInfoViewController: UIViewController{
             blurView.alpha = 0.9
             blurView.translatesAutoresizingMaskIntoConstraints = false
             blurView.layer.cornerRadius = 16
-            blurView.backgroundColor = UIColor.darkGray
+            blurView.backgroundColor = UIColor.clear
             blurView.clipsToBounds = true
             return blurView
         }()
@@ -44,9 +54,6 @@ class EditLibraryInfoViewController: UIViewController{
             backgroundBlur.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: 0)
         ])
     }
-    func editedTextFields(){
-        
-    }
     
     override func updateViewConstraints() {
         self.view.frame.size.height = self.mainView.frame.size.height
@@ -54,6 +61,16 @@ class EditLibraryInfoViewController: UIViewController{
         self.view.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 10.0)
         super.updateViewConstraints()
     }
+    
     @IBAction func saveButtonTapped(_ sender: Any) {
+        if self.delegate != nil {
+            let email: String  = editOwnerEmailTextField.text ?? ""
+            let phoneNumber: String  = editOwnerPhoneNumberTextField.text ?? ""
+            let location: String  = editLibraryLocationTextField.text ?? ""
+            let preferences: String  = editExchangeOrTradingPreferences.text ?? ""
+            
+            self.delegate?.sendMainDataToFirstViewController(email: email, phoneNumber: phoneNumber, location: location, preferences: preferences)
+            dismiss(animated: true, completion: nil)
+        }
     }
 }
