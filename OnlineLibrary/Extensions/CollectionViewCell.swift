@@ -7,8 +7,7 @@
 
 import UIKit
 
-extension UICollectionViewCell{
-    
+extension UICollectionViewCell {
     func cellContentViewBackgroundBlur(cell: UICollectionViewCell, radius: Double) -> UIVisualEffectView{
         let backgroundBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)

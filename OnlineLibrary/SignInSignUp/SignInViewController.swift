@@ -7,9 +7,12 @@
 
 import UIKit
 
-class SignInViewController: UIViewController{
+class SignInViewController: UIViewController {
+    // MARK: Outlets
     @IBOutlet weak var upperView: UIView!
     @IBOutlet weak var lowerView: UIView!
+    
+    // MARK: Lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
         upperView.setCorner(radius: 16)

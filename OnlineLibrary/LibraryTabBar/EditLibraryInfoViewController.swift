@@ -12,18 +12,21 @@ protocol MainSendingDelegateProtocol {
 }
 
 class EditLibraryInfoViewController: UIViewController {
+    // MARK: Outlets
     @IBOutlet weak var editOwnerEmailTextField: UITextField!
     @IBOutlet weak var editOwnerPhoneNumberTextField: UITextField!
     @IBOutlet weak var editLibraryLocationTextField: UITextField!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var editExchangeOrTradingPreferences: UITextField!
     
+    // MARK: Properties
     var oldLibraryLocation: String?
     var oldOwnerPhoneNumber: String?
     var oldOwnerEmail: String?
     var oldOwnerPreferences: String?
     var delegate: MainSendingDelegateProtocol? = nil
     
+    // MARK: Lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
         editOwnerEmailTextField.text = oldOwnerEmail
@@ -33,7 +36,8 @@ class EditLibraryInfoViewController: UIViewController {
         mainViewProperties()
     }
     
-    func mainViewProperties(){
+    // MARK: Private and public functions
+    func mainViewProperties() {
         let backgroundBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let blurView = UIVisualEffectView(effect: blurEffect)
@@ -62,6 +66,7 @@ class EditLibraryInfoViewController: UIViewController {
         super.updateViewConstraints()
     }
     
+    // MARK: Actions
     @IBAction func saveButtonTapped(_ sender: Any) {
         if self.delegate != nil {
             let email: String  = editOwnerEmailTextField.text ?? ""

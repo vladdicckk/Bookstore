@@ -8,8 +8,9 @@
 import UIKit
 
 class FavouritesViewController: UIViewController {
-    
+    // MARK: Outlets
     @IBOutlet var mainView: UIView!
+    // MARK: Properties
     private var presenter = BooksPresenter()         // Handles all the data
     private var collectionView: UICollectionView!
     

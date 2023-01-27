@@ -8,7 +8,7 @@
 import UIKit
 
 class RandomGenreCollectionViewCell: UICollectionViewCell, BookConfigurable {
-    
+    // MARK: Properties
     let nameLabel = UILabel()
     let subtitleLabel = UILabel()
     
@@ -17,6 +17,7 @@ class RandomGenreCollectionViewCell: UICollectionViewCell, BookConfigurable {
         setup()
     }
     
+    // MARK: Private and public functions
     private func setup() {
         backgroundView = cellContentViewBackgroundBlur(cell: self, radius: 16)
         layer.borderWidth = 2
@@ -28,7 +29,7 @@ class RandomGenreCollectionViewCell: UICollectionViewCell, BookConfigurable {
         separator.backgroundColor = .quaternaryLabel
         
         let stackView = UIStackView(arrangedSubviews: [separator, nameLabel,
-                                                                subtitleLabel])
+                                                       subtitleLabel])
         stackView.spacing = 10
         stackView.alignment = .center
         stackView.distribution = .fillProportionally

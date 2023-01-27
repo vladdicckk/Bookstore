@@ -12,17 +12,21 @@ protocol NameSendingDelegateProtocol {
 }
 
 class SetLibraryOwnerName: UIViewController{
-    
-    
+    // MARK: Outlets
     @IBOutlet weak var setNameTextField: UITextField!
+    
+    // MARK: Properties
     var delegate: NameSendingDelegateProtocol? = nil
     var setName: String?
+    
+    // MARK: Lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
         mainViewProperties()
     }
     
-    func mainViewProperties(){
+    // MARK: Private and public functions
+    private func mainViewProperties() {
         let backgroundBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let blurView = UIVisualEffectView(effect: blurEffect)
@@ -33,8 +37,10 @@ class SetLibraryOwnerName: UIViewController{
             blurView.clipsToBounds = true
             return blurView
         }()
+        
         view.addSubview(backgroundBlur)
         view.sendSubviewToBack(backgroundBlur)
+        
         backgroundBlur.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             backgroundBlur.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
@@ -43,6 +49,7 @@ class SetLibraryOwnerName: UIViewController{
             backgroundBlur.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         ])
     }
+    
     override func updateViewConstraints() {
         self.view.frame.size.height = UIScreen.main.bounds.height - 800
         self.view.frame.origin.y = 150
@@ -50,11 +57,11 @@ class SetLibraryOwnerName: UIViewController{
         super.updateViewConstraints()
     }
     
+    // MARK: Actions
     @IBAction func saveButtonTapped(_ sender: Any) {
         if self.delegate != nil {
-            
             let name: String  = setNameTextField.text ?? ""
-           
+            
             self.delegate?.sendNameDataToFirstViewController(name: name)
             dismiss(animated: true, completion: nil)
         }

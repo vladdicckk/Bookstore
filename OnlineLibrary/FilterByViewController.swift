@@ -8,12 +8,14 @@
 import UIKit
 
 class FilterByViewController: UIViewController{
+    // MARK: Lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
         mainViewProperties()
     }
     
-    func mainViewProperties() {
+    // MARK: Public and private functions
+    private func mainViewProperties() {
         view.backgroundColor = .clear
         
         let backgroundBlur: UIVisualEffectView = {

@@ -8,7 +8,7 @@
 import UIKit
 
 class RecentlyAddedBooksCollectionViewCell: UICollectionViewCell, BookConfigurable {
-    
+    // MARK: Properties
     let nameLabel = UILabel()
     let subtitleLabel = UILabel()
     
@@ -17,6 +17,7 @@ class RecentlyAddedBooksCollectionViewCell: UICollectionViewCell, BookConfigurab
         setup()
     }
     
+    // MARK: Private and public functions
     private func setup() {
         backgroundView = cellContentViewBackgroundBlur(cell: self, radius: 16)
         layer.borderWidth = 2
@@ -28,23 +29,11 @@ class RecentlyAddedBooksCollectionViewCell: UICollectionViewCell, BookConfigurab
         separator.backgroundColor = .quaternaryLabel
         
         let stackView = UIStackView(arrangedSubviews: [separator, nameLabel,
-                                                                subtitleLabel])
+                                                       subtitleLabel])
         stackView.axis = .vertical
         stackView.spacing = 10
         stackView.alignment = .center
         stackView.distribution = .fillProportionally
-//        let innerStackView = UIStackView(arrangedSubviews: [innerTextStackView])
-//        innerStackView.axis = .vertical
-//        innerStackView.spacing = 10
-//        innerStackView.alignment = .leading
-//        innerStackView.distribution = .fillProportionally
-//
-//        let outerStackView = UIStackView()
-//        outerStackView.axis = .vertical
-//        outerStackView.alignment = .center
-//        outerStackView.spacing = 10
-//        outerStackView.distribution = .fillProportionally
-//
         stackView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(stackView)
         
@@ -63,8 +52,6 @@ class RecentlyAddedBooksCollectionViewCell: UICollectionViewCell, BookConfigurab
     }
     
     private func style() {
-        
-        
         nameLabel.font = UIFont.preferredFont(forTextStyle: .headline)
         nameLabel.textColor = .label
         

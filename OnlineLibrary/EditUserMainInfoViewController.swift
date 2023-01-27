@@ -37,7 +37,7 @@ class EditUserMainInfoViewController: UIViewController {
     }
     
     // MARK: Private functions
-    private func mainViewProperties(){
+    private func mainViewProperties() {
         let backgroundBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let blurView = UIVisualEffectView(effect: blurEffect)

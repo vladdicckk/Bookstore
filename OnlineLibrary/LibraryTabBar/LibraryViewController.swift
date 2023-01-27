@@ -8,8 +8,7 @@
 import UIKit
 
 class LibraryViewController: UIViewController, TitleSendingDelegateProtocol, MainSendingDelegateProtocol, NameSendingDelegateProtocol{
-    
-    
+    // MARK: Outlets
     @IBOutlet weak var upperView: UIView!
     @IBOutlet var mainLibraryView: UIView!
     @IBOutlet weak var lowerView: UIView!
@@ -24,8 +23,14 @@ class LibraryViewController: UIViewController, TitleSendingDelegateProtocol, Mai
     @IBOutlet weak var editLibraryNameButton: UIButton!
     @IBOutlet weak var libraryInfoEditButton: UIButton!
     @IBOutlet weak var setOwnersName: UIButton!
-
     
+    // MARK: Lifecycle functions
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        mainLibraryViewProperties()
+    }
+    
+    // MARK: Private and public functions
     func sendTitleDataToFirstViewController(myData: String) {
         libraryTitleLabel.text = myData
     }
@@ -62,98 +67,77 @@ class LibraryViewController: UIViewController, TitleSendingDelegateProtocol, Mai
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        mainLibraryViewProperties()
-    }
-    
-    
-    func mainLibraryViewProperties(){
-        mainLibraryView.backgroundColor = .clear
-        mainLibraryView.backgroundColor = UIColor(patternImage: UIImage(named: "libraryBackground")!)
-        let backgroundMainViewBlur: UIVisualEffectView = {
-            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
+    private func createLightBlurEffect(alpha: Double, view: UIView) {
+        let backgroundBlur: UIVisualEffectView = {
+            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.35
+            blurView.alpha = alpha
             blurView.translatesAutoresizingMaskIntoConstraints = false
-            blurView.layer.cornerRadius = 16
+            blurView.layer.cornerRadius = 14
             blurView.backgroundColor = UIColor.clear
             blurView.clipsToBounds = true
             return blurView
         }()
-        mainLibraryView.addSubview(backgroundMainViewBlur)
-        mainLibraryView.sendSubviewToBack(backgroundMainViewBlur)
+        view.addSubview(backgroundBlur)
+        view.sendSubviewToBack(backgroundBlur)
         
-        backgroundMainViewBlur.translatesAutoresizingMaskIntoConstraints = false
-        
+        backgroundBlur.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            backgroundMainViewBlur.topAnchor.constraint(equalTo: mainLibraryView.topAnchor, constant: 0),
-            backgroundMainViewBlur.leadingAnchor.constraint(equalTo: mainLibraryView.leadingAnchor, constant: 0),
-            backgroundMainViewBlur.trailingAnchor.constraint(equalTo: mainLibraryView.trailingAnchor, constant: 0),
-            backgroundMainViewBlur.bottomAnchor.constraint(equalTo: mainLibraryView.bottomAnchor, constant: 0)
+            backgroundBlur.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            backgroundBlur.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            backgroundBlur.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            backgroundBlur.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         ])
+    }
+    
+    private func createDarkBlurEffect(alpha: Double, view: UIView) {
+        let backgroundBlur: UIVisualEffectView = {
+            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
+            let blurView = UIVisualEffectView(effect: blurEffect)
+            blurView.alpha = alpha
+            blurView.translatesAutoresizingMaskIntoConstraints = false
+            blurView.layer.cornerRadius = 14
+            blurView.backgroundColor = UIColor.clear
+            blurView.clipsToBounds = true
+            return blurView
+        }()
+        view.addSubview(backgroundBlur)
+        view.sendSubviewToBack(backgroundBlur)
+        
+        backgroundBlur.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            backgroundBlur.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            backgroundBlur.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            backgroundBlur.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            backgroundBlur.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        ])
+    }
+    
+    private func mainLibraryViewProperties(){
+        mainLibraryView.backgroundColor = .clear
+        mainLibraryView.backgroundColor = UIColor(patternImage: UIImage(named: "libraryBackground")!)
+        createDarkBlurEffect(alpha: 0.35, view: mainLibraryView)
+        
         upperViewProperties()
         lowerViewProperties()
         textViewProperties()
         additionalInfoLabelProperties()
     }
     
-    func upperViewProperties(){
+    private func upperViewProperties(){
         upperView.backgroundColor = .clear
         editLibraryNameButton.setImage(UIImage(systemName: "pencil.line"), for: .normal)
         libraryInfoEditButton.setImage(UIImage(systemName: "pencil.line"), for: .normal)
         setOwnersName.setImage(UIImage(systemName: "pencil.line"), for: .normal)
-        
-        let backgroundUpperViewBlur: UIVisualEffectView = {
-            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
-            let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.55
-            blurView.translatesAutoresizingMaskIntoConstraints = false
-            blurView.layer.cornerRadius = 16
-            blurView.backgroundColor = UIColor.clear
-            blurView.clipsToBounds = true
-            return blurView
-        }()
-        
-        upperView.addSubview(backgroundUpperViewBlur)
-        upperView.sendSubviewToBack(backgroundUpperViewBlur)
-        
-        backgroundUpperViewBlur.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            backgroundUpperViewBlur.topAnchor.constraint(equalTo: upperView.topAnchor, constant: 0),
-            backgroundUpperViewBlur.leadingAnchor.constraint(equalTo: upperView.leadingAnchor, constant: 0),
-            backgroundUpperViewBlur.trailingAnchor.constraint(equalTo: upperView.trailingAnchor, constant: 0),
-            backgroundUpperViewBlur.bottomAnchor.constraint(equalTo: upperView.bottomAnchor, constant: 0)
-        ])
+        createDarkBlurEffect(alpha: 0.55, view: upperView)
     }
     
-    func lowerViewProperties(){
+    private func lowerViewProperties(){
         lowerView.backgroundColor = .clear
-        
-        let backgroundLowerViewBlur: UIVisualEffectView = {
-            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
-            let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.45
-            blurView.translatesAutoresizingMaskIntoConstraints = false
-            blurView.layer.cornerRadius = 16
-            blurView.backgroundColor = UIColor.clear
-            blurView.clipsToBounds = true
-            return blurView
-        }()
-        
-        lowerView.addSubview(backgroundLowerViewBlur)
-        lowerView.sendSubviewToBack(backgroundLowerViewBlur)
-        backgroundLowerViewBlur.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            backgroundLowerViewBlur.topAnchor.constraint(equalTo: lowerView.topAnchor, constant: 0),
-            backgroundLowerViewBlur.leadingAnchor.constraint(equalTo: lowerView.leadingAnchor, constant: -20),
-            backgroundLowerViewBlur.trailingAnchor.constraint(equalTo: lowerView.trailingAnchor, constant: 20),
-            backgroundLowerViewBlur.bottomAnchor.constraint(equalTo: lowerView.bottomAnchor, constant: 0)
-        ])
+        createLightBlurEffect(alpha: 0.45, view: lowerView)
     }
     
-    func textViewProperties(){
+    private func textViewProperties(){
         additionalInfoTextView.backgroundColor = .clear
         
         let backgroundTextViewBlur: UIVisualEffectView = {
@@ -178,7 +162,8 @@ class LibraryViewController: UIViewController, TitleSendingDelegateProtocol, Mai
             backgroundTextViewBlur.bottomAnchor.constraint(equalTo: additionalInfoTextView.bottomAnchor, constant: 0)
         ])
     }
-    func additionalInfoLabelProperties(){
+    
+    private func additionalInfoLabelProperties(){
         let backgroundLabelBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.systemMaterial)
             let blurView = UIVisualEffectView(effect: blurEffect)

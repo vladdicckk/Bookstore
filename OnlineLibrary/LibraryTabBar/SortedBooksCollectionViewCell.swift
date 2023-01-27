@@ -7,21 +7,17 @@
 
 import UIKit
 
-class SortedBooksCollectionViewCell: UICollectionViewCell{
+class SortedBooksCollectionViewCell: UICollectionViewCell {
+    // MARK: Outlets
     @IBOutlet weak var bookTitle: UILabel!
     
-    
+    // MARK: Public functions
     func setup() {
-        //backgroundView = cellContentViewBackgroundBlur(cell: self, radius: 16)
         layer.borderWidth = 2
         layer.borderColor = UIColor.systemBrown.cgColor
         
-       
-        
         let stackView = UIStackView(arrangedSubviews: [bookTitle])
         stackView.axis = .vertical
-        
-       
         stackView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(stackView)
         
@@ -34,10 +30,8 @@ class SortedBooksCollectionViewCell: UICollectionViewCell{
             stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
+    
     func configure(with arr: [String], indexPath: IndexPath) {
-        
-        
         bookTitle.text = arr[indexPath.row] + "\(indexPath.row + 1)"
-        
     }
 }

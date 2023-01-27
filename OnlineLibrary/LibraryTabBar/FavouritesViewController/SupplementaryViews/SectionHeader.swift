@@ -8,7 +8,7 @@
 import UIKit
 
 class SectionHeader: UICollectionReusableView {
-    
+    // MARK: Properties
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
     
@@ -21,6 +21,7 @@ class SectionHeader: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Private and public functions
     private func setup() {
         let separator = UIView(frame: .zero)
         separator.translatesAutoresizingMaskIntoConstraints = false
@@ -38,9 +39,7 @@ class SectionHeader: UICollectionReusableView {
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10)
         ])
-        
         stackView.setCustomSpacing(100, after: separator)
-        
         style()
     }
     

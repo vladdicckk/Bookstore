@@ -12,17 +12,22 @@ protocol TitleSendingDelegateProtocol {
 }
 
 class EditLibraryNameViewController: UIViewController{
-    var delegate: TitleSendingDelegateProtocol? = nil
+    // MARK: Outlets
     @IBOutlet weak var editLibraryTitleTextField: UITextField!
+    
+    // MARK: Properties
+    var delegate: TitleSendingDelegateProtocol? = nil
     var oldLibraryTitle: String?
     
+    // MARK: Lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
         editLibraryTitleTextField.text = oldLibraryTitle
         mainViewProperties()
     }
     
-    func mainViewProperties(){
+    // MARK: Private and public functions
+    private func mainViewProperties() {
         let backgroundBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let blurView = UIVisualEffectView(effect: blurEffect)
@@ -33,8 +38,10 @@ class EditLibraryNameViewController: UIViewController{
             blurView.clipsToBounds = true
             return blurView
         }()
+        
         view.addSubview(backgroundBlur)
         view.sendSubviewToBack(backgroundBlur)
+        
         backgroundBlur.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             backgroundBlur.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
@@ -51,6 +58,7 @@ class EditLibraryNameViewController: UIViewController{
         super.updateViewConstraints()
     }
     
+    // MARK: Actions
     @IBAction func saveButtonTapped(_ sender: Any) {
         if self.delegate != nil && self.editLibraryTitleTextField.text != nil {
             let dataToBeSent: String  = editLibraryTitleTextField.text ?? ""

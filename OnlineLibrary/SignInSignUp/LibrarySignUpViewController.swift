@@ -7,10 +7,12 @@
 
 import UIKit
 
-class LibrarySignUpViewController: UIViewController{
-    
+class LibrarySignUpViewController: UIViewController {
+    // MARK: Outlets
     @IBOutlet weak var upperView: UIView!
     @IBOutlet weak var lowerView: UIView!
+    
+    // MARK: Lifecycle funcitons
     override func viewDidLoad() {
         super.viewDidLoad()
         upperView.setCorner(radius: 16)
