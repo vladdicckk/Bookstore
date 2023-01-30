@@ -1332,7 +1332,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="406" placeholderIntrinsicHeight="254" translatesAutoresizingMaskIntoConstraints="NO" id="7F9-Jh-lHS">
-                                <rect key="frame" x="12" y="180" width="406" height="254"/>
+                                <rect key="frame" x="12" y="180" width="406" height="257"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="21" text="Age" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ezo-tT-9mb">
                                         <rect key="frame" x="203" y="8" width="195" height="21"/>
@@ -1347,61 +1347,61 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="21" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tos-9y-Xe3">
-                                        <rect key="frame" x="8" y="90" width="195" height="21"/>
+                                        <rect key="frame" x="8" y="93" width="195" height="21"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" red="0.34131971001625061" green="0.077176518738269806" blue="0.22826641798019409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="45" text="username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I8t-Ts-Bij">
-                                        <rect key="frame" x="8" y="119" width="195" height="45"/>
+                                        <rect key="frame" x="8" y="122" width="195" height="45"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" red="0.34131971001625061" green="0.077176518738269806" blue="0.22826641798019409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="45" text="name, surname" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y44-6D-gie">
-                                        <rect key="frame" x="8" y="37" width="195" height="45"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="48" text="name, surname" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y44-6D-gie">
+                                        <rect key="frame" x="8" y="37" width="195" height="48"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" red="0.34131971001625061" green="0.077176518738269806" blue="0.22826641798019409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="21" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yNj-5y-Njb">
-                                        <rect key="frame" x="8" y="172" width="195" height="21"/>
+                                        <rect key="frame" x="8" y="175" width="195" height="21"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" red="0.34131971001625061" green="0.077176518738269806" blue="0.22826641798019409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="45" text="location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BtX-5X-boG">
-                                        <rect key="frame" x="8" y="201" width="195" height="45"/>
+                                        <rect key="frame" x="8" y="204" width="195" height="45"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" red="0.34131971001625061" green="0.077176518738269806" blue="0.22826641798019409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="249" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="45" text="age" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ImC-hc-7ug">
-                                        <rect key="frame" x="203" y="37" width="195" height="45"/>
+                                        <rect key="frame" x="203" y="38.666666666666657" width="195" height="45"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" red="0.34131971001625061" green="0.077176518738269806" blue="0.22826641798019409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="21" text="Phone number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A1q-Ns-qLT">
-                                        <rect key="frame" x="203" y="90" width="195" height="21"/>
+                                        <rect key="frame" x="203" y="93" width="195" height="21"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" red="0.34131971001625061" green="0.077176518738269806" blue="0.22826641798019409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="45" text="number" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ajq-oM-PCS">
-                                        <rect key="frame" x="203" y="119" width="195" height="45"/>
+                                        <rect key="frame" x="203" y="122" width="195" height="45"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" red="0.34131971001625061" green="0.077176518738269806" blue="0.22826641798019409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="21" text="E-mail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j0K-kU-30e">
-                                        <rect key="frame" x="203" y="172" width="195" height="21"/>
+                                        <rect key="frame" x="203" y="175" width="195" height="21"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" red="0.34131971001625061" green="0.077176518738269806" blue="0.22826641798019409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="45" text="e-mail" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyg-r3-AFQ">
-                                        <rect key="frame" x="203" y="201" width="195" height="45"/>
+                                        <rect key="frame" x="203" y="204" width="195" height="45"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" red="0.34131971001625061" green="0.077176518738269806" blue="0.22826641798019409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -1448,14 +1448,14 @@
                                     <constraint firstItem="yNj-5y-Njb" firstAttribute="leading" secondItem="7F9-Jh-lHS" secondAttribute="leading" constant="8" id="zAD-z5-d7P"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, &quot;\(First Name)&quot;!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tfv-la-OZE">
-                                <rect key="frame" x="131.66666666666666" y="73" width="166.99999999999997" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="286" placeholderIntrinsicHeight="48" text="Hello, &quot;\(First Name)&quot;!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tfv-la-OZE">
+                                <rect key="frame" x="12" y="73" width="286.33333333333331" height="48"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="406" placeholderIntrinsicHeight="324" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="xjd-he-aON">
-                                <rect key="frame" x="12" y="574" width="406" height="324"/>
+                                <rect key="frame" x="12" y="584" width="406" height="324"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TraidingHistoryCell" id="BAU-kE-8yz">
@@ -1473,7 +1473,7 @@
                                 </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trading history:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a0Z-8Z-1Tr">
-                                <rect key="frame" x="20.000000000000007" y="545" width="118.66666666666669" height="21"/>
+                                <rect key="frame" x="20.000000000000007" y="555" width="118.66666666666669" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1486,29 +1486,44 @@
                                     <segue destination="6B9-6f-YBl" kind="presentation" identifier="getMainInfoDataSegue" id="08W-wh-SMj"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="107" placeholderIntrinsicHeight="22" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qsb-ej-PHi">
+                                <rect key="frame" x="302.66666666666669" y="72" width="107.33333333333331" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="107.33" id="lxx-aH-6Ag"/>
+                                    <constraint firstAttribute="height" constant="22" id="wfi-gI-qKw"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="tinted" title="To libraries"/>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="SpD-8R-vTq"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="7F9-Jh-lHS" firstAttribute="top" secondItem="pWI-gh-XwB" secondAttribute="bottom" id="ATZ-67-Pip"/>
+                            <constraint firstItem="qsb-ej-PHi" firstAttribute="top" secondItem="SpD-8R-vTq" secondAttribute="top" constant="13" id="Ced-Ja-gJv"/>
+                            <constraint firstItem="a0Z-8Z-1Tr" firstAttribute="top" relation="lessThanOrEqual" secondItem="7F9-Jh-lHS" secondAttribute="bottom" constant="118" id="Eqq-Vk-d3Y"/>
+                            <constraint firstItem="7F9-Jh-lHS" firstAttribute="top" secondItem="pWI-gh-XwB" secondAttribute="bottom" id="GxJ-Jg-Pyq"/>
                             <constraint firstItem="SpD-8R-vTq" firstAttribute="trailing" secondItem="7F9-Jh-lHS" secondAttribute="trailing" constant="12" id="HDE-fw-nzl"/>
+                            <constraint firstItem="qsb-ej-PHi" firstAttribute="leading" secondItem="Tfv-la-OZE" secondAttribute="trailing" constant="4.3300000000000001" id="KDL-bZ-njK"/>
                             <constraint firstItem="SpD-8R-vTq" firstAttribute="trailing" secondItem="xjd-he-aON" secondAttribute="trailing" constant="12" id="Oh9-vb-Dbk"/>
-                            <constraint firstItem="xjd-he-aON" firstAttribute="bottom" secondItem="SpD-8R-vTq" secondAttribute="bottom" id="W1N-Il-zM8"/>
+                            <constraint firstItem="7F9-Jh-lHS" firstAttribute="top" secondItem="Tfv-la-OZE" secondAttribute="bottom" constant="59" id="Pbw-tV-dge"/>
+                            <constraint firstItem="xjd-he-aON" firstAttribute="bottom" secondItem="SpD-8R-vTq" secondAttribute="bottom" constant="10" id="W1N-Il-zM8"/>
                             <constraint firstItem="SpD-8R-vTq" firstAttribute="trailing" secondItem="pWI-gh-XwB" secondAttribute="trailing" constant="20" id="aQ2-7i-ieD"/>
                             <constraint firstItem="Tfv-la-OZE" firstAttribute="top" secondItem="SpD-8R-vTq" secondAttribute="top" constant="14" id="dOf-yw-rux"/>
-                            <constraint firstItem="Tfv-la-OZE" firstAttribute="centerX" secondItem="SZl-ao-t5a" secondAttribute="centerX" id="fPc-a2-MMG"/>
                             <constraint firstItem="a0Z-8Z-1Tr" firstAttribute="leading" secondItem="SpD-8R-vTq" secondAttribute="leading" constant="20" id="fbs-NS-DrZ"/>
                             <constraint firstItem="xjd-he-aON" firstAttribute="top" secondItem="a0Z-8Z-1Tr" secondAttribute="bottom" constant="8" symbolic="YES" id="hhR-h9-mLZ"/>
                             <constraint firstItem="xjd-he-aON" firstAttribute="leading" secondItem="SpD-8R-vTq" secondAttribute="leading" constant="12" id="kCu-wB-oe3"/>
-                            <constraint firstItem="7F9-Jh-lHS" firstAttribute="top" secondItem="Tfv-la-OZE" secondAttribute="bottom" constant="86" id="kMg-se-Me2"/>
-                            <constraint firstItem="a0Z-8Z-1Tr" firstAttribute="top" secondItem="7F9-Jh-lHS" secondAttribute="bottom" constant="111" id="zDe-mO-9Bp"/>
+                            <constraint firstAttribute="trailing" secondItem="qsb-ej-PHi" secondAttribute="trailing" constant="20" symbolic="YES" id="mqK-CU-SnJ"/>
+                            <constraint firstItem="Tfv-la-OZE" firstAttribute="leading" secondItem="SpD-8R-vTq" secondAttribute="leading" constant="12" id="wfl-aU-voH"/>
                             <constraint firstItem="7F9-Jh-lHS" firstAttribute="leading" secondItem="SpD-8R-vTq" secondAttribute="leading" constant="12" id="zZa-cX-90j"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="addressLabel" destination="BtX-5X-boG" id="9TR-oA-jtu"/>
+                        <outlet property="ageLabel" destination="ImC-hc-7ug" id="xtU-4q-nuO"/>
                         <outlet property="editMainInfoButton" destination="pWI-gh-XwB" id="cVk-Fq-kRl"/>
                         <outlet property="emailLabel" destination="cyg-r3-AFQ" id="cr0-8J-8p8"/>
+                        <outlet property="firstAndLastNamesLabel" destination="y44-6D-gie" id="5Ac-hz-Y0p"/>
                         <outlet property="greetingLabel" destination="Tfv-la-OZE" id="naa-RB-rin"/>
                         <outlet property="phoneNumberLabel" destination="ajq-oM-PCS" id="LtE-vt-hWa"/>
                         <outlet property="tableView" destination="xjd-he-aON" id="ShQ-OP-4Zh"/>

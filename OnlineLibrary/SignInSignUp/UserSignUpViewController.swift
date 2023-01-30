@@ -30,6 +30,7 @@ class UserSignUpViewController: UIViewController, UITextFieldDelegate {
     // MARK: Parameters
     let db = Firestore.firestore()
     var ref: DocumentReference!
+    var isExists = true
     let validation: Validation = Validation()
     
     // MARK: Lifecycle functions
@@ -44,17 +45,35 @@ class UserSignUpViewController: UIViewController, UITextFieldDelegate {
             self.confirmPasswordTextField.text = "test"
             self.addressTextField.text = "test"
             self.phoneNumberTextField.text = "+380000000000"
+            self.emailTextField.text = "test@gmail.com"
         }
     }
     
     // MARK: Private and public functions
-    private func setUsersData(name: String, surname: String, password: String, age: Int, email: String, address: String, phoneNumber: String, username: String) {
+    
+    
+    private func checkForUserExistingAndAddingUserData(email: String, _ completion: @escaping (_ exists: Bool) -> Void) {
         let users = db.collection("Users")
         
-        let user = User(firstName: name, lastName: surname, age: age, password: password, email: email, username: username, phoneNumber: phoneNumber, location: address)
+        users.document(email).getDocument { query, err in
+            if query!.exists {
+                completion(true)
+            } else {
+                completion(false)
+            }
+        }
+        
+        //        if isExists == false {
+        //            let user = User(firstName: name, lastName: surname, age: age, password: password, email: email, username: username, phoneNumber: phoneNumber, location: address)
+        //            addUser(user: user)
+        //        }
+        
+    }
+    
+    private func addUser(user: User) {
+        let users = db.collection("Users")
         do {
-            try users.addDocument(from: user)
-                //.document("Username : \(username)").setData(from: user)
+            try users.document(user.email).setData(from: user)
         } catch let error {
             print ("Error: \(error)")
         }
@@ -84,17 +103,9 @@ class UserSignUpViewController: UIViewController, UITextFieldDelegate {
     //        return true
     //    }
     
-    private func validation(username: String, email: String, phoneNumber: String) -> Bool{
-        //validation.isEmailUnique(email: email)
-        
+    private func validation(email: String, phoneNumber: String) -> Bool {
         if !validation.isEmail(enteredEmail: email){
             showAlert(message: "Please, enter correct email")
-            return false
-        } else if !validation.isEmailUnique(email: email) {
-            showAlert(message: "Email must be unique")
-            return false
-        } else if !validation.isUsernameUnique(username: username) {
-            showAlert(message: "Username must be unique")
             return false
         } else if !validation.isPhoneNumber(phone: phoneNumber) {
             showAlert(message: "Please, enter correct phone number")
@@ -130,12 +141,26 @@ class UserSignUpViewController: UIViewController, UITextFieldDelegate {
         
         if name != "" && surname != "" && password != "" && email != "" && address != "" && phoneNumber != "" && username != "" {
             if password == confirmPasswordTextField.text && password != "" {
-                //if validation(username: username, email: email, phoneNumber: phoneNumber) {
-                    setUsersData(name: name, surname: surname, password: password, age: age, email: email, address: address, phoneNumber: phoneNumber, username: username)
-                    
-                    let userProfileVC: UserProfileViewController = storyboard?.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
-                    self.navigationController?.pushViewController(userProfileVC, animated: true)
-                //}
+                if validation(email: email, phoneNumber: phoneNumber) {
+                    self.checkForUserExistingAndAddingUserData(email: email, { exists in
+                        if exists {
+                            self.showAlert(message: "Email already exists")
+                            self.isExists = true
+                        } else {
+                            let user = User(firstName: name, lastName: surname, age: age, password: password, email: email, username: username, phoneNumber: phoneNumber, location: address)
+                            //self.addUser(user: user)
+                            let userProfileVC: UserProfileViewController = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
+                            userProfileVC.firstName = name
+                            userProfileVC.lastName = surname
+                            userProfileVC.age = age
+                            userProfileVC.email = email
+                            userProfileVC.username = username
+                            userProfileVC.phoneNumber = phoneNumber
+                            userProfileVC.address = address
+                            self.navigationController?.pushViewController(userProfileVC, animated: true)
+                        }
+                    })
+                }
             } else {
                 showAlert(message: "You need to confirm your password")
             }

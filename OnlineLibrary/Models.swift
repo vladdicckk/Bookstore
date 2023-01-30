@@ -39,7 +39,7 @@ public struct User: Codable {
     var age: Int
     var password: String
     var email: String
-    @DocumentID var username = "Username :"
+    var username: String
     var phoneNumber: String
     var location: String
     

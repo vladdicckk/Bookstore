@@ -22,35 +22,43 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var phoneNumberLabel: UILabel!
+    @IBOutlet weak var firstAndLastNamesLabel: UILabel!
+    @IBOutlet weak var ageLabel: UILabel!
     
     // MARK: Properties
-    var arr: [String] = ["Object ","Object ","Object ","Object ","Object "]
+    var arr: [String] = ["Object ","Object ","Object ","Object ","Object ","Object ","Object ","Object ","Object "]
     var showLibrariesButton: UIBarButtonItem = UIBarButtonItem()
     let db = Firestore.firestore()
+    var firstName: String?
+    var lastName: String?
+    var age: Int?
+    var email: String?
+    var phoneNumber: String?
+    var username: String?
+    var address: String?
     
     // MARK: Lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TradingHistoryCell")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "To libraries", style: .done, target: self, action: #selector(done))
-        navigationItem.rightBarButtonItem?.tintColor = UIColor(red: 0.3, green: 0.1, blue: 0.2, alpha: 1)
-        
+        self.navigationController?.isNavigationBarHidden = true
+        userInfoConfiguration()
         viewProperties()
     }
     
     // MARK: Private and public functions
-    private func getUserData() {
-        db.collection("Users").getDocuments() { (query, err) in
-            
-        }
-    }
+//    func sendUserDataToUserProfileViewController(firstName: String) {
+//        greetingLabel.text = "Hello, \(firstName)"
+//    }
     
-    
-    
-    
-    
-    func sendUserDataToUserProfileViewController(firstName: String) {
-        greetingLabel.text = "Hello, \(firstName)"
+    private func userInfoConfiguration() {
+        greetingLabel.text = "Hello, \(firstName ?? "")"
+        usernameInfoLabel.text = username
+        emailLabel.text = email
+        addressLabel.text = address
+        phoneNumberLabel.text = phoneNumber
+        firstAndLastNamesLabel.text = "\(firstName ?? "") \(lastName ?? "")"
+        ageLabel.text = "\(age ?? 0)"
     }
     
     func sendMainInfoDataToFirstViewController(email: String, phoneNumber: String, location: String, username: String) {

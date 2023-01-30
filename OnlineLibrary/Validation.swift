@@ -15,36 +15,7 @@ class Validation {
     var isUserNameUnique = false
     var isUserEmailUnique = false
     
-    func isEmailUnique( email: String) -> Bool {
-        db.collection("Users").whereField("email", isEqualTo: email)
-            .getDocuments() { (querySnapshot, err) in
-                if err != nil {
-                    print(err)
-                    self.isUserEmailUnique = true
-                } else {
-                    for document in querySnapshot!.documents {
-                        
-                        print("\(document.documentID) => \(document.data())")
-                    }
-                    self.isUserEmailUnique = false
-                }
-            }
-        return isUserEmailUnique
-    }
     
-    
-    
-    func isUsernameUnique( username: String) -> Bool {
-        db.collection("Users").whereField("username", isEqualTo: username)
-            .getDocuments() { (querySnapshot, err) in
-                if querySnapshot == nil {
-                    self.isUserNameUnique = true
-                } else {
-                    self.isUserNameUnique = false
-                }
-            }
-        return isUserNameUnique
-    }
     
     func isPhoneNumber(phone: String?) -> Bool {
         guard let phone = phone else { return false }
