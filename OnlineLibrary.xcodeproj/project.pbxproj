@@ -17,8 +17,12 @@
 		6A01233029708F23006B8151 /* RandomGenreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A01232F29708F23006B8151 /* RandomGenreCollectionViewCell.swift */; };
 		6A01233229708F89006B8151 /* RecentlyAddedBooksCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A01233129708F89006B8151 /* RecentlyAddedBooksCollectionViewCell.swift */; };
 		6A0D545E296D6A9F0044F0E3 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0D545D296D6A9F0044F0E3 /* SignInViewController.swift */; };
+		6A166DFA298566D0008634B6 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A166DF9298566D0008634B6 /* Models.swift */; };
+		6A16C30A2986A163006A914F /* FormatStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A16C3092986A163006A914F /* FormatStrings.swift */; };
+		6A16C30C2986A32F006A914F /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A16C30B2986A32F006A914F /* Validation.swift */; };
 		6A519B8B29699EB60045FB6F /* LibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A519B8A29699EB60045FB6F /* LibraryViewController.swift */; };
 		6A59048B296F1F7500FC3593 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A59048A296F1F7500FC3593 /* CollectionViewCell.swift */; };
+		6A5CD04D298443EF00980B90 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A5CD04C298443EF00980B90 /* GoogleService-Info.plist */; };
 		6A7CAE252968758C00F16195 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CAE242968758C00F16195 /* AppDelegate.swift */; };
 		6A7CAE272968758C00F16195 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CAE262968758C00F16195 /* SceneDelegate.swift */; };
 		6A7CAE292968758C00F16195 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CAE282968758C00F16195 /* ViewController.swift */; };
@@ -43,9 +47,12 @@
 		6AD58E952968B4F0000FF56F /* LibrariesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD58E942968B4F0000FF56F /* LibrariesViewController.swift */; };
 		6AEBA5082976E381003A2279 /* FilterByViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEBA5072976E380003A2279 /* FilterByViewController.swift */; };
 		6AF6ADA72976D9E000F85C53 /* AddBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF6ADA62976D9E000F85C53 /* AddBookViewController.swift */; };
+		6F1B6345A7BFD9AE827E194F /* Pods_OnlineLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4270319E3660A3A4ACC37060 /* Pods_OnlineLibrary.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		231DC775932B2BDA1823E335 /* Pods-OnlineLibrary.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OnlineLibrary.release.xcconfig"; path = "Target Support Files/Pods-OnlineLibrary/Pods-OnlineLibrary.release.xcconfig"; sourceTree = "<group>"; };
+		4270319E3660A3A4ACC37060 /* Pods_OnlineLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OnlineLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A01231B29707891006B8151 /* UICollectionViewCell+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Extension.swift"; sourceTree = "<group>"; };
 		6A01232129707AC1006B8151 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		6A01232329707C25006B8151 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
@@ -56,8 +63,12 @@
 		6A01232F29708F23006B8151 /* RandomGenreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomGenreCollectionViewCell.swift; sourceTree = "<group>"; };
 		6A01233129708F89006B8151 /* RecentlyAddedBooksCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentlyAddedBooksCollectionViewCell.swift; sourceTree = "<group>"; };
 		6A0D545D296D6A9F0044F0E3 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		6A166DF9298566D0008634B6 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		6A16C3092986A163006A914F /* FormatStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatStrings.swift; sourceTree = "<group>"; };
+		6A16C30B2986A32F006A914F /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		6A519B8A29699EB60045FB6F /* LibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
 		6A59048A296F1F7500FC3593 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		6A5CD04C298443EF00980B90 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6A7CAE212968758C00F16195 /* OnlineLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnlineLibrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A7CAE242968758C00F16195 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6A7CAE262968758C00F16195 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +95,7 @@
 		6AD58E942968B4F0000FF56F /* LibrariesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrariesViewController.swift; sourceTree = "<group>"; };
 		6AEBA5072976E380003A2279 /* FilterByViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterByViewController.swift; sourceTree = "<group>"; };
 		6AF6ADA62976D9E000F85C53 /* AddBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookViewController.swift; sourceTree = "<group>"; };
+		6DA9C3EE0474946B07221CAB /* Pods-OnlineLibrary.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OnlineLibrary.debug.xcconfig"; path = "Target Support Files/Pods-OnlineLibrary/Pods-OnlineLibrary.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,12 +103,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F1B6345A7BFD9AE827E194F /* Pods_OnlineLibrary.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		459DC83E320CD10D224F828B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6DA9C3EE0474946B07221CAB /* Pods-OnlineLibrary.debug.xcconfig */,
+				231DC775932B2BDA1823E335 /* Pods-OnlineLibrary.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		6A01231629704869006B8151 /* LibraryTabBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -181,6 +203,8 @@
 			children = (
 				6A7CAE232968758C00F16195 /* OnlineLibrary */,
 				6A7CAE222968758C00F16195 /* Products */,
+				459DC83E320CD10D224F828B /* Pods */,
+				F58F81A3670B4C6A79B85647 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -198,6 +222,9 @@
 				6A7CAE242968758C00F16195 /* AppDelegate.swift */,
 				6A7CAE262968758C00F16195 /* SceneDelegate.swift */,
 				6A7CAE282968758C00F16195 /* ViewController.swift */,
+				6A16C3092986A163006A914F /* FormatStrings.swift */,
+				6A16C30B2986A32F006A914F /* Validation.swift */,
+				6A166DF9298566D0008634B6 /* Models.swift */,
 				6AD58E942968B4F0000FF56F /* LibrariesViewController.swift */,
 				6AEBA5072976E380003A2279 /* FilterByViewController.swift */,
 				6AC0FDD52973000700ABDC5C /* UserProfileViewController.swift */,
@@ -205,12 +232,21 @@
 				6A01231629704869006B8151 /* LibraryTabBar */,
 				6A01231729704899006B8151 /* SignInSignUp */,
 				6A7CAE2A2968758C00F16195 /* Main.storyboard */,
+				6A5CD04C298443EF00980B90 /* GoogleService-Info.plist */,
 				6A7CAE2D2968758D00F16195 /* Assets.xcassets */,
 				6A7CAE2F2968758D00F16195 /* LaunchScreen.storyboard */,
 				6A7CAE322968758D00F16195 /* Info.plist */,
 				6A012318297048C8006B8151 /* Extensions */,
 			);
 			path = OnlineLibrary;
+			sourceTree = "<group>";
+		};
+		F58F81A3670B4C6A79B85647 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4270319E3660A3A4ACC37060 /* Pods_OnlineLibrary.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,9 +256,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6A7CAE352968758D00F16195 /* Build configuration list for PBXNativeTarget "OnlineLibrary" */;
 			buildPhases = (
+				6B2A17328145408012109485 /* [CP] Check Pods Manifest.lock */,
 				6A7CAE1D2968758C00F16195 /* Sources */,
 				6A7CAE1E2968758C00F16195 /* Frameworks */,
 				6A7CAE1F2968758C00F16195 /* Resources */,
+				72F1051EFEDBD85CC9044342 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -272,6 +310,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A7CAE312968758D00F16195 /* LaunchScreen.storyboard in Resources */,
+				6A5CD04D298443EF00980B90 /* GoogleService-Info.plist in Resources */,
 				6A7CAE2E2968758D00F16195 /* Assets.xcassets in Resources */,
 				6A7CAE2C2968758C00F16195 /* Main.storyboard in Resources */,
 			);
@@ -279,12 +318,55 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		6B2A17328145408012109485 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OnlineLibrary-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		72F1051EFEDBD85CC9044342 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-OnlineLibrary/Pods-OnlineLibrary-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-OnlineLibrary/Pods-OnlineLibrary-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OnlineLibrary/Pods-OnlineLibrary-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		6A7CAE1D2968758C00F16195 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				6AC0FDDC2974195800ABDC5C /* SortedBooksCollectionViewCell.swift in Sources */,
+				6A166DFA298566D0008634B6 /* Models.swift in Sources */,
 				6A80362529799C5C00FA8160 /* SetLibraryOwnerName.swift in Sources */,
 				6AF6ADA72976D9E000F85C53 /* AddBookViewController.swift in Sources */,
 				6AC0FDDE29742DDD00ABDC5C /* BookInfoViewController.swift in Sources */,
@@ -305,6 +387,8 @@
 				6A97078A29687EC0001F8629 /* Extension+UIView.swift in Sources */,
 				6A01233029708F23006B8151 /* RandomGenreCollectionViewCell.swift in Sources */,
 				6A01231C29707891006B8151 /* UICollectionViewCell+Extension.swift in Sources */,
+				6A16C30C2986A32F006A914F /* Validation.swift in Sources */,
+				6A16C30A2986A163006A914F /* FormatStrings.swift in Sources */,
 				6A93D74A296DC0D600EE2763 /* TypesOfBookSortingViewController.swift in Sources */,
 				6AC0FDE229744BFB00ABDC5C /* EditLibraryInfoViewController.swift in Sources */,
 				6A8D6D2A297EFB7700E05D39 /* EditUserMainInfoViewController.swift in Sources */,
@@ -460,6 +544,7 @@
 		};
 		6A7CAE362968758D00F16195 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6DA9C3EE0474946B07221CAB /* Pods-OnlineLibrary.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -487,6 +572,7 @@
 		};
 		6A7CAE372968758D00F16195 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 231DC775932B2BDA1823E335 /* Pods-OnlineLibrary.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

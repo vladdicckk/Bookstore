@@ -6,8 +6,12 @@
 //
 
 import UIKit
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 class UserProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MainInfoSendingDelegateProtocol {
+    
+    
     // MARK: Outlets
     @IBOutlet weak var editMainInfoButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
@@ -22,6 +26,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     // MARK: Properties
     var arr: [String] = ["Object ","Object ","Object ","Object ","Object "]
     var showLibrariesButton: UIBarButtonItem = UIBarButtonItem()
+    let db = Firestore.firestore()
     
     // MARK: Lifecycle functions
     override func viewDidLoad() {
@@ -29,10 +34,25 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TradingHistoryCell")
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "To libraries", style: .done, target: self, action: #selector(done))
         navigationItem.rightBarButtonItem?.tintColor = UIColor(red: 0.3, green: 0.1, blue: 0.2, alpha: 1)
+        
         viewProperties()
     }
     
     // MARK: Private and public functions
+    private func getUserData() {
+        db.collection("Users").getDocuments() { (query, err) in
+            
+        }
+    }
+    
+    
+    
+    
+    
+    func sendUserDataToUserProfileViewController(firstName: String) {
+        greetingLabel.text = "Hello, \(firstName)"
+    }
+    
     func sendMainInfoDataToFirstViewController(email: String, phoneNumber: String, location: String, username: String) {
         emailLabel.text = email
         phoneNumberLabel.text = phoneNumber

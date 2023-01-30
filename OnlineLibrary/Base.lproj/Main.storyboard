@@ -234,7 +234,7 @@
                                                         <textInputTraits key="textInputTraits"/>
                                                     </textField>
                                                     <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="ZZi-1d-vx6">
-                                                        <rect key="frame" x="96" y="138" width="141" height="35"/>
+                                                        <rect key="frame" x="96" y="138" width="141" height="34.333333333333343"/>
                                                     </datePicker>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Birth date:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D3x-r6-5yh">
                                                         <rect key="frame" x="0.0" y="144.66666666666663" width="79" height="21"/>
@@ -331,8 +331,17 @@
                     <navigationItem key="navigationItem" id="KCj-nM-CCP"/>
                     <size key="freeformSize" width="430" height="1040"/>
                     <connections>
+                        <outlet property="addressTextField" destination="0qF-g7-6RO" id="UXY-Gj-NMS"/>
+                        <outlet property="birthDatePicker" destination="ZZi-1d-vx6" id="4MN-xi-zxE"/>
+                        <outlet property="confirmPasswordTextField" destination="uc8-at-aWX" id="mhD-d7-fp3"/>
+                        <outlet property="emailTextField" destination="EJ5-Fv-7sh" id="18C-Qd-Dw7"/>
+                        <outlet property="firstNameTextField" destination="32H-vX-Psy" id="JgV-Dz-ZYF"/>
+                        <outlet property="lastNameTextField" destination="dV5-oF-Mt2" id="JQ0-He-4yz"/>
                         <outlet property="lowerView" destination="m7K-cp-w7z" id="aHd-L9-t0F"/>
+                        <outlet property="passwordTextField" destination="MIy-eu-5IV" id="Vkr-aG-mYF"/>
+                        <outlet property="phoneNumberTextField" destination="hSI-KJ-PYS" id="4eg-SJ-FEZ"/>
                         <outlet property="upperView" destination="WLc-it-Mem" id="4yy-KU-L6V"/>
+                        <outlet property="usernameTextField" destination="ZfP-fm-Lu9" id="kEP-6F-iaY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2iw-ig-hsX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1228,7 +1237,7 @@
                                         </connections>
                                     </button>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" placeholderIntrinsicWidth="364" placeholderIntrinsicHeight="34" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Exchanging/Trading preferences" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w2t-bV-5bN">
-                                        <rect key="frame" x="33" y="113.00000000000001" width="364" height="33.666666666666671"/>
+                                        <rect key="frame" x="33" y="112.99999999999999" width="364" height="33.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>

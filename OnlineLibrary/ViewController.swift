@@ -6,11 +6,15 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class ViewController: UIViewController {
     // MARK: Outlets
     @IBOutlet weak var greetingView: UIView!
     @IBOutlet var mainView: UIView!
+    
+    // MARK: Parameters
+    let database = Firestore.firestore()
     
     // MARK: Lifecycle functions
     override func viewDidLoad() {
@@ -23,7 +27,7 @@ class ViewController: UIViewController {
     
     // MARK: Private functions
     private func greetingViewSettings() {
-        var backgroundBlur: UIVisualEffectView = {
+        let backgroundBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
             let blurView = UIVisualEffectView(effect: blurEffect)
             blurView.alpha = 0.75
