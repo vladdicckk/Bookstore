@@ -47,9 +47,6 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     // MARK: Private and public functions
-//    func sendUserDataToUserProfileViewController(firstName: String) {
-//        greetingLabel.text = "Hello, \(firstName)"
-//    }
     
     private func userInfoConfiguration() {
         greetingLabel.text = "Hello, \(firstName ?? "")"
@@ -69,7 +66,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "getMainInfoDataSegue"{
+        if segue.identifier == "getMainInfoDataSegue" {
             let editProfileInfoVC: EditUserMainInfoViewController = segue.destination as! EditUserMainInfoViewController
             editProfileInfoVC.oldEmail = emailLabel.text
             editProfileInfoVC.oldPhoneNumber = phoneNumberLabel.text

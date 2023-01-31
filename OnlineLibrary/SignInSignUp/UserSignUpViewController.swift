@@ -62,12 +62,6 @@ class UserSignUpViewController: UIViewController, UITextFieldDelegate {
                 completion(false)
             }
         }
-        
-        //        if isExists == false {
-        //            let user = User(firstName: name, lastName: surname, age: age, password: password, email: email, username: username, phoneNumber: phoneNumber, location: address)
-        //            addUser(user: user)
-        //        }
-        
     }
     
     private func addUser(user: User) {

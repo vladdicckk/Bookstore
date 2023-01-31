@@ -71,7 +71,6 @@ class EditUserMainInfoViewController: UIViewController {
     // MARK: Actions
     @IBAction func saveButtonTapped(_ sender: Any) {
         if self.delegate != nil {
-            
             let email: String  = editEmailTextField.text ?? ""
             let phoneNumber: String  = editPhoneNumberTextField.text ?? ""
             let location: String  = editAddressTextField.text ?? ""

@@ -26,6 +26,7 @@ class ViewController: UIViewController {
     }
     
     // MARK: Private functions
+    
     private func greetingViewSettings() {
         let backgroundBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
@@ -55,11 +56,35 @@ class ViewController: UIViewController {
         blur.bottomAnchor.constraint(equalTo: greetingView.bottomAnchor, constant: 0).isActive = true
     }
     
+    private func getData(completion: @escaping ([String]) -> ()) {
+        database.collection("Owners").getDocuments() { (querySnapshot, err) in
+            var arr: [String] = [""]
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                arr.removeAll()
+                for document in querySnapshot!.documents {
+                    arr.append(document.documentID)
+                }
+                completion(arr)
+            }
+        }
+    }
+    
     // MARK: Actions
     @IBAction func signButtonTapped(_ sender: Any) {
         let signInViewController: SignInViewController = storyboard?.instantiateViewController(withIdentifier: "SignInViewController") as! SignInViewController
         self.navigationController?.pushViewController(signInViewController, animated: true)
     }
+    
+    @IBAction func toLibrariesButtonTapped(_ sender: Any) {
+        let vc: LibrariesViewController = self.storyboard?.instantiateViewController(withIdentifier: "LibrariesViewController") as! LibrariesViewController
+        getData(completion: { arr in
+            vc.bookStoreTitles = arr
+            self.navigationController?.pushViewController(vc, animated: true)
+        })
+    }
 }
+
 
 

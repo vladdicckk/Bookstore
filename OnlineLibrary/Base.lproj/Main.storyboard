@@ -806,7 +806,7 @@
                                             <color key="baseBackgroundColor" red="0.34222540259361267" green="0.074462853372097015" blue="0.22763767838478088" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </buttonConfiguration>
                                         <connections>
-                                            <segue destination="vcY-ab-nRr" kind="show" id="b1h-rj-LbR"/>
+                                            <action selector="toLibrariesButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ahO-iR-GQc"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -868,7 +868,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="4Zr-HQ-Ar8">
-                                <rect key="frame" x="0.0" y="160" width="430" height="772"/>
+                                <rect key="frame" x="0.0" y="116" width="430" height="816"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LibraryCell" id="jjJ-OF-uXH">
@@ -886,7 +886,7 @@
                                 </connections>
                             </tableView>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="TnV-q1-6kZ">
-                                <rect key="frame" x="0.0" y="116" width="430" height="44"/>
+                                <rect key="frame" x="0.0" y="72" width="430" height="44"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="vcY-ab-nRr" id="7L8-Tr-zUg"/>

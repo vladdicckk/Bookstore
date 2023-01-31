@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import FirebaseFirestore
+
 
 class LibrariesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     // MARK: Outlets
@@ -14,9 +16,14 @@ class LibrariesViewController: UIViewController, UITableViewDataSource, UITableV
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var filterButton: UIBarButtonItem!
     
+    // MARK: Parameters
+    let db = Firestore.firestore()
+    var bookStoreTitles: [String]?
+    
     // MARK: Lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "LibraryCell")
         tableView.backgroundColor = .clear
         mainLibrariesViewSettings()
@@ -62,18 +69,20 @@ class LibrariesViewController: UIViewController, UITableViewDataSource, UITableV
         present(filterVC, animated: true)
     }
     
+    
     // MARK: UITableViewDataSource & UITableViewDelegate functions
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 15
+        return bookStoreTitles?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LibraryCell", for: indexPath)
+        
         var content = cell.defaultContentConfiguration()
         
         content.textProperties.font = .boldSystemFont(ofSize: 22)
         content.textProperties.color = UIColor(red: 0.3, green: 0.1, blue: 0.2, alpha: 1)
-        content.text = "Library \(indexPath.row)"
+        content.text = bookStoreTitles?[indexPath.row]
         
         cell.backgroundColor = .clear
         cell.contentConfiguration = content
