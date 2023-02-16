@@ -10,9 +10,9 @@ import UIKit
 extension UICollectionViewCell {
     func cellContentViewBackgroundBlur(cell: UICollectionViewCell, radius: Double) -> UIVisualEffectView{
         let backgroundBlur: UIVisualEffectView = {
-            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
+            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.4
+            blurView.alpha = 0.85
             blurView.translatesAutoresizingMaskIntoConstraints = false
             blurView.layer.cornerRadius = radius
             blurView.backgroundColor = UIColor.clear

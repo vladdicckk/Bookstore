@@ -59,9 +59,14 @@ class RecentlyAddedBooksCollectionViewCell: UICollectionViewCell, BookConfigurab
         subtitleLabel.textColor = .secondaryLabel
     }
     
-    func configure(with book: Book) {
-        nameLabel.text = book.name
-        subtitleLabel.text = book.subTitle
+    func configure(with book: BookInfo) {
+        nameLabel.text = book.title
+        
+        if book.addingDate != "" {
+            subtitleLabel.text = "Added \(book.addingDate)"
+        } else {
+            subtitleLabel.text = ""
+        }
     }
     
     required init?(coder: NSCoder) {

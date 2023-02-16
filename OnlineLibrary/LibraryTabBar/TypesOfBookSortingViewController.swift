@@ -6,13 +6,52 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
-class TypesOfBookSortingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
-    
+class TypesOfBookSortingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var greetingView: UIView!
     @IBOutlet var mainView: UIView!
     @IBOutlet weak var tableView: UITableView!
-    var sortTypes: [String] = ["Alphabet", "Genre", "Authors", "Year"]
+    
+    let db = Firestore.firestore()
+    let firestoreManager = FirestoreManager()
+    var sortTypes: [String] = ["Alphabet", "Genre", "Authors", "The newest", "The oldest"]
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        mainView.backgroundColor = UIColor(patternImage: UIImage(named: "libraryBackground")!)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "BooksTypeCell")
+        mainViewProperties()
+    }
+    
+    func mainViewProperties() {
+        greetingViewProperties()
+        tableViewProperties()
+    }
+    
+    func greetingViewProperties() {
+        greetingView.setCorner(radius: 16)
+        greetingView.layer.borderWidth = 1
+        greetingView.layer.borderColor = UIColor.brown.cgColor
+    }
+    
+    func tableViewProperties() {
+        let backgroundBlur: UIVisualEffectView = {
+            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
+            let blurView = UIVisualEffectView(effect: blurEffect)
+            blurView.alpha = 0.75
+            blurView.translatesAutoresizingMaskIntoConstraints = false
+            blurView.layer.cornerRadius = 16
+            blurView.backgroundColor = UIColor.clear
+            blurView.clipsToBounds = true
+            return blurView
+        }()
+        
+        tableView.backgroundColor = .clear
+        backgroundBlur.frame = self.tableView.bounds
+        self.tableView.backgroundView = backgroundBlur
+        
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sortTypes.count
@@ -26,67 +65,95 @@ class TypesOfBookSortingViewController: UIViewController, UITableViewDelegate, U
         content.textProperties.font = .boldSystemFont(ofSize: 18)
         content.text = sortTypes[indexPath.row]
         
+        let backgroundBlur: UIVisualEffectView = {
+            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
+            let blurView = UIVisualEffectView(effect: blurEffect)
+            blurView.alpha = 1
+            blurView.translatesAutoresizingMaskIntoConstraints = false
+            blurView.layer.cornerRadius = 16
+            blurView.backgroundColor = .clear
+            blurView.clipsToBounds = true
+            return blurView
+        }()
+        
+        cell.backgroundView = backgroundBlur
+        cell.selectedBackgroundView = cell.backgroundView
+        cell.selectedBackgroundView?.backgroundColor = .clear
+        cell.selectedBackgroundView?.layer.cornerRadius = 16
+        cell.layer.cornerRadius = 16
         cell.backgroundColor = .clear
         cell.contentConfiguration = content
         return cell
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let email = appDelegate().currentReviewingOwnersProfile?.email
+        let currentBookstoreOwnerEmail = appDelegate().currentBookstoreOwner?.email
         let sortedBooksVC: SortedBooksInfoViewController = self.storyboard?.instantiateViewController(withIdentifier: "SortedBooksInfoViewController") as! SortedBooksInfoViewController
-        self.navigationController?.pushViewController(sortedBooksVC, animated: true)
-        //present(sortedBooksVC, animated: true)
-    }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        mainView.backgroundColor = UIColor(patternImage: UIImage(named: "libraryBackground")!)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "BooksTypeCell")
-        mainViewProperties()
-    }
-    func mainViewProperties(){
         
-        let backgroundMainViewBlur: UIVisualEffectView = {
-            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
-            let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.35
-            blurView.translatesAutoresizingMaskIntoConstraints = false
-            blurView.layer.cornerRadius = 16
-            blurView.backgroundColor = UIColor.clear
-            blurView.clipsToBounds = true
-            return blurView
-        }()
-        mainView.addSubview(backgroundMainViewBlur)
-        mainView.sendSubviewToBack(backgroundMainViewBlur)
-        NSLayoutConstraint.activate([
-            backgroundMainViewBlur.topAnchor.constraint(equalTo: mainView.topAnchor, constant: 0),
-            backgroundMainViewBlur.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 0),
-            backgroundMainViewBlur.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: 0),
-            backgroundMainViewBlur.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: 0)
-        ])
-        greetingViewProperties()
-        tableViewProperties()
+        if indexPath.row == 0 {
+            firestoreManager.getBooks(email: email ?? currentBookstoreOwnerEmail ?? "", completion: { booksArr in
+                if booksArr.count > 1 {
+                    var sortedBooksArr: [BookInfo] = []
+                    sortedBooksArr = booksArr.sorted { $0.title.lowercased() < $1.title.lowercased() }
+                    sortedBooksVC.books = sortedBooksArr
+                    self.navigationController?.pushViewController(sortedBooksVC, animated: true)
+                } else {
+                    sortedBooksVC.books = booksArr
+                    self.navigationController?.pushViewController(sortedBooksVC, animated: true)
+                }
+            })
+        } else if indexPath.row == 1 {
+            firestoreManager.getBooks(email: email ?? currentBookstoreOwnerEmail ?? "", completion: { booksArr in
+                if booksArr.count > 1 {
+                    var sortedBooksArr: [BookInfo] = []
+                    sortedBooksArr = booksArr.sorted { $0.genre.lowercased() < $1.genre.lowercased() }
+                    sortedBooksVC.books = sortedBooksArr
+                    self.navigationController?.pushViewController(sortedBooksVC, animated: true)
+                } else {
+                    sortedBooksVC.books = booksArr
+                    self.navigationController?.pushViewController(sortedBooksVC, animated: true)
+                }
+            })
+        } else if indexPath.row == 2 {
+            firestoreManager.getBooks(email: email ?? currentBookstoreOwnerEmail ?? "", completion: { booksArr in
+                if booksArr.count > 1 {
+                    var sortedBooksArr: [BookInfo] = []
+                    sortedBooksArr = booksArr.sorted { $0.author.lowercased() < $1.author.lowercased() }
+                    sortedBooksVC.books = sortedBooksArr
+                    self.navigationController?.pushViewController(sortedBooksVC, animated: true)
+                } else {
+                    sortedBooksVC.books = booksArr
+                    self.navigationController?.pushViewController(sortedBooksVC, animated: true)
+                }
+            })
+        } else if indexPath.row == 3 {
+            firestoreManager.getBooks(email: email ?? currentBookstoreOwnerEmail ?? "", completion: { booksArr in
+                if booksArr.count > 1 {
+                    var sortedBooksArr: [BookInfo] = []
+                    sortedBooksArr = booksArr.sorted { $0.publishYear > $1.publishYear }
+                    sortedBooksVC.books = sortedBooksArr
+                    self.navigationController?.pushViewController(sortedBooksVC, animated: true)
+                } else {
+                    sortedBooksVC.books = booksArr
+                    self.navigationController?.pushViewController(sortedBooksVC, animated: true)
+                }
+            })
+        } else {
+            firestoreManager.getBooks(email: email ?? currentBookstoreOwnerEmail ?? "", completion: { booksArr in
+                if booksArr.count > 1 {
+                    var sortedBooksArr: [BookInfo] = []
+                    sortedBooksArr = booksArr.sorted { $0.publishYear < $1.publishYear }
+                    sortedBooksVC.books = sortedBooksArr
+                    self.navigationController?.pushViewController(sortedBooksVC, animated: true)
+                } else {
+                    sortedBooksVC.books = booksArr
+                    self.navigationController?.pushViewController(sortedBooksVC, animated: true)
+                }
+            })
+        }
+        
     }
-    func greetingViewProperties(){
-        greetingView.setCorner(radius: 16)
-        greetingView.layer.borderWidth = 1
-        greetingView.layer.borderColor = UIColor.black.cgColor
-    }
-    
-func tableViewProperties(){
-    let backgroundBlur: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
-        let blurView = UIVisualEffectView(effect: blurEffect)
-        blurView.alpha = 0.4
-        blurView.translatesAutoresizingMaskIntoConstraints = false
-        blurView.layer.cornerRadius = 16
-        blurView.backgroundColor = UIColor.clear
-        blurView.clipsToBounds = true
-        return blurView
-    }()
-    
-    tableView.backgroundColor = .clear
-    backgroundBlur.frame = self.tableView.bounds
-    self.tableView.backgroundView = backgroundBlur
-    
-}
 }
 //if let containerView = additionalInfoTextView.superview {
 //            let gradient = CAGradientLayer(layer: containerView.layer)

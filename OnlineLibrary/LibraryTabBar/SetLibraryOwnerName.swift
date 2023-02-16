@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 protocol NameSendingDelegateProtocol {
     func sendNameDataToFirstViewController(name: String)
@@ -16,7 +17,10 @@ class SetLibraryOwnerName: UIViewController{
     @IBOutlet weak var setNameTextField: UITextField!
     
     // MARK: Properties
+    let db = Firestore.firestore()
+    let firestoreManager = FirestoreManager()
     var delegate: NameSendingDelegateProtocol? = nil
+    var bookstoreOwnersEmail: String?
     var setName: String?
     
     // MARK: Lifecycle functions
@@ -59,9 +63,11 @@ class SetLibraryOwnerName: UIViewController{
     
     // MARK: Actions
     @IBAction func saveButtonTapped(_ sender: Any) {
+        guard let bookstoreOwnersEmail = bookstoreOwnersEmail else { return }
         if self.delegate != nil {
             let name: String  = setNameTextField.text ?? ""
             
+            firestoreManager.editLibraryOwnersNameFirestore(name: name, email: bookstoreOwnersEmail)
             self.delegate?.sendNameDataToFirstViewController(name: name)
             dismiss(animated: true, completion: nil)
         }

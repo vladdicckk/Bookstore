@@ -8,5 +8,5 @@
 import Foundation
 
 protocol BookConfigurable {
-    func configure(with book: Book)
+    func configure(with book: BookInfo)
 }

@@ -6,18 +6,39 @@
 //
 
 import UIKit
+import FirebaseFirestore
+
+
+protocol AdditionalInfoProtocol {
+    func getAdditionalInfo(additionalInfoText: String)
+}
 
 class AddBookAdditionalInfoViewController: UIViewController {
     // MARK: Outlets
     @IBOutlet weak var additionalInfoLabel: UILabel!
     @IBOutlet weak var additionalInfoTextView: UITextView!
     
+    // MARK: Parameters
+    let db = Firestore.firestore()
+    var additionalInfoText: String?
+    var delegate: AdditionalInfoProtocol?
+    
     // MARK: Lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        additionalInfoTextView.text = additionalInfoText
+        additionalInfoTextViewSettings()
     }
     
     // MARK: Public and private functions
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .default)
+        
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+    
     private func additionalInfoTextViewSettings() {
         let backgroundTextViewBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
@@ -47,5 +68,20 @@ class AddBookAdditionalInfoViewController: UIViewController {
         self.view.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 10.0)
         self.view.roundCorners(corners: [.topLeft, .topRight], radius: 15.0)
         super.updateViewConstraints()
+    }
+    
+    
+    
+    @IBAction func saveButtonTapped(_ sender: Any) {
+        if additionalInfoTextView.text != "" && additionalInfoTextView.text.count > 30 {
+            if delegate != nil {
+                self.delegate?.getAdditionalInfo(additionalInfoText: additionalInfoTextView.text)
+                dismiss(animated: true)
+            }
+        } else if additionalInfoTextView.text == "" {
+            showAlert(message: "Additional info text can`t be empty")
+        } else if additionalInfoTextView.text.count < 30 {
+            showAlert(message: "Additional info text must be longer")
+        }
     }
 }

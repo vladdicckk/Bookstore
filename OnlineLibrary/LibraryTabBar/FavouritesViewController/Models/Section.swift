@@ -5,7 +5,7 @@
 //  Created by iosdev on 12.01.2023.
 //
 
-import Foundation
+import UIKit
 
 enum SectionType: Int, CaseIterable {
     case singleList     // Featured
@@ -19,5 +19,5 @@ struct Section {
     let type: SectionType
     let title: String?
     let subtitle: String?
-    let data: [SectionData]
+    let data: [BookInfo]
 }

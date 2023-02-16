@@ -62,9 +62,9 @@ class RandomGenreCollectionViewCell: UICollectionViewCell, BookConfigurable {
         subtitleLabel.textColor = .secondaryLabel
     }
     
-    func configure(with book: Book) {
-        nameLabel.text = book.name
-        subtitleLabel.text = book.subTitle
+    func configure(with book: BookInfo) {
+        nameLabel.text = book.title
+        subtitleLabel.text = book.genre
     }
     
     required init?(coder: NSCoder) {

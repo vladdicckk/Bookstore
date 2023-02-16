@@ -59,9 +59,9 @@ class RecomendedBooksCollectionViewCell: UICollectionViewCell, BookConfigurable 
         subtitleLabel.textColor = .secondaryLabel
     }
     
-    func configure(with book: Book) {
-        nameLabel.text = book.name
-        subtitleLabel.text = book.subTitle
+    func configure(with book: BookInfo) {
+        nameLabel.text = book.title
+        subtitleLabel.text = book.author
     }
     
     required init?(coder: NSCoder) {

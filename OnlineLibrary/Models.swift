@@ -11,15 +11,16 @@ import FirebaseCore
 import FirebaseAuth
 import FirebaseFirestoreSwift
 
-struct BookInfo: Codable {
+struct BookInfo: Codable, Equatable {
     var title: String
     var author: String
     var publishYear: Int
     var genre: String
     var pagesCount: Int
     var language: String
-    var price: Int
+    var price: Double
     var additionalInfo: String
+    var addingDate: String
     
     enum CodingKeys: String, CodingKey {
         case title
@@ -30,10 +31,11 @@ struct BookInfo: Codable {
         case language
         case price
         case additionalInfo
+        case addingDate
     }
 }
 
-public struct User: Codable {
+struct User: Codable {
     var firstName: String
     var lastName: String
     var age: Int
@@ -55,22 +57,72 @@ public struct User: Codable {
     }
 }
 
-struct Owner: Codable {
+struct Bookstore: Codable {
     var name: String
+    var ownersName: String
     var password: String
-    var tradingType: String
+    var preference: String
     var phoneNumber: String
     var email: String
     var location: String
+    var additionalInfo: String
     var books: [BookInfo]
     
     enum CodingKeys: String, CodingKey {
         case name
+        case ownersName
         case password
-        case tradingType
+        case preference
         case phoneNumber
         case email
         case location
+        case additionalInfo
         case books
+    }
+}
+
+struct Application: Codable {
+    var userInfo: String
+    var user: User
+    var bookstore: Bookstore
+    var book: BookInfo
+    var date: String
+    var status: Bool
+    var type: String
+    var additionalInfo: String
+    
+    enum CodingKeys: String, CodingKey {
+        case userInfo
+        case user
+        case bookstore
+        case date
+        case status
+        case type
+        case book
+        case additionalInfo
+    }
+}
+
+struct ApplicationMainInfo: Codable {
+    var userInfo: String
+    var book: BookInfo
+    var date: String
+    var status: Bool
+    var type: String
+    var additionalInfo: String
+    var bookstoreName: String
+    var userEmail: String
+    var bookstoreEmail: String
+    
+    enum CodingKeys: String, CodingKey {
+        case userInfo
+        case date
+        case status
+        case type
+        case book
+        case additionalInfo
+        case bookstoreName
+        case userEmail
+        case bookstoreEmail
     }
 }

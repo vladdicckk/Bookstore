@@ -6,30 +6,33 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 protocol MainSendingDelegateProtocol {
-    func sendMainDataToFirstViewController(email: String, phoneNumber: String, location: String, preferences: String)
+    func sendMainDataToFirstViewController(bookstoreName: String, phoneNumber: String, location: String, preferences: String)
 }
 
 class EditLibraryInfoViewController: UIViewController {
     // MARK: Outlets
-    @IBOutlet weak var editOwnerEmailTextField: UITextField!
+    @IBOutlet weak var editBookstoreNameTextField: UITextField!
     @IBOutlet weak var editOwnerPhoneNumberTextField: UITextField!
     @IBOutlet weak var editLibraryLocationTextField: UITextField!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var editExchangeOrTradingPreferences: UITextField!
     
     // MARK: Properties
+    let db = Firestore.firestore()
+    let firestoreManager = FirestoreManager()
+    var bookStoreOwnersEmail: String?
     var oldLibraryLocation: String?
     var oldOwnerPhoneNumber: String?
-    var oldOwnerEmail: String?
+    var oldBookstoreTitle: String?
     var oldOwnerPreferences: String?
     var delegate: MainSendingDelegateProtocol? = nil
     
     // MARK: Lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        editOwnerEmailTextField.text = oldOwnerEmail
         editOwnerPhoneNumberTextField.text = oldOwnerPhoneNumber
         editLibraryLocationTextField.text = oldLibraryLocation
         editExchangeOrTradingPreferences.text = oldOwnerPreferences
@@ -68,13 +71,15 @@ class EditLibraryInfoViewController: UIViewController {
     
     // MARK: Actions
     @IBAction func saveButtonTapped(_ sender: Any) {
+        guard let bookStoreOwnersEmail = bookStoreOwnersEmail else { return }
         if self.delegate != nil {
-            let email: String  = editOwnerEmailTextField.text ?? ""
+            let bookstoreName: String  = oldBookstoreTitle ?? ""
             let phoneNumber: String  = editOwnerPhoneNumberTextField.text ?? ""
             let location: String  = editLibraryLocationTextField.text ?? ""
             let preferences: String  = editExchangeOrTradingPreferences.text ?? ""
             
-            self.delegate?.sendMainDataToFirstViewController(email: email, phoneNumber: phoneNumber, location: location, preferences: preferences)
+            firestoreManager.editBookstoreAndOwnersDataFirestore(location: location, email: bookStoreOwnersEmail, phoneNumber: phoneNumber, exchangePreference: preferences)
+            self.delegate?.sendMainDataToFirstViewController(bookstoreName: bookstoreName, phoneNumber: phoneNumber, location: location, preferences: preferences)
             dismiss(animated: true, completion: nil)
         }
     }

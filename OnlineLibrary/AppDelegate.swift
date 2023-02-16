@@ -11,7 +11,9 @@ import FirebaseCore
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    var currentUser: User?
+    var currentBookstoreOwner: Bookstore?
+    var currentReviewingOwnersProfile: Bookstore?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
