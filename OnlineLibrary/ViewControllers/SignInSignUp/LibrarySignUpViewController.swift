@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 import FirebaseFirestore
 
 class LibrarySignUpViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
@@ -59,6 +60,10 @@ class LibrarySignUpViewController: UIViewController, UIPickerViewDelegate, UIPic
         return false
     }
     
+    private func signUp(email: String, password: String) {
+        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password)
+    }
+    
     private func validation(email: String, phoneNumber: String) -> Bool {
         if !validation.isEmail(enteredEmail: email) {
             showAlert(message: "Please, enter correct email")
@@ -84,10 +89,10 @@ class LibrarySignUpViewController: UIViewController, UIPickerViewDelegate, UIPic
         rolesPicker.autoresizingMask = .flexibleWidth
         rolesPicker.contentMode = .center
         rolesPicker.frame = CGRect.init(x: 0.0, y: UIScreen.main.bounds.size.height - 300, width: UIScreen.main.bounds.size.width, height: 300)
-        self.view.addSubview(rolesPicker)
+        view.addSubview(rolesPicker)
         toolBar = UIToolbar.init(frame: CGRect.init(x: 0.0, y: UIScreen.main.bounds.size.height - 300, width: UIScreen.main.bounds.size.width, height: 50))
         toolBar.items = [UIBarButtonItem.init(title: "Done", style: .done, target: self, action: #selector(onDoneButtonTapped))]
-        self.view.addSubview(toolBar)
+        view.addSubview(toolBar)
         rolesPicker.selectRow(selectedIndex, inComponent: 0, animated: true)
     }
     
@@ -103,28 +108,34 @@ class LibrarySignUpViewController: UIViewController, UIPickerViewDelegate, UIPic
         if bookstoreName != "" && preference != "" && password != "" && email != "" && address != "" && phoneNumber != "" {
             if password == confirmPassword {
                 if validation(email: email, phoneNumber: phoneNumber) {
-                    self.firestoreManager.checkForBookstoreNameExisting(bookstoreName: bookstoreName, email: email, { nameExists in
+                    firestoreManager.checkForBookstoreNameExisting(bookstoreName: bookstoreName, email: email, {[weak self]  nameExists in
                         if nameExists {
-                            self.showAlert(message: "Bookstore name already exists")
+                            self?.showAlert(message: "Bookstore name already exists")
                         } else {
-                            self.firestoreManager.checkForBookstoreExisting(email: email, { exists in
+                            self?.firestoreManager.checkForBookstoreExisting(email: email, { exists in
                                 if exists {
-                                    self.showAlert(message: "Email already exists")
+                                    self?.showAlert(message: "Email already exists")
                                 } else {
-                                    let emptyBookInfo: BookInfo = BookInfo(title: "", author: "", publishYear: 0, genre: "", pagesCount: 0, language: "", price: 0, additionalInfo: "", addingDate: "")
-                                    let bookstore = Bookstore(name: bookstoreName,ownersName: "Set your name", password: password, preference: preference, phoneNumber: phoneNumber, email: email, location: address, additionalInfo: "", books: [emptyBookInfo])
-                                    self.firestoreManager.addBookstore(bookstore: bookstore)
-                                    
-                                    let tabBC: UITabBarController = self.storyboard?.instantiateViewController(withIdentifier: "LibraryTabBarController") as! UITabBarController
-                                    let nav = tabBC.viewControllers?[0] as! UINavigationController
-                                    let bookstoreProfileVC = nav.topViewController as! LibraryViewController
-                                    bookstoreProfileVC.bookstoreName = bookstoreName
-                                    bookstoreProfileVC.email = email
-                                    bookstoreProfileVC.preference = preference
-                                    bookstoreProfileVC.phoneNumber = phoneNumber
-                                    bookstoreProfileVC.address = address
-                                    self.appDelegate().currentBookstoreOwner = bookstore
-                                    UIApplication.shared.keyWindow?.rootViewController = tabBC
+                                    FirebaseManager.shared.insertUser(with:
+                                                                        ChatAppUser(name: bookstoreName, surname: "", email: email), completion: { success in
+                                        let emptyBookInfo: BookInfo = BookInfo(title: "", author: "", publishYear: 0, genre: "", pagesCount: 0, language: "", price: 0, additionalInfo: "", addingDate: "")
+                                        let bookstore = Bookstore(name: bookstoreName,ownersName: "Set your name", password: password, preference: preference, phoneNumber: phoneNumber, email: email, location: address, additionalInfo: "", books: [emptyBookInfo])
+                                        self?.firestoreManager.addBookstore(bookstore: bookstore)
+                                        
+                                        let tabBC: UITabBarController = self?.storyboard?.instantiateViewController(withIdentifier: "LibraryTabBarController") as! UITabBarController
+                                        let nav = tabBC.viewControllers?[0] as! UINavigationController
+                                        let bookstoreProfileVC = nav.topViewController as! LibraryViewController
+                                        bookstoreProfileVC.bookstoreName = bookstoreName
+                                        bookstoreProfileVC.email = email
+                                        bookstoreProfileVC.preference = preference
+                                        bookstoreProfileVC.phoneNumber = phoneNumber
+                                        bookstoreProfileVC.address = address
+                                        
+                                        self?.appDelegate().currentBookstoreOwner = bookstore
+                                        
+                                        self?.signUp(email: email, password: password)
+                                        self?.dismiss(animated: false)
+                                    })
                                 }
                             })
                         }

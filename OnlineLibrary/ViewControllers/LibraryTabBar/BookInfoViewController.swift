@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BookInfoViewController: UIViewController{
+class BookInfoViewController: UIViewController {
     // MARK: Outlets
     @IBOutlet weak var bookAdditionalInfoTextView: UITextView!
     @IBOutlet weak var mainInfoView: UIView!
@@ -20,7 +20,6 @@ class BookInfoViewController: UIViewController{
     @IBOutlet weak var publishYearLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var bookTitleLabel: UILabel!
-    
     @IBOutlet weak var openApplicationCreatingButton: UIButton!
     
     // MARK: Parameters
@@ -184,6 +183,7 @@ class BookInfoViewController: UIViewController{
         let vc: SendApplicationToBookstoreViewController = storyboard?.instantiateViewController(withIdentifier: "SendApplicationToBookstoreViewController") as! SendApplicationToBookstoreViewController
         vc.modalTransitionStyle = .coverVertical
         vc.modalPresentationStyle = .fullScreen
+        vc.storyboardPrevious = self.storyboard
         vc.book = BookInfo(title: bookTitle ?? "", author: author ?? "", publishYear: publishYear ?? 0, genre: genre ?? "", pagesCount: pagesCount ?? 0, language: language ?? "", price: price ?? 0, additionalInfo: additionalInfo ?? "", addingDate: "")
         present(vc, animated: true)
     }

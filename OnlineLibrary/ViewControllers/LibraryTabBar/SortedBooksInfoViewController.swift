@@ -137,7 +137,6 @@ class SortedBooksInfoViewController: UIViewController, UICollectionViewDataSourc
         guard let books = books else { return cell }
         collectionView.backgroundColor = .clear
         
-        
         cell.backgroundView = cell.cellContentViewBackgroundBlur(cell: cell, radius: 5)
         cell.configure(with: books[indexPath.row].title, author: books[indexPath.row].author, genre: books[indexPath.row].genre, publishYear: books[indexPath.row].publishYear)
         cell.setup()
@@ -172,16 +171,25 @@ class SortedBooksInfoViewController: UIViewController, UICollectionViewDataSourc
         if isAppendingRecommended {
             let cell = collectionView.cellForItem(at: indexPath)
             if cell?.layer.borderWidth == 5.0 || cell?.layer.borderColor == UIColor.red.cgColor {
-                recommendedBooksArr.remove(at: indexPath.row)
+                
                 cell?.layer.borderWidth = 2
                 cell?.layer.borderColor = UIColor.systemBrown.cgColor
             } else {
-                recommendedBooksArr.append(books[indexPath.row])
+                
                 cell?.layer.borderWidth = 5.0
                 cell?.layer.borderColor = UIColor.red.cgColor
             }
+            if !recommendedBooksArr.contains(books[indexPath.row]) {
+                recommendedBooksArr.append(books[indexPath.row])
+            } else {
+                if indexPath.row == 0 {
+                    recommendedBooksArr.remove(at: indexPath.row)
+                } else {
+                    recommendedBooksArr.remove(at: indexPath.row - 1)
+                }
+            }
         } else {
-            let bookInfoViewVC: BookInfoViewController = self.storyboard?.instantiateViewController(withIdentifier: "BookInfoViewController") as! BookInfoViewController
+            let bookInfoViewVC: BookInfoViewController = storyboard?.instantiateViewController(withIdentifier: "BookInfoViewController") as! BookInfoViewController
             bookInfoViewVC.bookTitle = books[indexPath.row].title
             bookInfoViewVC.author = books[indexPath.row].author
             bookInfoViewVC.publishYear = books[indexPath.row].publishYear

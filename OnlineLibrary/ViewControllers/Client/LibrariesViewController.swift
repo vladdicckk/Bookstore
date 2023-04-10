@@ -29,7 +29,12 @@ class LibrariesViewController: UIViewController, UITableViewDataSource, UITableV
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "LibraryCell")
         tableView.backgroundColor = .clear
         mainLibrariesViewSettings()
-        self.navigationController?.isNavigationBarHidden = false
+        let leftButton = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(toStart))
+        leftButton.style = .done
+        leftButton.tintColor = .systemIndigo
+        //UIColor(red: 0.3, green: 0.1, blue: 0.2, alpha: 1)
+        navigationItem.leftBarButtonItem = leftButton
+        navigationController?.isNavigationBarHidden = false
         
         for view in searchBar.subviews.last!.subviews {
             if type(of: view) == NSClassFromString("UISearchBarBackground"){
@@ -67,6 +72,11 @@ class LibrariesViewController: UIViewController, UITableViewDataSource, UITableV
         blur.bottomAnchor.constraint(equalTo: mainLibrariesView.bottomAnchor, constant: 0).isActive = true
     }
     
+    @objc func toStart() {
+        let navVc = storyboard?.instantiateViewController(withIdentifier: "navController") as! UINavigationController
+        let vc: ViewController = navVc.topViewController as! ViewController
+        UIApplication.shared.keyWindow?.rootViewController = vc
+    }
     
     func sortNamesBy(type: String, location: String, preference: String) {
         if type == "Sort by alphabet" {
@@ -75,19 +85,19 @@ class LibrariesViewController: UIViewController, UITableViewDataSource, UITableV
             }
             tableView.reloadData()
         } else if type == "Filter by location" {
-            firestoreManager.getBookstoresWithChoosedLocation(location: location, { success, arr in
+            firestoreManager.getBookstoresWithChoosedLocation(location: location, {[weak self]  success, arr in
                 if success {
-                    self.bookStoreTitles = arr
-                    self.tableView.reloadData()
+                    self?.bookStoreTitles = arr
+                    self?.tableView.reloadData()
                 } else {
                     print("Error")
                 }
             })
         } else if type == "Filter by preference" {
-            firestoreManager.getBookstoresWithChoosedPreference(preference: preference, { success, arr in
+            firestoreManager.getBookstoresWithChoosedPreference(preference: preference, {[weak self] success, arr in
                 if success {
-                    self.bookStoreTitles = arr
-                    self.tableView.reloadData()
+                    self?.bookStoreTitles = arr
+                    self?.tableView.reloadData()
                 } else {
                     print("Error")
                 }
@@ -140,18 +150,18 @@ class LibrariesViewController: UIViewController, UITableViewDataSource, UITableV
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         guard let bookStoreTitles = bookStoreTitles else { return }
-        let tabBC: UITabBarController = self.storyboard?.instantiateViewController(withIdentifier: "LibraryTabBarController") as! UITabBarController
+        let tabBC: UITabBarController = storyboard?.instantiateViewController(withIdentifier: "LibraryTabBarController") as! UITabBarController
         let nav = tabBC.viewControllers?[0] as! UINavigationController
         let nav_2 = tabBC.viewControllers?[2] as! UINavigationController
         
         let bookstoreProfileVC = nav.topViewController as! LibraryViewController
         let favouritesVC = nav_2.topViewController as! FavouritesViewController
-        firestoreManager.getBookstoreData(name: bookStoreTitles[indexPath.row], completion: { bookstore in
-            self.appDelegate().currentReviewingOwnersProfile = bookstore
+        firestoreManager.getBookstoreData(name: bookStoreTitles[indexPath.row], completion: {[weak self] bookstore in
+            self?.appDelegate().currentReviewingOwnersProfile = bookstore
             
-            self.firestoreManager.getRecommendedBooks(email: bookstore.email, completion: { arr in
-                self.firestoreManager.configureRandomBooksOfRandomGenre(email: bookstore.email, completion: { randArr in
-                    self.firestoreManager.configureRecentlyAddedBooks(email: bookstore.email, completion: { recentArr in
+            self?.firestoreManager.getRecommendedBooks(email: bookstore.email, completion: { arr in
+                self?.firestoreManager.configureRandomBooksOfRandomGenre(email: bookstore.email, completion: { randArr in
+                    self?.firestoreManager.configureRecentlyAddedBooks(email: bookstore.email, completion: { recentArr in
                         favouritesVC.recommendedBooksArr = arr
                         favouritesVC.randomBooksArr = randArr
                         favouritesVC.recentlyAddedBooksArr = recentArr
@@ -182,11 +192,11 @@ class LibrariesViewController: UIViewController, UITableViewDataSource, UITableV
             }
             
         }
-        self.tableView.reloadData()
+        tableView.reloadData()
         
         if searchText == "" {
             bookStoreTitles = bookStoreTitlesTemp
-            self.tableView.reloadData()
+            tableView.reloadData()
         }
     }
 }

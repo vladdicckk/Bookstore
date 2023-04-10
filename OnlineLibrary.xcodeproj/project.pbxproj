@@ -20,6 +20,7 @@
 		6A166DFA298566D0008634B6 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A166DF9298566D0008634B6 /* Models.swift */; };
 		6A16C30A2986A163006A914F /* FormatStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A16C3092986A163006A914F /* FormatStrings.swift */; };
 		6A16C30C2986A32F006A914F /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A16C30B2986A32F006A914F /* Validation.swift */; };
+		6A400D8F29E04017002513CA /* ChatProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A400D8E29E04017002513CA /* ChatProfileViewController.swift */; };
 		6A519B8B29699EB60045FB6F /* LibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A519B8A29699EB60045FB6F /* LibraryViewController.swift */; };
 		6A59048B296F1F7500FC3593 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A59048A296F1F7500FC3593 /* CollectionViewCell.swift */; };
 		6A5CD04D298443EF00980B90 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A5CD04C298443EF00980B90 /* GoogleService-Info.plist */; };
@@ -47,11 +48,21 @@
 		6A93D748296DBEC000EE2763 /* FavouritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A93D747296DBEC000EE2763 /* FavouritesViewController.swift */; };
 		6A93D74A296DC0D600EE2763 /* TypesOfBookSortingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A93D749296DC0D600EE2763 /* TypesOfBookSortingViewController.swift */; };
 		6A97078A29687EC0001F8629 /* Extension+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A97078929687EC0001F8629 /* Extension+UIView.swift */; };
+		6AA6BBFE29DD8DCB00849FC2 /* ChatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA6BBFD29DD8DCA00849FC2 /* ChatsViewController.swift */; };
+		6AA6BC0129DD91E500849FC2 /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA6BC0029DD91E500849FC2 /* ConversationTableViewCell.swift */; };
+		6AA6BC0429DD921C00849FC2 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA6BC0329DD921C00849FC2 /* StorageManager.swift */; };
+		6AA6BC0629DD965700849FC2 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA6BC0529DD965700849FC2 /* FirebaseManager.swift */; };
+		6AA6BC0829DD99DD00849FC2 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA6BC0729DD99DD00849FC2 /* ChatViewController.swift */; };
+		6AA6BC0A29DD9AA200849FC2 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA6BC0929DD9AA200849FC2 /* PhotoViewerViewController.swift */; };
+		6AA6BC0C29DD9DC600849FC2 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA6BC0B29DD9DC600849FC2 /* NewConversationViewController.swift */; };
+		6AA6BC0E29DD9E0500849FC2 /* NewConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA6BC0D29DD9E0500849FC2 /* NewConversationTableViewCell.swift */; };
 		6AC0FDD62973000700ABDC5C /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC0FDD52973000700ABDC5C /* UserProfileViewController.swift */; };
 		6AC0FDDA297418CF00ABDC5C /* SortedBooksInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC0FDD9297418CF00ABDC5C /* SortedBooksInfoViewController.swift */; };
 		6AC0FDDC2974195800ABDC5C /* SortedBooksCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC0FDDB2974195800ABDC5C /* SortedBooksCollectionViewCell.swift */; };
 		6AC0FDDE29742DDD00ABDC5C /* BookInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC0FDDD29742DDD00ABDC5C /* BookInfoViewController.swift */; };
 		6AC0FDE229744BFB00ABDC5C /* EditLibraryInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC0FDE129744BFB00ABDC5C /* EditLibraryInfoViewController.swift */; };
+		6AC2C03029A0EF4D00CDE9BA /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC2C02F29A0EF4D00CDE9BA /* NetworkMonitor.swift */; };
+		6AD1C38129E055D7004C4468 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6AD1C38029E055D7004C4468 /* Chat.storyboard */; };
 		6AD58E952968B4F0000FF56F /* LibrariesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD58E942968B4F0000FF56F /* LibrariesViewController.swift */; };
 		6AEBA5082976E381003A2279 /* FilterByViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEBA5072976E380003A2279 /* FilterByViewController.swift */; };
 		6AF6ADA72976D9E000F85C53 /* AddBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF6ADA62976D9E000F85C53 /* AddBookViewController.swift */; };
@@ -74,6 +85,7 @@
 		6A166DF9298566D0008634B6 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		6A16C3092986A163006A914F /* FormatStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatStrings.swift; sourceTree = "<group>"; };
 		6A16C30B2986A32F006A914F /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
+		6A400D8E29E04017002513CA /* ChatProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatProfileViewController.swift; sourceTree = "<group>"; };
 		6A519B8A29699EB60045FB6F /* LibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
 		6A59048A296F1F7500FC3593 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		6A5CD04C298443EF00980B90 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -103,11 +115,21 @@
 		6A93D747296DBEC000EE2763 /* FavouritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesViewController.swift; sourceTree = "<group>"; };
 		6A93D749296DC0D600EE2763 /* TypesOfBookSortingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypesOfBookSortingViewController.swift; sourceTree = "<group>"; };
 		6A97078929687EC0001F8629 /* Extension+UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIView.swift"; sourceTree = "<group>"; };
+		6AA6BBFD29DD8DCA00849FC2 /* ChatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatsViewController.swift; sourceTree = "<group>"; };
+		6AA6BC0029DD91E500849FC2 /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
+		6AA6BC0329DD921C00849FC2 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		6AA6BC0529DD965700849FC2 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		6AA6BC0729DD99DD00849FC2 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		6AA6BC0929DD9AA200849FC2 /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
+		6AA6BC0B29DD9DC600849FC2 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
+		6AA6BC0D29DD9E0500849FC2 /* NewConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationTableViewCell.swift; sourceTree = "<group>"; };
 		6AC0FDD52973000700ABDC5C /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		6AC0FDD9297418CF00ABDC5C /* SortedBooksInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedBooksInfoViewController.swift; sourceTree = "<group>"; };
 		6AC0FDDB2974195800ABDC5C /* SortedBooksCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedBooksCollectionViewCell.swift; sourceTree = "<group>"; };
 		6AC0FDDD29742DDD00ABDC5C /* BookInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInfoViewController.swift; sourceTree = "<group>"; };
 		6AC0FDE129744BFB00ABDC5C /* EditLibraryInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLibraryInfoViewController.swift; sourceTree = "<group>"; };
+		6AC2C02F29A0EF4D00CDE9BA /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
+		6AD1C38029E055D7004C4468 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
 		6AD58E942968B4F0000FF56F /* LibrariesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrariesViewController.swift; sourceTree = "<group>"; };
 		6AEBA5072976E380003A2279 /* FilterByViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterByViewController.swift; sourceTree = "<group>"; };
 		6AF6ADA62976D9E000F85C53 /* AddBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookViewController.swift; sourceTree = "<group>"; };
@@ -146,8 +168,8 @@
 				6A93D749296DC0D600EE2763 /* TypesOfBookSortingViewController.swift */,
 				6AC0FDD9297418CF00ABDC5C /* SortedBooksInfoViewController.swift */,
 				6AC0FDDD29742DDD00ABDC5C /* BookInfoViewController.swift */,
-				6AC0FDDB2974195800ABDC5C /* SortedBooksCollectionViewCell.swift */,
 				6AF6ADA62976D9E000F85C53 /* AddBookViewController.swift */,
+				6AC0FDDB2974195800ABDC5C /* SortedBooksCollectionViewCell.swift */,
 				6A8036262979A29300FA8160 /* AddBookAdditionalInfoViewController.swift */,
 			);
 			path = LibraryTabBar;
@@ -180,10 +202,11 @@
 		6A01231D297078C1006B8151 /* FavouritesViewController */ = {
 			isa = PBXGroup;
 			children = (
-				6A012328297083CA006B8151 /* Protocols.swift */,
 				6A01232C29708528006B8151 /* Cells */,
 				6A01232529707C3B006B8151 /* SupplementaryViews */,
 				6A01231E29707A2B006B8151 /* Models */,
+				6A6CE6722991005B00187555 /* SortByLocationViewController.swift */,
+				6A012328297083CA006B8151 /* Protocols.swift */,
 				6A01232D297085FA006B8151 /* BooksPresenter.swift */,
 				6A93D747296DBEC000EE2763 /* FavouritesViewController.swift */,
 			);
@@ -220,6 +243,7 @@
 		6A7CAE182968758C00F16195 = {
 			isa = PBXGroup;
 			children = (
+				6AC2C02F29A0EF4D00CDE9BA /* NetworkMonitor.swift */,
 				6A7CAE232968758C00F16195 /* OnlineLibrary */,
 				6A7CAE222968758C00F16195 /* Products */,
 				459DC83E320CD10D224F828B /* Pods */,
@@ -238,31 +262,72 @@
 		6A7CAE232968758C00F16195 /* OnlineLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				6AA6BC0229DD920D00849FC2 /* Managers */,
+				6A012318297048C8006B8151 /* Extensions */,
+				6AA6BBF729DC691400849FC2 /* ViewControllers */,
 				6A7CAE242968758C00F16195 /* AppDelegate.swift */,
 				6A7CAE262968758C00F16195 /* SceneDelegate.swift */,
-				6A7CAE282968758C00F16195 /* ViewController.swift */,
-				6A681DA7299CE35400507930 /* FirestoreManager.swift */,
 				6A16C3092986A163006A914F /* FormatStrings.swift */,
 				6A16C30B2986A32F006A914F /* Validation.swift */,
 				6A166DF9298566D0008634B6 /* Models.swift */,
-				6AD58E942968B4F0000FF56F /* LibrariesViewController.swift */,
-				6A6CE6782991263400187555 /* FilterByPreferenceViewController.swift */,
-				6AEBA5072976E380003A2279 /* FilterByViewController.swift */,
-				6A6CE6722991005B00187555 /* SortByLocationViewController.swift */,
-				6AC0FDD52973000700ABDC5C /* UserProfileViewController.swift */,
-				6A681DA2299A9A9D00507930 /* SendApplicationToBookstoreViewController.swift */,
-				6A681DA5299BEAAD00507930 /* ApplicationViewController.swift */,
-				6A8D6D29297EFB7700E05D39 /* EditUserMainInfoViewController.swift */,
-				6A01231629704869006B8151 /* LibraryTabBar */,
-				6A01231729704899006B8151 /* SignInSignUp */,
 				6A7CAE2A2968758C00F16195 /* Main.storyboard */,
+				6AD1C38029E055D7004C4468 /* Chat.storyboard */,
 				6A5CD04C298443EF00980B90 /* GoogleService-Info.plist */,
 				6A7CAE2D2968758D00F16195 /* Assets.xcassets */,
 				6A7CAE2F2968758D00F16195 /* LaunchScreen.storyboard */,
 				6A7CAE322968758D00F16195 /* Info.plist */,
-				6A012318297048C8006B8151 /* Extensions */,
 			);
 			path = OnlineLibrary;
+			sourceTree = "<group>";
+		};
+		6AA6BBF729DC691400849FC2 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				6A01231629704869006B8151 /* LibraryTabBar */,
+				6AA6BBF829DC695C00849FC2 /* Client */,
+				6A01231729704899006B8151 /* SignInSignUp */,
+				6AA6BBFF29DD91BC00849FC2 /* Chat */,
+				6A7CAE282968758C00F16195 /* ViewController.swift */,
+				6A681DA5299BEAAD00507930 /* ApplicationViewController.swift */,
+				6AA6BC0929DD9AA200849FC2 /* PhotoViewerViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		6AA6BBF829DC695C00849FC2 /* Client */ = {
+			isa = PBXGroup;
+			children = (
+				6A681DA2299A9A9D00507930 /* SendApplicationToBookstoreViewController.swift */,
+				6AD58E942968B4F0000FF56F /* LibrariesViewController.swift */,
+				6A6CE6782991263400187555 /* FilterByPreferenceViewController.swift */,
+				6AEBA5072976E380003A2279 /* FilterByViewController.swift */,
+				6AC0FDD52973000700ABDC5C /* UserProfileViewController.swift */,
+				6A8D6D29297EFB7700E05D39 /* EditUserMainInfoViewController.swift */,
+			);
+			path = Client;
+			sourceTree = "<group>";
+		};
+		6AA6BBFF29DD91BC00849FC2 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				6AA6BBFD29DD8DCA00849FC2 /* ChatsViewController.swift */,
+				6AA6BC0029DD91E500849FC2 /* ConversationTableViewCell.swift */,
+				6AA6BC0729DD99DD00849FC2 /* ChatViewController.swift */,
+				6AA6BC0B29DD9DC600849FC2 /* NewConversationViewController.swift */,
+				6AA6BC0D29DD9E0500849FC2 /* NewConversationTableViewCell.swift */,
+				6A400D8E29E04017002513CA /* ChatProfileViewController.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		6AA6BC0229DD920D00849FC2 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				6A681DA7299CE35400507930 /* FirestoreManager.swift */,
+				6AA6BC0329DD921C00849FC2 /* StorageManager.swift */,
+				6AA6BC0529DD965700849FC2 /* FirebaseManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		F58F81A3670B4C6A79B85647 /* Frameworks */ = {
@@ -336,6 +401,7 @@
 				6A7CAE312968758D00F16195 /* LaunchScreen.storyboard in Resources */,
 				6A5CD04D298443EF00980B90 /* GoogleService-Info.plist in Resources */,
 				6A7CAE2E2968758D00F16195 /* Assets.xcassets in Resources */,
+				6AD1C38129E055D7004C4468 /* Chat.storyboard in Resources */,
 				6A7CAE2C2968758C00F16195 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -394,16 +460,22 @@
 				6A6CE675299119CC00187555 /* Extension+UIViewController.swift in Sources */,
 				6A681DA3299A9A9D00507930 /* SendApplicationToBookstoreViewController.swift in Sources */,
 				6A166DFA298566D0008634B6 /* Models.swift in Sources */,
+				6AA6BC0A29DD9AA200849FC2 /* PhotoViewerViewController.swift in Sources */,
 				6A80362529799C5C00FA8160 /* SetLibraryOwnerName.swift in Sources */,
 				6AF6ADA72976D9E000F85C53 /* AddBookViewController.swift in Sources */,
+				6AC2C03029A0EF4D00CDE9BA /* NetworkMonitor.swift in Sources */,
+				6AA6BC0E29DD9E0500849FC2 /* NewConversationTableViewCell.swift in Sources */,
 				6AC0FDDE29742DDD00ABDC5C /* BookInfoViewController.swift in Sources */,
 				6A681DA6299BEAAE00507930 /* ApplicationViewController.swift in Sources */,
 				6A01232229707AC1006B8151 /* Section.swift in Sources */,
+				6AA6BC0129DD91E500849FC2 /* ConversationTableViewCell.swift in Sources */,
 				6AC0FDDA297418CF00ABDC5C /* SortedBooksInfoViewController.swift in Sources */,
 				6AC0FDD62973000700ABDC5C /* UserProfileViewController.swift in Sources */,
 				6A5EE6CA299166E400997904 /* Extension+AppDelegate.swift in Sources */,
+				6AA6BC0429DD921C00849FC2 /* StorageManager.swift in Sources */,
 				6A0D545E296D6A9F0044F0E3 /* SignInViewController.swift in Sources */,
 				6A01233229708F89006B8151 /* RecentlyAddedBooksCollectionViewCell.swift in Sources */,
+				6AA6BC0829DD99DD00849FC2 /* ChatViewController.swift in Sources */,
 				6A7CAE292968758C00F16195 /* ViewController.swift in Sources */,
 				6A7CAE252968758C00F16195 /* AppDelegate.swift in Sources */,
 				6A6CE6732991005B00187555 /* SortByLocationViewController.swift in Sources */,
@@ -416,14 +488,18 @@
 				6A97078A29687EC0001F8629 /* Extension+UIView.swift in Sources */,
 				6A01233029708F23006B8151 /* RandomGenreCollectionViewCell.swift in Sources */,
 				6A681DA1299A841100507930 /* ApplicationsListViewController.swift in Sources */,
+				6AA6BBFE29DD8DCB00849FC2 /* ChatsViewController.swift in Sources */,
 				6A01231C29707891006B8151 /* UICollectionViewCell+Extension.swift in Sources */,
 				6A16C30C2986A32F006A914F /* Validation.swift in Sources */,
 				6A6CE677299124B900187555 /* Extension+String.swift in Sources */,
 				6A16C30A2986A163006A914F /* FormatStrings.swift in Sources */,
 				6A93D74A296DC0D600EE2763 /* TypesOfBookSortingViewController.swift in Sources */,
 				6AC0FDE229744BFB00ABDC5C /* EditLibraryInfoViewController.swift in Sources */,
+				6AA6BC0629DD965700849FC2 /* FirebaseManager.swift in Sources */,
 				6A8D6D2A297EFB7700E05D39 /* EditUserMainInfoViewController.swift in Sources */,
+				6A400D8F29E04017002513CA /* ChatProfileViewController.swift in Sources */,
 				6A93D744296DB82800EE2763 /* LibrarySignUpViewController.swift in Sources */,
+				6AA6BC0C29DD9DC600849FC2 /* NewConversationViewController.swift in Sources */,
 				6A59048B296F1F7500FC3593 /* CollectionViewCell.swift in Sources */,
 				6A012329297083CA006B8151 /* Protocols.swift in Sources */,
 				6A01232429707C25006B8151 /* SectionHeader.swift in Sources */,

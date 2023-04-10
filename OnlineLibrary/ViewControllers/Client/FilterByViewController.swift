@@ -92,9 +92,9 @@ class FilterByViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     override func updateViewConstraints() {
-        self.view.frame.size.height = UIScreen.main.bounds.height - 750
-        self.view.frame.origin.y = 150
-        self.view.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 10.0)
+        view.frame.size.height = UIScreen.main.bounds.height - 750
+        view.frame.origin.y = 150
+        view.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 10.0)
         super.updateViewConstraints()
     }
     
@@ -132,12 +132,12 @@ class FilterByViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             if delegate != nil {
-                let locationSortVC: SortByLocationViewController = self.storyboard?.instantiateViewController(withIdentifier: "SortByLocationViewController") as! SortByLocationViewController
-                getBookstoresLocations({ success, arr in
+                let locationSortVC: SortByLocationViewController = storyboard?.instantiateViewController(withIdentifier: "SortByLocationViewController") as! SortByLocationViewController
+                getBookstoresLocations({[weak self]  success, arr in
                     if success {
                         locationSortVC.locationsArr = arr
-                        locationSortVC.delegate = self.delegate
-                        self.present(locationSortVC, animated: true)
+                        locationSortVC.delegate = self?.delegate
+                        self?.present(locationSortVC, animated: true)
                     }
                 })
             }
@@ -153,7 +153,7 @@ class FilterByViewController: UIViewController, UITableViewDelegate, UITableView
             if delegate != nil {
                 let preferenceVC: FilterByPreferenceViewController = self.storyboard?.instantiateViewController(withIdentifier: "FilterByPreferenceViewController") as! FilterByPreferenceViewController
                 preferenceVC.delegate = self.delegate
-                self.present(preferenceVC, animated: true)
+                present(preferenceVC, animated: true)
             }
         }
     }

@@ -8,7 +8,6 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseCore
-import FirebaseAuth
 import FirebaseFirestoreSwift
 
 struct BookInfo: Codable, Equatable {
@@ -124,5 +123,29 @@ struct ApplicationMainInfo: Codable {
         case bookstoreName
         case userEmail
         case bookstoreEmail
+    }
+}
+
+extension User: Equatable {
+    static func == (lhs: User, rhs: User) -> Bool {
+        return lhs.firstName == rhs.firstName &&
+        lhs.lastName == rhs.lastName &&
+        lhs.age == rhs.age &&
+        lhs.email == rhs.email &&
+        lhs.username == rhs.username &&
+        lhs.location == rhs.location &&
+        lhs.phoneNumber == rhs.phoneNumber
+    }
+}
+
+extension Bookstore: Equatable {
+    static func == (lhs: Bookstore, rhs: Bookstore) -> Bool {
+        return lhs.name == rhs.name &&
+        lhs.location == rhs.location &&
+        lhs.ownersName == rhs.ownersName &&
+        lhs.email == rhs.email &&
+        lhs.preference == rhs.preference &&
+        lhs.phoneNumber == rhs.phoneNumber &&
+        lhs.additionalInfo == rhs.additionalInfo
     }
 }

@@ -7,17 +7,22 @@
 
 import UIKit
 import FirebaseCore
+import FirebaseStorage
+import FirebaseAuth
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var currentUser: User?
+    var currentReviewingUsersProfile: User?
     var currentBookstoreOwner: Bookstore?
     var currentReviewingOwnersProfile: Bookstore?
+    var currentEmail: String?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
+        currentEmail = FirebaseAuth.Auth.auth().currentUser?.email
         return true
     }
 

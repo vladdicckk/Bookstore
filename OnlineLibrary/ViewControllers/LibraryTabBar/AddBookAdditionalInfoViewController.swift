@@ -41,9 +41,9 @@ class AddBookAdditionalInfoViewController: UIViewController {
     
     private func additionalInfoTextViewSettings() {
         let backgroundTextViewBlur: UIVisualEffectView = {
-            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
+            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.8
+            blurView.alpha = 1
             blurView.translatesAutoresizingMaskIntoConstraints = false
             blurView.layer.cornerRadius = 16
             blurView.backgroundColor = UIColor.clear
@@ -69,8 +69,6 @@ class AddBookAdditionalInfoViewController: UIViewController {
         self.view.roundCorners(corners: [.topLeft, .topRight], radius: 15.0)
         super.updateViewConstraints()
     }
-    
-    
     
     @IBAction func saveButtonTapped(_ sender: Any) {
         if additionalInfoTextView.text != "" && additionalInfoTextView.text.count > 30 {

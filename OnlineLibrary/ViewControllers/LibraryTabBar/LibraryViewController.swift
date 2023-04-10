@@ -7,14 +7,15 @@
 
 import UIKit
 import FirebaseFirestore
+import FirebaseStorage
+import FirebaseAuth
 
-class LibraryViewController: UIViewController, UITextViewDelegate, MainSendingDelegateProtocol, NameSendingDelegateProtocol {
+class LibraryViewController: UIViewController, UITextViewDelegate, MainSendingDelegateProtocol, NameSendingDelegateProtocol, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     // MARK: Outlets
     @IBOutlet weak var upperView: UIView!
     @IBOutlet var mainLibraryView: UIView!
     @IBOutlet weak var lowerView: UIView!
     @IBOutlet weak var ownersName: UILabel!
-    @IBOutlet weak var bookstoreNameLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var contactPhoneLabel: UILabel!
     @IBOutlet weak var typeOfTrading: UILabel!
@@ -25,8 +26,11 @@ class LibraryViewController: UIViewController, UITextViewDelegate, MainSendingDe
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var saveAdditionalInfoDataButton: UIButton!
     @IBOutlet weak var logoutButton: UIButton!
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var openChatsButton: UIButton!
     
     // MARK: Parameters
+    var reviewingChatProfileText: String?
     var bookstoreName: String?
     var address: String?
     var phoneNumber: String?
@@ -34,50 +38,131 @@ class LibraryViewController: UIViewController, UITextViewDelegate, MainSendingDe
     var email: String?
     var bookstoreOwnersName: String?
     var additionalInfoText: String?
+    var currentImage: UIImage!
+    let firestoreManager = FirestoreManager()
+    let storage = Storage.storage().reference()
     let db = Firestore.firestore()
     
     // MARK: Lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        if appDelegate().currentBookstoreOwner == nil {
-            self.tabBarController?.viewControllers?.remove(at: 3)
-        }
-        
+        accessSettings()
         bookstoreInfoConfiguration()
         mainLibraryViewProperties()
-        if appDelegate().currentBookstoreOwner == nil {
-            libraryInfoEditButton.isHidden = true
-            setOwnersName.isHidden = true
-            saveAdditionalInfoDataButton.isHidden = true
-            additionalInfoTextView.isEditable = false
-            if #available(iOS 16.0, *) {
-                logoutButton.isHidden = true
-            } else {
-                logoutButton.isEnabled = false
-                // Fallback on earlier versions
-            }
+        imageViewProperties()
+        
+        if reviewingChatProfileText != "" && reviewingChatProfileText != nil {
+            logoutButton.setTitle(reviewingChatProfileText, for: .normal)
+            logoutButton.isHidden = false
         }
         
-        if appDelegate().currentReviewingOwnersProfile != nil && appDelegate().currentBookstoreOwner != nil {
-            libraryInfoEditButton.isHidden = true
-            setOwnersName.isHidden = true
-            saveAdditionalInfoDataButton.isHidden = true
-            additionalInfoTextView.isEditable = false
-            if #available(iOS 16.0, *) {
-                logoutButton.isHidden = true
-            } else {
-                logoutButton.isEnabled = false
-                // Fallback on earlier versions
+        self.firestoreManager.getBookstoreAvatarURL(email: self.email ?? appDelegate().currentReviewingOwnersProfile?.email ?? "", completion: { url in
+            DispatchQueue.global().async {
+                // Fetch Image Data
+                if let data = try? Data(contentsOf: url) {
+                    DispatchQueue.main.async {
+                        // Create Image and Update Image View
+                        self.imageView.image = self.setProfileImage(imageToResize: UIImage(data: data)!, onImageView: self.imageView)
+                    }
+                }
             }
-        }
+        })
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(tapGestureRecognizer)
+        
         self.title = bookstoreName
         navigationController?.navigationBar.prefersLargeTitles = true
-        upperView.isHidden = true
+        upperView.isHidden = false
     }
     
     // MARK: Private and public functions
+    private func accessSettings() {
+        
+        if appDelegate().currentReviewingOwnersProfile != nil && appDelegate().currentBookstoreOwner != nil && appDelegate().currentReviewingOwnersProfile != appDelegate().currentBookstoreOwner {
+            libraryInfoEditButton.isHidden = true
+            setOwnersName.isHidden = true
+            saveAdditionalInfoDataButton.isHidden = true
+            additionalInfoTextView.isEditable = false
+            if #available(iOS 16.0, *) {
+                logoutButton.isHidden = true
+            } else {
+                logoutButton.isEnabled = false
+                // Fallback on earlier versions
+            }
+        } else {
+            libraryInfoEditButton.isHidden = false
+            setOwnersName.isHidden = false
+            saveAdditionalInfoDataButton.isHidden = false
+            additionalInfoTextView.isEditable = true
+            if #available(iOS 16.0, *) {
+                logoutButton.isHidden = false
+            } else {
+                logoutButton.isEnabled = true
+                // Fallback on earlier versions
+            }
+        }
+        
+        if appDelegate().currentReviewingOwnersProfile != nil && appDelegate().currentReviewingOwnersProfile != appDelegate().currentBookstoreOwner {
+            self.tabBarController?.viewControllers?.remove(at: 3)
+            openChatsButton.isHidden = true
+        } else {
+            openChatsButton.isHidden = false
+        }
+    }
+    
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
+        if appDelegate().currentReviewingOwnersProfile == nil {
+            importPicture()
+        }
+    }
+    
+    @objc func importPicture() {
+        let picker = UIImagePickerController()
+        picker.allowsEditing = true
+        picker.delegate = self
+        present(picker, animated: true)
+    }
+    
+    private func imageViewProperties() {
+        imageView.image = setProfileImage(imageToResize: UIImage(named: "empty")!, onImageView: imageView)
+        
+        imageView.layer.borderWidth = 2.5
+        imageView.layer.masksToBounds = false
+        imageView.layer.borderColor = UIColor.gray.cgColor
+        imageView.layer.cornerRadius = imageView.frame.width/2
+        
+        imageView.sizeToFit()
+        imageView.clipsToBounds = true
+        
+        imageView.contentMode = .center
+        
+        imageView.backgroundColor = .gray
+    }
+    
+    func setProfileImage(imageToResize: UIImage, onImageView: UIImageView) -> UIImage {
+        let width = imageToResize.size.width
+        let height = imageToResize.size.height
+
+        var scaleFactor: CGFloat
+
+        if width > height {
+            scaleFactor = onImageView.frame.size.height / height;
+        }
+        else {
+            scaleFactor = onImageView.frame.size.width / width;
+        }
+
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(width * scaleFactor, height * scaleFactor), false, 0.0)
+        imageToResize.draw(in: CGRectMake(0, 0, width * scaleFactor, height * scaleFactor))
+        let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return resizedImage ?? UIImage()
+    }
+
     private func bookstoreInfoConfiguration() {
-        bookstoreNameLabel.text = bookstoreName
         locationLabel.text = address
         contactPhoneLabel.text = phoneNumber
         emailLabel.text = email
@@ -92,7 +177,6 @@ class LibraryViewController: UIViewController, UITextViewDelegate, MainSendingDe
     }
     
     func sendMainDataToFirstViewController(bookstoreName: String, phoneNumber: String, location: String, preferences: String) {
-        bookstoreNameLabel.text = bookstoreName
         contactPhoneLabel.text = phoneNumber
         locationLabel.text = location
         typeOfTrading.text = preferences
@@ -102,7 +186,6 @@ class LibraryViewController: UIViewController, UITextViewDelegate, MainSendingDe
         if segue.identifier == "getMainDataSegue" {
             let editLibraryInfoVC: EditLibraryInfoViewController = segue.destination as! EditLibraryInfoViewController
             editLibraryInfoVC.bookStoreOwnersEmail = email
-            editLibraryInfoVC.oldBookstoreTitle = bookstoreNameLabel.text
             editLibraryInfoVC.oldOwnerPhoneNumber = contactPhoneLabel.text
             editLibraryInfoVC.oldLibraryLocation = locationLabel.text
             editLibraryInfoVC.oldOwnerPreferences = typeOfTrading.text
@@ -177,7 +260,6 @@ class LibraryViewController: UIViewController, UITextViewDelegate, MainSendingDe
         upperView.backgroundColor = .clear
         libraryInfoEditButton.setImage(UIImage(systemName: "pencil.line"), for: .normal)
         setOwnersName.setImage(UIImage(systemName: "pencil.line"), for: .normal)
-        createLightBlurEffect(alpha: 0.85, view: upperView)
     }
     
     private func lowerViewProperties() {
@@ -230,6 +312,11 @@ class LibraryViewController: UIViewController, UITextViewDelegate, MainSendingDe
             backgroundLabelBlur.bottomAnchor.constraint(equalTo: additionalInfoLabel.bottomAnchor, constant: 0)
         ])
     }
+    @IBAction func opennChatsButtonTapped(_ sender: Any) {
+        let chatStoryboard = UIStoryboard(name: "Chat", bundle: nil)
+        let vc: UINavigationController = chatStoryboard.instantiateViewController(withIdentifier: "ChatNavVC") as! UINavigationController
+        UIApplication.shared.keyWindow?.rootViewController = vc
+    }
     
     @IBAction func saveButtonTapped(_ sender: Any) {
         guard let bookstoreEmail = email else { return }
@@ -247,8 +334,48 @@ class LibraryViewController: UIViewController, UITextViewDelegate, MainSendingDe
     
     
     @IBAction func logOutButtonTapped(_ sender: Any) {
-        appDelegate().currentBookstoreOwner = nil
-        let navc: UINavigationController = self.storyboard?.instantiateViewController(withIdentifier: "navController") as! UINavigationController
-        UIApplication.shared.keyWindow?.rootViewController = navc
+        if reviewingChatProfileText != nil && reviewingChatProfileText != "" {
+            let chatStoryboard = UIStoryboard(name: "Chat", bundle: nil)
+            let vc: UINavigationController = chatStoryboard.instantiateViewController(withIdentifier: "ChatNavVC") as! UINavigationController
+            UIApplication.shared.keyWindow?.rootViewController = vc
+        } else {
+            appDelegate().currentBookstoreOwner = nil
+            let navc: UINavigationController = self.storyboard?.instantiateViewController(withIdentifier: "navController") as! UINavigationController
+            do {
+                try FirebaseAuth.Auth.auth().signOut()
+            } catch {
+                print("Failed to log out")
+            }
+            UIApplication.shared.keyWindow?.rootViewController = navc
+        }
+    }
+    
+    // MARK: UIImagePickerControllerDelegate & UINavigationControllerDelegate function
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.editedImage] as? UIImage else { return }
+        guard let data = setProfileImage(imageToResize: image, onImageView: imageView).pngData() else { return }
+        
+        dismiss(animated: true)
+        
+        self.imageView.image = setProfileImage(imageToResize: image, onImageView: imageView)
+        guard let bookstoreName = bookstoreName else { return }
+        storage.child("images.\(bookstoreName)_Avatar.png").putData(data, completion: { _, err in
+            guard err == nil else {
+                print("Failed to upload")
+                return
+            }
+            self.storage.child("images.\(bookstoreName)_Avatar.png").downloadURL(completion: { url, err in
+                guard let url = url, err == nil else { return }
+                let urlString = url.absoluteString
+
+                guard let email = self.email else {
+                    print("Empty email")
+                    return
+                }
+
+                self.db.collection("Owners").document(email).setData(["AvatarImageURL" : urlString], merge: true)
+            })
+        })
     }
 }
+

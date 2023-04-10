@@ -21,6 +21,8 @@ class ApplicationViewController: UIViewController {
     @IBOutlet weak var successLabel: UILabel!
     @IBOutlet weak var switchStatus: UISwitch!
     @IBOutlet weak var failureLabel: UILabel!
+  
+    
     
     // MARK: Parameters
     var application: ApplicationMainInfo?
@@ -43,17 +45,18 @@ class ApplicationViewController: UIViewController {
     }
     
     override func updateViewConstraints() {
-        self.view.frame.size.height = view.frame.size.height - 250
-        self.view.frame.origin.y = 150
-        self.view.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 10.0)
+        view.frame.size.height = view.frame.size.height - 250
+        view.frame.origin.y = 150
+        view.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 10.0)
         super.updateViewConstraints()
     }
     
     // MARK: Private functions
     private func configureApplicationInfo() {
-        additionalInfoTextView.text = application?.additionalInfo
+        additionalInfoTextView.text = "\(application?.additionalInfo ?? "") \nUserInfo: \(application?.userInfo ?? "")"
         bookstoreNameLabel.text = application?.bookstoreName
         dateLabel.text = "Date: \(application?.date ?? "")"
+        
         
         guard let status = application?.status else { return }
         
@@ -77,6 +80,8 @@ class ApplicationViewController: UIViewController {
     
     private func setupMainInfoView() {
         mainInfoView.layer.cornerRadius = 16
+        mainInfoView.layer.borderColor = UIColor.systemBrown.cgColor
+        mainInfoView.layer.borderWidth = 2.0
         mainInfoView.backgroundColor = .clear
         createLightBlurEffect(alpha: 0.75, view: mainInfoView)
     }

@@ -6,10 +6,7 @@
 //
 
 import UIKit
-import FirebaseFirestoreSwift
-import FirebaseFirestore
 import FirebaseAuth
-import FirebaseCore
 
 class UserSignUpViewController: UIViewController, UITextFieldDelegate {
     // MARK: Outlets
@@ -26,7 +23,6 @@ class UserSignUpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var lowerView: UIView!
     
     // MARK: Parameters
-    let db = Firestore.firestore()
     let firestoreManager = FirestoreManager()
     let validation: Validation = Validation()
     
@@ -56,6 +52,10 @@ class UserSignUpViewController: UIViewController, UITextFieldDelegate {
             return true
         }
         return false
+    }
+    
+    private func signUp(email: String, password: String) {
+        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password)
     }
     
     private func validation(email: String, phoneNumber: String) -> Bool {
@@ -93,18 +93,23 @@ class UserSignUpViewController: UIViewController, UITextFieldDelegate {
         if name != "" && surname != "" && password != "" && email != "" && address != "" && phoneNumber != "" && username != "" {
             if password == confirmPasswordTextField.text {
                 if validation(email: email, phoneNumber: phoneNumber) {
-                    self.firestoreManager.checkForUsernameExisting(username: username, email: email, { usernameExists in
+                    firestoreManager.checkForUsernameExisting(username: username, { [weak self]  usernameExists in
                         if usernameExists {
-                            self.showAlert(message: "Username already exists")
+                            self?.showAlert(message: "Username already exists")
                         } else {
-                            self.firestoreManager.checkForUserExisting(email: email, { exists in
+                            self?.firestoreManager.checkForUserExisting(email: email, { exists in
                                 if exists {
-                                    self.showAlert(message: "Email already exists")
+                                    self?.showAlert(message: "Email already exists")
                                 } else {
+                                    FirebaseManager.shared.insertUser(with:
+                                                                    ChatAppUser(name: name, surname: surname, email: email), completion: { success in
                                     let user = User(firstName: name, lastName: surname, age: age, password: password, email: email, username: username, phoneNumber: phoneNumber, location: address)
-                                    self.firestoreManager.addUser(user: user)
-                                    self.appDelegate().currentUser = user
-                                    let userProfileVC: UserProfileViewController = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
+                                    self?.firestoreManager.addUser(user: user)
+                                    
+                                        
+                                    
+                                    self?.appDelegate().currentUser = user
+                                    let userProfileVC: UserProfileViewController = self?.storyboard?.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
                                     
                                     userProfileVC.firstName = name
                                     userProfileVC.lastName = surname
@@ -113,7 +118,10 @@ class UserSignUpViewController: UIViewController, UITextFieldDelegate {
                                     userProfileVC.username = username
                                     userProfileVC.phoneNumber = phoneNumber
                                     userProfileVC.address = address
-                                    self.navigationController?.pushViewController(userProfileVC, animated: true)
+                                    
+                                    self?.signUp(email: email, password: password)
+                                    self?.dismiss(animated: false)
+                                    })
                                 }
                             })
                         }

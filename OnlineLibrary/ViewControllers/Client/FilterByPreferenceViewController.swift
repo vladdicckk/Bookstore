@@ -50,9 +50,9 @@ class FilterByPreferenceViewController: UIViewController, UITableViewDelegate, U
     }
     
     override func updateViewConstraints() {
-        self.view.frame.size.height = self.tableView.bounds.height + 100
-        self.view.frame.origin.y = 150
-        self.view.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 10.0)
+        view.frame.size.height = tableView.bounds.height + 100
+        view.frame.origin.y = 150
+        view.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 10.0)
         super.updateViewConstraints()
     }
     
@@ -88,11 +88,11 @@ class FilterByPreferenceViewController: UIViewController, UITableViewDelegate, U
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let librariesVC: LibrariesViewController = self.storyboard?.instantiateViewController(withIdentifier: "LibrariesViewController") as! LibrariesViewController
+        let librariesVC: LibrariesViewController = storyboard?.instantiateViewController(withIdentifier: "LibrariesViewController") as! LibrariesViewController
         
-        self.delegate?.sortNamesBy(type: "Filter by preference", location: "", preference: preferencesArr[indexPath.row])
+        delegate?.sortNamesBy(type: "Filter by preference", location: "", preference: preferencesArr[indexPath.row])
         
-        self.dismissTo(vc: librariesVC, count: 2, animated: true)
+        dismissTo(vc: librariesVC, count: 2, animated: true)
     }
 }
 

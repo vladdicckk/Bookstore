@@ -8,6 +8,10 @@ target 'OnlineLibrary' do
   # Pods for OnlineLibrary
 	pod ‘FirebaseCore'
 	pod ‘FirebaseFirestore'
-	pod ‘FirebaseAuth'
 	pod ‘FirebaseFirestoreSwift'
+	pod ‘FirebaseStorage'
+	pod 'Firebase/Auth'
+	pod 'Firebase/Database'
+	pod 'MessageKit', '~> 3.8.0'
+	pod 'SDWebImage'
 end

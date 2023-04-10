@@ -8,6 +8,8 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseStorage
+import FirebaseAuth
 
 class UserProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MainInfoSendingDelegateProtocol, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     // MARK: Outlets
@@ -25,10 +27,15 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var firstAndLastNamesLabel: UILabel!
     @IBOutlet weak var ageLabel: UILabel!
     @IBOutlet weak var usersImageView: UIImageView!
+    @IBOutlet weak var logoutButton: UIButton!
+    
+    @IBOutlet weak var openChatsButton: UIButton!
     
     // MARK: Properties
+    var reviewingChatProfileText: String?
     var arr: [ApplicationMainInfo]?
     let db = Firestore.firestore()
+    let firestoreManager = FirestoreManager()
     var firstName: String?
     var lastName: String?
     var age: Int?
@@ -37,30 +44,47 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     var username: String?
     var address: String?
     var currentImage: UIImage!
+    let storage = Storage.storage().reference()
     
     // MARK: Lifecycle functions
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TradingHistoryCell")
-        self.navigationController?.isNavigationBarHidden = true
+        navigationController?.isNavigationBarHidden = true
         imageViewProperties()
         userInfoConfiguration()
         viewProperties()
-        if currentImage != nil {
-            self.usersImageView.image = currentImage
+
+        firestoreManager.getUserAvatarURL(email: self.email!, completion: {[weak self]  url in
+            DispatchQueue.global().async {
+                // Fetch Image Data
+                if let data = try? Data(contentsOf: url) {
+                    DispatchQueue.main.async {
+                        // Create Image and Update Image View
+                        self?.usersImageView.image = self?.setProfileImage(imageToResize: (UIImage(data: data) ?? UIImage(named: "empty"))!, onImageView: self?.usersImageView ?? UIImageView())
+                    }
+                }
+            }
+        })
+        
+        if appDelegate().currentReviewingUsersProfile != nil && appDelegate().currentReviewingUsersProfile != appDelegate().currentUser {
+            openChatsButton.isHidden = true
+            logoutButton.isHidden = true
+            editMainInfoButton.isHidden = true
         } else {
-            let image = UIImage(systemName: "photo")
-            self.usersImageView.image = image
+            openChatsButton.isHidden = false
+            logoutButton.isHidden = false
+            editMainInfoButton.isHidden = false
         }
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         usersImageView.isUserInteractionEnabled = true
         usersImageView.addGestureRecognizer(tapGestureRecognizer)
+        
+        if reviewingChatProfileText != "" && reviewingChatProfileText != nil {
+            logoutButton.setTitle(reviewingChatProfileText, for: .normal)
+            logoutButton.isHidden = false
+        }
      }
     
     // MARK: Private and public functions
@@ -82,9 +106,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         usersImageView.layer.cornerRadius = usersImageView.frame.height/2
         usersImageView.sizeToFit()
         usersImageView.clipsToBounds = true
-        
         usersImageView.contentMode = .center
-        
         usersImageView.backgroundColor = .gray
     }
     
@@ -110,7 +132,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     private func userInfoConfiguration() {
-        greetingLabel.text = "Hello, \(firstName ?? "")"
+        greetingLabel.text = "Hello, \(appDelegate().currentUser?.firstName ?? "")"
         usernameInfoLabel.text = username
         emailLabel.text = email
         addressLabel.text = address
@@ -149,7 +171,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
 
     private func createLightBlurEffect(alpha: Double, view: UIView, clipsToBounds: Bool) {
         let backgroundBlur: UIVisualEffectView = {
-            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
+            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.regular)
             let blurView = UIVisualEffectView(effect: blurEffect)
             blurView.alpha = alpha
             blurView.translatesAutoresizingMaskIntoConstraints = false
@@ -174,7 +196,7 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         applicationsView.layer.cornerRadius = 16
         applicationsView.backgroundColor = .clear
          
-        createLightBlurEffect(alpha: 0.75, view: applicationsView, clipsToBounds: true)
+        createLightBlurEffect(alpha: 0.925, view: applicationsView, clipsToBounds: true)
     }
     
     private func upperViewProperties() {
@@ -191,16 +213,40 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
 
     private func tradingHistoryLabelProperties() {
         tradingHistoryLabel.font = UIFont.boldSystemFont(ofSize: 27)
-        tradingHistoryLabel.textColor = UIColor(red: 0.3, green: 0.1, blue: 0.4, alpha: 1)
+        tradingHistoryLabel.textColor = UIColor(red: 0.4, green: 0.15, blue: 0.5, alpha: 1)
+    }
+    
+    // MARK: - Actions
+    
+    @IBAction func openChatsButtonTapped(_ sender: Any) {
+        let chatStoryboard = UIStoryboard(name: "Chat", bundle: nil)
+        let vc: UINavigationController = chatStoryboard.instantiateViewController(withIdentifier: "ChatNavVC") as! UINavigationController
+        UIApplication.shared.keyWindow?.rootViewController = vc
+    }
+    
+    @IBAction func logoutButtonTapped(_ sender: Any) {
+        if reviewingChatProfileText != nil && reviewingChatProfileText != "" {
+            let chatStoryboard = UIStoryboard(name: "Chat", bundle: nil)
+            let vc: UINavigationController = chatStoryboard.instantiateViewController(withIdentifier: "ChatNavVC") as! UINavigationController
+            UIApplication.shared.keyWindow?.rootViewController = vc
+        } else {
+            appDelegate().currentUser = nil
+            let navc: UINavigationController = self.storyboard?.instantiateViewController(withIdentifier: "navController") as! UINavigationController
+            do {
+                try FirebaseAuth.Auth.auth().signOut()
+            } catch {
+                print("Failed to log out")
+            }
+            UIApplication.shared.keyWindow?.rootViewController = navc
+        }
     }
 
     @IBAction func toBookstoresButtonTapped(_ sender: Any) {
-        let vc: ViewController = storyboard?.instantiateViewController(withIdentifier: "ViewController")  as! ViewController
-        navigationController?.pushViewController(vc, animated: true)
+        let navVc = storyboard?.instantiateViewController(withIdentifier: "navController") as! UINavigationController
+        let vc: ViewController = navVc.topViewController as! ViewController
+        UIApplication.shared.keyWindow?.rootViewController = vc
     }
     
-    
-
     // MARK: UITableViewDataSource & UITableViewDelegate functions
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         arr?.count ?? 0
@@ -264,17 +310,37 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let arr = arr else { return }
-        let vc: ApplicationViewController = self.storyboard?.instantiateViewController(withIdentifier: "ApplicationViewController") as! ApplicationViewController
+        let vc: ApplicationViewController = storyboard?.instantiateViewController(withIdentifier: "ApplicationViewController") as! ApplicationViewController
         vc.application = arr[indexPath.row]
         present(vc, animated: true)
     }
     
-    // MARK: UIImagePickerControllerDelegate & UINavigationControllerDelegate function
+    // MARK: - UIImagePickerControllerDelegate & UINavigationControllerDelegate function
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[.editedImage] as? UIImage else { return }
-
+        guard let data = setProfileImage(imageToResize: image, onImageView: usersImageView).pngData() else { return }
+        
         dismiss(animated: true)
+        
+        usersImageView.image = setProfileImage(imageToResize: image, onImageView: usersImageView)
+        guard let username = username else { return }
+        storage.child("images.\(username)_Avatar.png").putData(data, completion: {[weak self]  _, err in
+            guard err == nil else {
+                print("Failed to upload")
+                return
+            }
+            self?.storage.child("images.\(username)_Avatar.png").downloadURL(completion: {[weak self]  url, err in
+                guard let url = url, err == nil else { return }
+                let urlString = url.absoluteString
 
-        self.usersImageView.image = setProfileImage(imageToResize: image, onImageView: usersImageView)
+                guard let email = self?.email else {
+                    print("Empty email")
+                    return
+                }
+
+                self?.db.collection("Users").document(email).setData(["AvatarImageURL" : urlString], merge: true)
+            })
+        })
+        
     }
 }

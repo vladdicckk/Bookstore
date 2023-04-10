@@ -20,13 +20,12 @@ class EditUserMainInfoViewController: UIViewController {
     @IBOutlet weak var editUsernameTextField: UITextField!
     
     // MARK: Parameters
-    let db = Firestore.firestore()
+    let firestoreManager = FirestoreManager()
     var userEmail: String?
     var oldPhoneNumber: String?
     var oldAddress: String?
     var oldUsername: String?
     var delegate: MainInfoSendingDelegateProtocol? = nil
-    let firestoreManager = FirestoreManager()
     
     // MARK: Lifecycle functions
     override func viewDidLoad() {
@@ -62,40 +61,6 @@ class EditUserMainInfoViewController: UIViewController {
         ])
     }
     
-    private func getNamesData(completion: @escaping ([String]) -> ()) {
-        db.collection("Users").getDocuments() { (querySnapshot, err) in
-            guard let querySnapshot = querySnapshot else { return }
-            var arr: [String] = []
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                for document in querySnapshot.documents {
-                    arr.append("\(document.get("username") ?? "")")
-                }
-                completion(arr)
-            }
-        }
-    }
-    
-    private func checkForUsernameExisting(username: String, email: String, _ completion: @escaping (_ usernameExists: Bool) -> Void) {
-        let users = db.collection("Users")
-        
-        users.document(email).getDocument { query, err in
-            if query!.exists {
-                self.getNamesData(completion: { arr in
-                    for name in arr {
-                        if name == username {
-                            completion(true)
-                        }
-                    }
-                    completion(false)
-                })
-            } else {
-                completion(false)
-            }
-        }
-    }
-    
     private func showAlert(message: String) {
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         
@@ -103,34 +68,35 @@ class EditUserMainInfoViewController: UIViewController {
     }
     
     override func updateViewConstraints() {
-        self.view.frame.size.height = self.mainView.frame.size.height
-        self.view.frame.origin.y = 150
-        self.view.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 10.0)
+        view.frame.size.height = mainView.frame.size.height
+        view.frame.origin.y = 150
+        view.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 10.0)
         super.updateViewConstraints()
     }
     
     // MARK: Actions
     @IBAction func saveButtonTapped(_ sender: Any) {
         guard let userEmail = userEmail else { return }
-        if self.delegate != nil {
+        if delegate != nil {
             let phoneNumber: String  = editPhoneNumberTextField.text ?? ""
             let location: String  = editAddressTextField.text ?? ""
             let username: String  = editUsernameTextField.text ?? ""
-            checkForUsernameExisting(username: username, email: userEmail, { exists in
-                if username != self.oldUsername {
+            firestoreManager.checkForUsernameExisting(username: username, {[weak self] exists in
+                if username != self?.oldUsername {
                     if !exists {
-                        self.firestoreManager.editUserData(phoneNumber: phoneNumber, address: location, email: userEmail, username: username)
+                        self?.firestoreManager.editUserData(phoneNumber: phoneNumber, address: location, email: userEmail, username: username)
                         
-                        self.delegate?.sendMainInfoDataToFirstViewController(phoneNumber: phoneNumber, location: location, username: username)
-                        self.dismiss(animated: true, completion: nil)
+                        self?.delegate?.sendMainInfoDataToFirstViewController(phoneNumber: phoneNumber, location: location, username: username)
+                        self?.dismiss(animated: true, completion: nil)
                     } else {
-                        self.showAlert(message: "Username already exists")
+                        self?.showAlert(message: "Username already exists")
+                        self?.dismiss(animated: true)
                     }
                 } else {
-                    self.firestoreManager.editUserData(phoneNumber: phoneNumber, address: location, email: userEmail, username: username)
+                    self?.firestoreManager.editUserData(phoneNumber: phoneNumber, address: location, email: userEmail, username: username)
                     
-                    self.delegate?.sendMainInfoDataToFirstViewController(phoneNumber: phoneNumber, location: location, username: username)
-                    self.dismiss(animated: true, completion: nil)
+                    self?.delegate?.sendMainInfoDataToFirstViewController(phoneNumber: phoneNumber, location: location, username: username)
+                    self?.dismiss(animated: true, completion: nil)
                 }
             })
         }

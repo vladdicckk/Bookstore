@@ -91,9 +91,9 @@ class SortByLocationViewController: UIViewController, UITableViewDataSource, UIT
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let locationsArr = locationsArr else { return }
         
-        let librariesVC: LibrariesViewController = self.storyboard?.instantiateViewController(withIdentifier: "LibrariesViewController") as! LibrariesViewController
-        self.delegate?.sortNamesBy(type: "Filter by location", location: locationsArr[indexPath.row], preference: "")
-        self.dismissTo(vc: librariesVC, count: 2, animated: true)
+        let librariesVC: LibrariesViewController = storyboard?.instantiateViewController(withIdentifier: "LibrariesViewController") as! LibrariesViewController
+        delegate?.sortNamesBy(type: "Filter by location", location: locationsArr[indexPath.row], preference: "")
+        dismissTo(vc: librariesVC, count: 2, animated: true)
     }
 }
 

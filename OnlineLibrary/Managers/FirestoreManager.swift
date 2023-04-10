@@ -7,9 +7,50 @@
 
 import UIKit
 import FirebaseFirestore
+import FirebaseStorage
 
 class FirestoreManager {
     let db = Firestore.firestore()
+    let storage = Storage.storage().reference()
+    
+    func getBookstoreAvatarURL(email: String, completion: @escaping (_ avatar: URL) -> Void) {
+        db.collection("Owners").document(email).getDocument(completion: { res, err in
+            let avatarURL = "\(res?.get("AvatarImageURL") ?? "")"
+            let url = URL(string: avatarURL)
+            guard let url = url else { return }
+            completion(url)
+        })
+    }
+    
+    func getUserAvatarURL(email: String, completion: @escaping (_ avatar: URL) -> Void) {
+        db.collection("Users").document(email).getDocument(completion: { res, err in
+            let avatarURL = "\(res?.get("AvatarImageURL") ?? "")"
+            let url = URL(string: avatarURL)
+            guard let url = url else { return }
+            completion(url)
+        })
+    }
+    
+    func downloadUserAvatar(email: String, completion: @escaping (_ avatar: UIImage) -> Void) {
+        if email != "" {
+            db.collection("Users").document(email).getDocument(completion: { res, err in
+                let avatarURL = "\(res?.get("AvatarImageURL") ?? "")"
+                let url = URL(string: avatarURL)
+                guard let url = url else { return }
+                URLSession.shared.dataTask(with: url, completionHandler: { data, _ , err in
+                    guard let data = data, err == nil else { return }
+                    
+                    let image = UIImage(data: data)
+                    if let image = image {
+                        print("\(image)")
+                        completion(image)
+                    } else {
+                        print("error downloading image")
+                    }
+                }).resume()
+            })
+        }
+    }
     
     func checkForBookstoreExisting(email: String, _ completion: @escaping (_ exists: Bool) -> Void) {
         let bookstores = db.collection("Owners")
@@ -53,114 +94,169 @@ class FirestoreManager {
     }
     
     func checkForUserExisting(email: String, _ completion: @escaping (_ exists: Bool) -> Void) {
-       let users = db.collection("Users")
-       users.document(email).getDocument { query, err in
-           if query!.exists {
-               completion(true)
-           } else {
-               completion(false)
-           }
-       }
-   }
+        let users = db.collection("Users")
+        guard email != "" else { return }
+        users.document(email).getDocument { query, err in
+            guard let data = query?.data(), let emailFromDB = data["email"] as? String, emailFromDB == email else {
+                print("User doesn`t exist: \(err?.localizedDescription ?? "")")
+                completion(false)
+                return }
+            completion(true)
+        }
+    }
+    
+    func checkForUsernameExisting(username: String, _ completion: @escaping (_ exists: Bool) -> Void) {
+        let users = db.collection("Users")
+        users.getDocuments { query, err in
+            guard let data = query?.documents else {
+                print("User doesn`t exist: \(err?.localizedDescription ?? "")")
+                completion(false)
+                return }
+            var tempBoolean = false
+            for user in data {
+                if let usernameFromDB = user["username"] as? String {
+                    if usernameFromDB == username {
+                        tempBoolean = true
+                    }
+                }
+            }
+            
+            if tempBoolean {
+                completion(true)
+            } else {
+                completion(false)
+            }
+        }
+    }
     
     func addUser(user: User) {
-       let users = db.collection("Users")
-       do {
-           try users.document(user.email).setData(from: user)
-       } catch let error {
-           print ("Error: \(error)")
-       }
-   }
+        let users = db.collection("Users")
+        do {
+            try users.document(user.email).setData(from: user)
+        } catch let error {
+            print ("Error: \(error)")
+        }
+    }
     
-    func checkForUsernameExisting(username: String, email: String, _ completion: @escaping (_ usernameExists: Bool) -> Void) {
-       let users = db.collection("Users")
-       
-       users.document(email).getDocument { query, err in
-           if query!.exists {
-               self.getUsernamesData(completion: { arr in
-                   for name in arr {
-                       if name == username {
-                           completion(true)
-                       }
-                   }
-                   completion(false)
-               })
-           } else {
-               completion(false)
-           }
-       }
-   }
+    func getUserInfo(email: String, completion: @escaping (_ user: User) -> Void) {
+        let users = db.collection("Users")
+        if email != "" {
+            users.document(email).getDocument(completion: { res, err in
+                guard let data = res?.data() else {
+                    print("User doesn`t exist: \(err?.localizedDescription ?? "")")
+                    completion(User(firstName: "", lastName: "", age: 0, password: "", email: "", username: "", phoneNumber: "", location: ""))
+                    return }
+                
+                let user = User(firstName: data["firstName"] as? String ?? "", lastName: data["lastName"] as? String ?? "", age: data["age"] as? Int ?? 0, password: "*", email: data["email"] as? String ?? "", username: data["username"] as? String ?? "", phoneNumber: data["phoneNumber"] as? String ?? "", location: data["location"] as? String ?? "")
+                completion(user)
+            })
+        } else {
+            print("Email is empty, failed getting user info")
+        }
+//        else {
+//            users.whereField("username", isEqualTo: username).getDocuments(completion: { res, err in
+//                guard let res = res?.documents else {
+//                    print("User doesn`t exist")
+//                    return }
+//                for data in res {
+//                    guard let usernameFromDB = data["username"] as? String, usernameFromDB == username else {
+//                        print("error getting user from db")
+//                        return }
+//
+//                    let user = User(firstName: data["firstName"] as? String ?? "", lastName: data["lastName"] as? String ?? "", age: data["age"] as? Int ?? 0, password: "*", email: data["email"] as? String ?? "", username: data["username"] as? String ?? "", phoneNumber: data["phoneNumber"] as? String ?? "", location: data["location"] as? String ?? "")
+//                    completion(user)
+//                }
+//            })
+//        }
+    }
+    
+    func getBookstoreDataWithEmail(email: String, completion: @escaping (_ bookstore: Bookstore) -> Void) {
+        let bookstores = db.collection("Owners")
+        guard email != "" else {
+            print("Email is empty, failed getting user info")
+            return }
+        
+        bookstores.document(email).getDocument(completion: { res, err in
+            guard let bookstore = res?.data() else {
+                print("Bookstore doesn`t exist: \(err?.localizedDescription ?? "")")
+                return }
+            let books: [BookInfo] = bookstore["books"] as? [BookInfo] ?? [BookInfo(title: "", author: "", publishYear: 0, genre: "", pagesCount: 0, language: "", price: 0, additionalInfo: "", addingDate: "")]
+            
+            let bookStore = Bookstore(name: bookstore["name"] as? String ?? "", ownersName: bookstore["Owners name"] as? String ?? "Set owners name", password: "*", preference: bookstore["preference"] as? String ?? "", phoneNumber: bookstore["phoneNumber"] as? String ?? "" , email: bookstore["email"] as? String ?? "", location: bookstore["location"] as? String ?? "", additionalInfo: bookstore["additionalInfo"] as? String ?? "", books: books)
+            completion(bookStore)
+        })
+    }
     
     func checkBookTitleForExisting(title: String, email: String, completion: @escaping(_ exists: Bool) -> Void) {
-       db.collection("Owners").document(email).getDocument(completion: { res, err in
-           guard let data = res?.data() else { return }
-           var boolValue = false
-           let booksArr = data["books"] as? [String: Any]
-           if let dict = booksArr?[title] {
-               let bookInfoArr = dict as! NSDictionary
-               for item in bookInfoArr {
-                   if "\(item.value)" == title {
-                       boolValue = true
-                       print("found title")
-                       completion(true)
-                   }
-               }
-               if boolValue == false {
-                   completion(false)
-               }
-           } else {
-               completion(false)
-           }
-       })
-   }
+        db.collection("Owners").document(email).getDocument(completion: { res, err in
+            guard let data = res?.data() else { return }
+            var boolValue = false
+            let booksArr = data["books"] as? [String: Any]
+            if let dict = booksArr?[title] {
+                let bookInfoArr = dict as! NSDictionary
+                for item in bookInfoArr {
+                    if "\(item.value)" == title {
+                        boolValue = true
+                        print("found title")
+                        completion(true)
+                    }
+                }
+                if boolValue == false {
+                    completion(false)
+                }
+            } else {
+                completion(false)
+            }
+        })
+    }
     
     func checkBookAuthorForExisting(title: String, email: String, author: String, completion: @escaping(_ exists: Bool) -> Void) {
-       db.collection("Owners").document(email).getDocument(completion: { res, err in
-           guard let data = res?.data() else { return }
-           var boolValue = false
-           let booksArr = data["books"] as? [String: Any]
-           if let dict = booksArr?[title] {
-               let bookInfoArr = dict as! NSDictionary
-               for item in bookInfoArr {
-                   if "\(item.value)" == author {
-                       boolValue = true
-                       print("found author")
-                       completion(true)
-                   }
-               }
-               if boolValue == false {
-                   completion(false)
-               }
-           } else {
-               completion(false)
-           }
-       })
-   }
+        db.collection("Owners").document(email).getDocument(completion: { res, err in
+            guard let data = res?.data() else { return }
+            var boolValue = false
+            let booksArr = data["books"] as? [String: Any]
+            if let dict = booksArr?[title] {
+                let bookInfoArr = dict as! NSDictionary
+                for item in bookInfoArr {
+                    if "\(item.value)" == author {
+                        boolValue = true
+                        print("found author")
+                        completion(true)
+                    }
+                }
+                if boolValue == false {
+                    completion(false)
+                }
+            } else {
+                completion(false)
+            }
+        })
+    }
     
     func addBook(email: String, title: String, author: String, publishYear: Int, genre: String, pagesCount: Int, language: String, price: Double, additionalInfo: String) {
-       let formatter = DateFormatter()
-       // initially set the format based on your datepicker date / server String
-       formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-
-       let myString = formatter.string(from: Date()) // string purpose I add here
-       // convert your string to date
-       let yourDate = formatter.date(from: myString)
-       //then again set the date format whhich type of output you need
-       formatter.dateFormat = "dd-MMM-yyyy"
-       // again convert your date to string
-       let myStringDate = formatter.string(from: yourDate!)
-       
-       let doc = db.collection("Owners").document(email)
-       doc.updateData([
-           "books.\(title)": ["title" : title, "author" :  author, "publishYear" :  "\(publishYear)", "genre" :  genre, "pagesCount" :  "\(pagesCount)", "language" :  language, "price" :  "\(price)", "additionalInfo" :  additionalInfo, "addingDate" : myStringDate]
-       ]) { err in
-           if let err = err {
-               print("Error updating document: \(err)")
-           } else {
-               print("Document successfully added")
-           }
-       }
-   }
+        let formatter = DateFormatter()
+        // initially set the format based on your datepicker date / server String
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        let myString = formatter.string(from: Date()) // string purpose I add here
+        // convert your string to date
+        let yourDate = formatter.date(from: myString)
+        //then again set the date format whhich type of output you need
+        formatter.dateFormat = "dd-MMM-yyyy"
+        // again convert your date to string
+        let myStringDate = formatter.string(from: yourDate!)
+        
+        let doc = db.collection("Owners").document(email)
+        doc.updateData([
+            "books.\(title)": ["title" : title, "author" :  author, "publishYear" :  "\(publishYear)", "genre" :  genre, "pagesCount" :  "\(pagesCount)", "language" :  language, "price" :  "\(price)", "additionalInfo" :  additionalInfo, "addingDate" : myStringDate]
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully added")
+            }
+        }
+    }
     
     func deleteDeselectedBooksFromRecommended(email: String, recommendedBooksArr: [BookInfo]) {
         db.collection("Owners").document(email).getDocument(completion: { res, err in
@@ -227,7 +323,7 @@ class FirestoreManager {
                 }
             }
         })
-   }
+    }
     
     func setRecommendedBooks(recommendedBooksArr: [BookInfo], email: String) {
         if recommendedBooksArr != [] {
@@ -247,81 +343,81 @@ class FirestoreManager {
     }
     
     func deleteBookFromDB(email: String, bookInfo: BookInfo) {
-           let doc = db.collection("Owners").document(email)
-           let title = bookInfo.title
-           doc.updateData(["books.\(title)" : FieldValue.delete()])
-           
-           db.collection("Owners").document(email).getDocument(completion: { res, err in
-               var title = ""
-               var author = ""
-               var publishYear = ""
-               var genre = ""
-               var pagesCount = ""
-               var language = ""
-               var price = ""
-               var additionalInfo = ""
-               var addingDate = ""
-               
-               let booksFromDBTemp = res?.get("recommendedBooks")
-               let checkCount_1 = booksFromDBTemp as? NSDictionary
-               
-               guard checkCount_1 != nil else {
-                   print("err")
-                   return
-               }
-               var booksFromDBArr: [BookInfo] = []
-               let booksFromDB = booksFromDBTemp as! NSDictionary
-               
-               
-               for info in booksFromDB {
-                   let infoValues = info.value as! NSDictionary
-                   for someInfoValue in infoValues {
-                       if "\(someInfoValue.key)" == "title" {
-                           title = "\(someInfoValue.value)"
-                       } else if "\(someInfoValue.key)" == "author" {
-                           author = "\(someInfoValue.value)"
-                       } else if "\(someInfoValue.key)" == "publishYear" {
-                           publishYear = "\(someInfoValue.value)"
-                       } else if "\(someInfoValue.key)" == "genre" {
-                           genre = "\(someInfoValue.value)"
-                       } else if "\(someInfoValue.key)" == "pagesCount" {
-                           pagesCount = "\(someInfoValue.value)"
-                       } else if "\(someInfoValue.key)" == "language" {
-                           language = "\(someInfoValue.value)"
-                       } else if "\(someInfoValue.key)" == "price" {
-                           price = "\(someInfoValue.value)"
-                       } else if "\(someInfoValue.key)" == "additionalInfo" {
-                           additionalInfo = "\(someInfoValue.value)"
-                       } else if "\(someInfoValue.key)" == "addingDate" {
-                           addingDate = "\(someInfoValue.value)"
-                       }
-                   }
-                   let bookFromDB: BookInfo = BookInfo(title: title, author: author, publishYear: Int(publishYear) ?? 0, genre: genre, pagesCount: Int(pagesCount) ?? 0, language: language, price: Double(price) ?? 0.0, additionalInfo: additionalInfo, addingDate: addingDate)
-                   booksFromDBArr.append(bookFromDB)
-               }
-               
-               if booksFromDBArr.contains(bookInfo) {
-                   let doc = self.db.collection("Owners").document(email)
-                   let titleForDeleting = bookInfo.title
-                   doc.updateData(["recommendedBooks.\(titleForDeleting)" : FieldValue.delete()]) { err in
-                       if let err = err {
-                           print("Error updating document: \(err)")
-                       } else {
-                           print("Document successfully deleted")
-                       }
-                   }
-               }
-           })
-   }
+        let doc = db.collection("Owners").document(email)
+        let title = bookInfo.title
+        doc.updateData(["books.\(title)" : FieldValue.delete()])
+        
+        db.collection("Owners").document(email).getDocument(completion: { res, err in
+            var title = ""
+            var author = ""
+            var publishYear = ""
+            var genre = ""
+            var pagesCount = ""
+            var language = ""
+            var price = ""
+            var additionalInfo = ""
+            var addingDate = ""
+            
+            let booksFromDBTemp = res?.get("recommendedBooks")
+            let checkCount_1 = booksFromDBTemp as? NSDictionary
+            
+            guard checkCount_1 != nil else {
+                print("err")
+                return
+            }
+            var booksFromDBArr: [BookInfo] = []
+            let booksFromDB = booksFromDBTemp as! NSDictionary
+            
+            
+            for info in booksFromDB {
+                let infoValues = info.value as! NSDictionary
+                for someInfoValue in infoValues {
+                    if "\(someInfoValue.key)" == "title" {
+                        title = "\(someInfoValue.value)"
+                    } else if "\(someInfoValue.key)" == "author" {
+                        author = "\(someInfoValue.value)"
+                    } else if "\(someInfoValue.key)" == "publishYear" {
+                        publishYear = "\(someInfoValue.value)"
+                    } else if "\(someInfoValue.key)" == "genre" {
+                        genre = "\(someInfoValue.value)"
+                    } else if "\(someInfoValue.key)" == "pagesCount" {
+                        pagesCount = "\(someInfoValue.value)"
+                    } else if "\(someInfoValue.key)" == "language" {
+                        language = "\(someInfoValue.value)"
+                    } else if "\(someInfoValue.key)" == "price" {
+                        price = "\(someInfoValue.value)"
+                    } else if "\(someInfoValue.key)" == "additionalInfo" {
+                        additionalInfo = "\(someInfoValue.value)"
+                    } else if "\(someInfoValue.key)" == "addingDate" {
+                        addingDate = "\(someInfoValue.value)"
+                    }
+                }
+                let bookFromDB: BookInfo = BookInfo(title: title, author: author, publishYear: Int(publishYear) ?? 0, genre: genre, pagesCount: Int(pagesCount) ?? 0, language: language, price: Double(price) ?? 0.0, additionalInfo: additionalInfo, addingDate: addingDate)
+                booksFromDBArr.append(bookFromDB)
+            }
+            
+            if booksFromDBArr.contains(bookInfo) {
+                let doc = self.db.collection("Owners").document(email)
+                let titleForDeleting = bookInfo.title
+                doc.updateData(["recommendedBooks.\(titleForDeleting)" : FieldValue.delete()]) { err in
+                    if let err = err {
+                        print("Error updating document: \(err)")
+                    } else {
+                        print("Document successfully deleted")
+                    }
+                }
+            }
+        })
+    }
     
     func editLibraryOwnersNameFirestore(name: String, email: String) {
-       db.collection("Owners").document(email).setData(["Owners name": name], merge: true)
-   }
+        db.collection("Owners").document(email).setData(["Owners name": name], merge: true)
+    }
     
     func editBookstoreAndOwnersDataFirestore(location: String, email: String, phoneNumber: String, exchangePreference: String) {
-       db.collection("Owners").document(email).setData(["location" : location,
-       "phoneNumber": phoneNumber, "preference": exchangePreference], merge: true)
-   }
+        db.collection("Owners").document(email).setData(["location" : location,
+                                                         "phoneNumber": phoneNumber, "preference": exchangePreference], merge: true)
+    }
     
     func getBooks(email: String, completion: @escaping (_ books: [BookInfo]) -> Void) {
         db.collection("Owners").document(email).getDocument(completion: { res, err in
@@ -426,19 +522,20 @@ class FirestoreManager {
     func checkForBookstoreNameExisting(bookstoreName: String, _ completion: @escaping (_ nameExists: Bool) -> Void) {
         let bookstores = db.collection("Owners")
         bookstores.getDocuments { query, err in
-            for document in query!.documents {
-                if document.exists {
-                    self.getNamesData(completion: { arr in
-                        for name in arr {
-                            if name == "\(bookstoreName)" {
-                                completion(true)
-                            }
+            var boolean = false
+            guard let docs = query?.documents else { return }
+            for _ in docs {
+                self.getNamesData(completion: { arr in
+                    for name in arr {
+                        if name == "\(bookstoreName)" {
+                            completion(true)
+                            boolean = true
                         }
+                    }
+                    if !boolean {
                         completion(false)
-                    })
-                } else {
-                    completion(false)
-                }
+                    }
+                })
             }
         }
     }
@@ -537,7 +634,8 @@ class FirestoreManager {
     
     func checkForValidPasswordForUsernameLogin(username: String, password: String,  _ completion: @escaping (_ valid: Bool, _ userData: User) -> Void) {
         db.collection("Users").whereField("username", isEqualTo: username).getDocuments(completion: { res, err in
-            for user in res!.documents {
+            guard let docs = res?.documents else { return }
+            for user in docs {
                 if res == nil {
                     completion(false, User(firstName: "", lastName: "", age: 0, password: "", email: "", username: "", phoneNumber: "", location: "") )
                 }
@@ -552,32 +650,6 @@ class FirestoreManager {
                 }
             }
         })
-    }
-    
-    func checkForUsernameExisting(username: String, _ existingCompletion: @escaping (_ usernameExists: Bool) -> Void) {
-        let users = db.collection("Users")
-        users.getDocuments { query, err in
-            guard let docs = query?.documents else {
-                existingCompletion(false)
-                return
-            }
-            var exists = false
-            for document in docs {
-                if document.exists {
-                    self.getUsernamesData(completion: { arr in
-                        for name in arr {
-                            if name == username {
-                                existingCompletion(true)
-                                exists = true
-                            }
-                        }
-                        if exists == false {
-                            existingCompletion(false)
-                        }
-                    })
-                }
-            }
-        }
     }
     
     func getUsernamesData(completion: @escaping ([String]) -> ()) {
@@ -836,10 +908,10 @@ class FirestoreManager {
                                     }
                                     else if "\(application.key)" == "UserEmail" {
                                         userEmail = "\(application.value)"
-                                   }
+                                    }
                                     else if "\(application.key)" == "BookstoreEmail" {
                                         bookstoreEmail = "\(application.value)"
-                                   }
+                                    }
                                 }
                             }
                         }

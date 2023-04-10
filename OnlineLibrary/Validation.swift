@@ -15,8 +15,6 @@ class Validation {
     var isUserNameUnique = false
     var isUserEmailUnique = false
     
-    
-    
     func isPhoneNumber(phone: String?) -> Bool {
         guard let phone = phone else { return false }
         /* The numbers 10, 12, 13 are the number of characters when entering a phone number.
@@ -28,10 +26,8 @@ class Validation {
     }
     
     func isEmail(enteredEmail: String) -> Bool {
-        
         let emailFormat = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPredicate = NSPredicate(format:"SELF MATCHES %@", emailFormat)
         return emailPredicate.evaluate(with: enteredEmail)
-        
     }
 }

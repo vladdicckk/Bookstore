@@ -15,8 +15,12 @@ class SendApplicationToBookstoreViewController: UIViewController, UIPickerViewDe
     @IBOutlet weak var additionalinfoTextView: UITextView!
     @IBOutlet weak var usersInfoTextView: UITextView!
     @IBOutlet weak var preferenceTextField: UITextField!
+    @IBOutlet weak var sendButton: UIButton!
+    
+    @IBOutlet weak var cancelButton: UIButton!
     
     // MARK: Parameters
+    var storyboardPrevious: UIStoryboard?
     let db = Firestore.firestore()
     var book: BookInfo?
     var preferences: [String] = ["Trading","Exchanging","Both"]
@@ -73,12 +77,54 @@ class SendApplicationToBookstoreViewController: UIViewController, UIPickerViewDe
         present(alert, animated: true, completion: nil)
     }
     
+    // Send application and open chat
     @IBAction func sendApplicationButtonTapped(_ sender: UIButton) {
         guard let bookstore = appDelegate().currentReviewingOwnersProfile else { print("bookstore data empty")
             return }
-        guard let book = self.book else { print("book data empty")
+        guard let book = book else { print("book data empty")
             return }
-        guard let user = self.appDelegate().currentUser else { print("book data empty")
+        guard let user = appDelegate().currentUser else { print("book data empty")
+            return }
+        
+        guard let email = appDelegate().currentEmail else { print("email empty")
+            return }
+        
+        let formatter = DateFormatter()
+        // initially set the format based on your datepicker date / server String
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        let myString = formatter.string(from: Date()) // string purpose I add here
+        // convert your string to date
+        let yourDate = formatter.date(from: myString)
+        // again convert your date to string
+        let myStringDate = formatter.string(from: yourDate!)
+        
+        let application = Application(userInfo: usersInfoTextView.text, user: user, bookstore: bookstore, book: book, date: myStringDate, status: false, type: preferenceTextField.text ?? "", additionalInfo: self.additionalinfoTextView.text ?? "")
+        
+        let storyBoard = UIStoryboard(name: "Chat", bundle: nil)
+        let instaniatedNavVC = storyBoard.instantiateViewController(withIdentifier: "ChatNavVC") as? UINavigationController
+        
+        let safeEmail = FirebaseManager.safeEmail(email: email)
+        FirebaseManager.shared.getAllConversations(for: safeEmail, completion: { res in
+            switch res {
+            case .success(let convs):
+                let navVc = instaniatedNavVC
+                let vc = navVc?.topViewController as! ChatsViewController
+                vc.application = application
+                vc.conversations = convs
+                UIApplication.shared.keyWindow?.rootViewController = navVc
+            case .failure(let error):
+                print(error)
+            }
+        })
+    }
+    
+    @IBAction func sendApplicationAndDismiss(_ sender: Any) {
+        guard let bookstore = appDelegate().currentReviewingOwnersProfile else { print("bookstore data empty")
+            return }
+        guard let book = book else { print("book data empty")
+            return }
+        guard let user = appDelegate().currentUser else { print("book data empty")
             return }
         
         let formatter = DateFormatter()
@@ -91,16 +137,19 @@ class SendApplicationToBookstoreViewController: UIViewController, UIPickerViewDe
         // again convert your date to string
         let myStringDate = formatter.string(from: yourDate!)
         
-        let application = Application(userInfo: usersInfoTextView.text, user: user, bookstore: bookstore, book: book, date: myStringDate, status: false, type: self.preferenceTextField.text ?? "", additionalInfo: self.additionalinfoTextView.text ?? "")
+        let application = Application(userInfo: usersInfoTextView.text, user: user, bookstore: bookstore, book: book, date: myStringDate, status: false, type: preferenceTextField.text ?? "", additionalInfo: self.additionalinfoTextView.text ?? "")
         
-        firestoreManager.sendApplication(email: bookstore.email ,application: application, completion: { success in
+        firestoreManager.sendApplication(email: bookstore.email ,application: application, completion: {[weak self]  success in
             if success {
-                self.dismiss(animated: true)
+                self?.dismiss(animated: true)
             } else {
-                self.showAlert(message: "Error")
+                self?.showAlert(message: "Error")
             }
         })
-        
+    }
+    
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        dismiss(animated: true)
     }
     
     @IBAction func didTapPickPreferences(_ sender: UIButton) {
