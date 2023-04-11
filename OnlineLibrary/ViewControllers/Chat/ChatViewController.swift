@@ -91,10 +91,25 @@ class ChatViewController: MessagesViewController, MessageCellDelegate, MessagesD
         let safeEmail = FirebaseManager.safeEmail(email: email)
         return Sender(photoURL: "", senderId: safeEmail, displayName: "Me")
     }
-    
+//    override func loadView() {
+//            view = UIView()
+//            view.backgroundColor = UIColor(white: 0, alpha: 0.7)
+//
+//            spinner.translatesAutoresizingMaskIntoConstraints = false
+//            spinner.startAnimating()
+//            view.addSubview(spinner)
+//
+//            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+//        }
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
+
+        activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         loadFirstMessages()
         setupInputButton()
         setupBackroundImage()
@@ -110,6 +125,7 @@ class ChatViewController: MessagesViewController, MessageCellDelegate, MessagesD
             messageInputBar.inputTextView.text = "\(application.userInfo) \n\n Title: \(application.book.title) Author: \(application.book.author) Price: \(application.book.price) Publish year: \(application.book.publishYear) With preference: \(application.type) Additional info: \(application.additionalInfo) Created: \(application.date)"
             self.application = nil
         }
+        
         activityIndicator.stopAnimating()
     }
     

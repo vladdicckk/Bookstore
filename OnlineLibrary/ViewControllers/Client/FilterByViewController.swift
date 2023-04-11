@@ -92,7 +92,7 @@ class FilterByViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     override func updateViewConstraints() {
-        view.frame.size.height = UIScreen.main.bounds.height - 750
+        view.frame.size.height = tableView.height
         view.frame.origin.y = 150
         view.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 10.0)
         super.updateViewConstraints()
