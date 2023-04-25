@@ -12,15 +12,17 @@ class ChatProfileViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var profileImageView: UIImageView!
     
-    var chatProfileImageURL: URL?
+    var chatProfileImage: UIImage?
     var bookstore: Bookstore?
     var user: User?
+    var delegate: UnhideInputBar?
     let firestoreManager = FirestoreManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "ChatProfileCell")
         view.backgroundColor = .clear
+        view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(makeInputBarUnhidden)))
         tableView.backgroundColor = .clear
         imageViewSettings() 
         configureViewBlur()
@@ -28,23 +30,22 @@ class ChatProfileViewController: UIViewController {
     }
     
     private func imageViewSettings() {
-        profileImageView.layer.cornerRadius = profileImageView.height/2
+        profileImageView.layer.cornerRadius = 83
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.masksToBounds = true
         profileImageView.layer.borderColor = UIColor.lightGray.cgColor
         profileImageView.layer.borderWidth = 2
     }
     
+    @objc func makeInputBarUnhidden() {
+        guard let delegate = delegate else { return }
+        delegate.unhideInputBar()
+        dismiss(animated: true)
+    }
+    
     private func setProfilePic() {
-        guard let chatProfileImageURL = chatProfileImageURL else { return }
-        URLSession.shared.dataTask(with: chatProfileImageURL) { (data, response, error) in
-            // Error handling...
-            guard let imageData = data else { return }
-            
-            DispatchQueue.main.async {
-                self.profileImageView.image = UIImage(data: imageData)
-            }
-        }.resume()
+        guard let chatProfileImage = chatProfileImage else { return }
+        profileImageView.image = chatProfileImage
     }
     
     private func configureViewBlur() {
@@ -74,12 +75,12 @@ class ChatProfileViewController: UIViewController {
 
 extension ChatProfileViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if bookstore?.name != nil && bookstore?.name != "" {
+        if bookstore?.name != nil && bookstore?.name != "" && (bookstore?.ownersName == nil || bookstore?.ownersName == "") {
             return 2
         }
         
-        if bookstore?.ownersName != nil && bookstore?.ownersName != "" {
-            return 2
+        if bookstore?.ownersName != nil {
+            return 3
         }
         
         if user?.username != nil && user?.firstName != nil && user?.lastName != nil && user?.age != nil && user?.username != "" && user?.lastName != nil && user?.age != 1 && user?.firstName != "" && user?.lastName != "" {
@@ -109,7 +110,7 @@ extension ChatProfileViewController: UITableViewDataSource, UITableViewDelegate 
         cell.backgroundView = backgroundBlur
         cell.selectedBackgroundView = cell.backgroundView
         
-        if bookstore?.name != nil && bookstore?.name != "" {
+        if bookstore?.name != nil && bookstore?.name != "" && (bookstore?.ownersName == nil || bookstore?.ownersName == "") {
             if indexPath.row == 0 {
                 content.text = "Bookstore name: \(bookstore?.name ?? "")"
             } else if indexPath.row == 1 {
@@ -147,68 +148,72 @@ extension ChatProfileViewController: UITableViewDataSource, UITableViewDelegate 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let visibleRows = tableView.indexPathsForVisibleRows, let lastRow = visibleRows.last, lastRow == indexPath {
             if tableView.numberOfRows(inSection: 0) > 3 {
-                print("Open user profile")
-                guard let email = user?.email else { return }
-                firestoreManager.getUsersApplications(email: email, completion: {[weak self] arr in
-                    self?.firestoreManager.downloadUserAvatar(email: email, completion: { image in
-                        DispatchQueue.main.async {[weak self] in
-                            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                            let vc: UserProfileViewController = storyBoard.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
-                            
-                            vc.currentImage = image
-                            vc.email = self?.user?.email
-                            vc.firstName = self?.user?.firstName
-                            vc.lastName = self?.user?.lastName
-                            vc.age = self?.user?.age
-                            vc.username = self?.user?.username
-                            vc.phoneNumber = self?.user?.phoneNumber
-                            vc.address = self?.user?.location
-                            vc.arr = arr
-                            self?.appDelegate().currentReviewingUsersProfile = self?.user
-                            vc.reviewingChatProfileText = "To chats"
-                            UIApplication.shared.keyWindow?.rootViewController = vc
-                            //self?.navigationController?.pushViewController(vc, animated: true)
-                        }
+                if indexPath.row == 4 {
+                    print("Open user profile")
+                    guard let email = user?.email else { return }
+                    firestoreManager.getUsersApplications(email: email, completion: {[weak self] arr in
+                        self?.firestoreManager.downloadUserAvatar(email: email, completion: { image in
+                            DispatchQueue.main.async {[weak self] in
+                                let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                                let vc: UserProfileViewController = storyBoard.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
+                                
+                                vc.currentImage = image
+                                vc.email = self?.user?.email
+                                vc.firstName = self?.user?.firstName
+                                vc.lastName = self?.user?.lastName
+                                vc.age = self?.user?.age
+                                vc.username = self?.user?.username
+                                vc.phoneNumber = self?.user?.phoneNumber
+                                vc.address = self?.user?.location
+                                vc.arr = arr
+                                self?.appDelegate().currentReviewingUsersProfile = self?.user
+                                vc.reviewingChatProfileText = "To chats"
+                                UIApplication.shared.keyWindow?.rootViewController = vc
+                            }
+                        })
                     })
-                })
+                }
             } else if tableView.numberOfRows(inSection: 0) <= 3 {
-                print("Open bookstore profile")
-                let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                let tabBC: UITabBarController = storyBoard.instantiateViewController(withIdentifier: "LibraryTabBarController") as! UITabBarController
-                let nav = tabBC.viewControllers?[0] as! UINavigationController
-                let nav_1 = tabBC.viewControllers?[3] as! UINavigationController
-                let nav_2 = tabBC.viewControllers?[2] as! UINavigationController
                 
-                let bookstoreVC = nav.topViewController as! LibraryViewController
-                let applicationsVC = nav_1.topViewController as! ApplicationsListViewController
-                let favouritesVC = nav_2.topViewController as! FavouritesViewController
-                
-                guard let owner = bookstore else { return }
-                firestoreManager.getRecommendedBooks(email: owner.email, completion: {[weak self] arr in
-                    self?.firestoreManager.configureRandomBooksOfRandomGenre(email: owner.email, completion: { randArr in
-                        self?.firestoreManager.configureRecentlyAddedBooks(email: owner.email, completion: { recentlyAddedArr in
-                            self?.firestoreManager.getApplications(email: owner.email, completion: { appls in
-                                favouritesVC.recommendedBooksArr = arr
-                                favouritesVC.randomBooksArr = randArr
-                                favouritesVC.recentlyAddedBooksArr = recentlyAddedArr
-                                
-                                applicationsVC.applicationsArr = appls
-                                
-                                bookstoreVC.phoneNumber = owner.phoneNumber
-                                bookstoreVC.address = owner.location
-                                bookstoreVC.bookstoreName = owner.name
-                                bookstoreVC.preference = owner.preference
-                                bookstoreVC.email = owner.email
-                                bookstoreVC.bookstoreOwnersName = owner.ownersName
-                                bookstoreVC.additionalInfoText = owner.additionalInfo
-                                bookstoreVC.reviewingChatProfileText = "To chats"
-                                
-                                self?.appDelegate().currentReviewingOwnersProfile = owner
-                                UIApplication.shared.keyWindow?.rootViewController = tabBC
+                if indexPath.row == 1 || indexPath.row == 2 {
+                    print("Open bookstore profile")
+                    let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let tabBC: UITabBarController = storyBoard.instantiateViewController(withIdentifier: "LibraryTabBarController") as! UITabBarController
+                    let nav = tabBC.viewControllers?[0] as! UINavigationController
+                    let nav_1 = tabBC.viewControllers?[3] as! UINavigationController
+                    let nav_2 = tabBC.viewControllers?[2] as! UINavigationController
+                    
+                    let bookstoreVC = nav.topViewController as! LibraryViewController
+                    let applicationsVC = nav_1.topViewController as! ApplicationsListViewController
+                    let favouritesVC = nav_2.topViewController as! FavouritesViewController
+                    
+                    guard let owner = bookstore else { return }
+                    firestoreManager.getRecommendedBooks(email: owner.email, completion: {[weak self] arr in
+                        self?.firestoreManager.configureRandomBooksOfRandomGenre(email: owner.email, completion: { randArr in
+                            self?.firestoreManager.configureRecentlyAddedBooks(email: owner.email, completion: { recentlyAddedArr in
+                                self?.firestoreManager.getApplications(email: owner.email, completion: { appls in
+                                    favouritesVC.recommendedBooksArr = arr
+                                    favouritesVC.randomBooksArr = randArr
+                                    favouritesVC.recentlyAddedBooksArr = recentlyAddedArr
+                                    
+                                    applicationsVC.applicationsArr = appls
+                                    
+                                    bookstoreVC.phoneNumber = owner.phoneNumber
+                                    bookstoreVC.address = owner.location
+                                    bookstoreVC.bookstoreName = owner.name
+                                    bookstoreVC.preference = owner.preference
+                                    bookstoreVC.email = owner.email
+                                    bookstoreVC.bookstoreOwnersName = owner.ownersName
+                                    bookstoreVC.additionalInfoText = owner.additionalInfo
+                                    bookstoreVC.reviewingChatProfileText = "To chats"
+                                    
+                                    self?.appDelegate().currentReviewingOwnersProfile = owner
+                                    UIApplication.shared.keyWindow?.rootViewController = tabBC
+                                })
                             })
                         })
                     })
-                })
+                }
             }
         }
     }

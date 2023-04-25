@@ -40,11 +40,23 @@ class AddBookViewController: UIViewController, AdditionalInfoProtocol {
         pagesCountTextField.text = "500"
         languageTextField.text = "TestLanguage"
         priceTextField.text = "2.31"
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        
+        //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
+        //tap.cancelsTouchesInView = false
+        
+        lowerView.addGestureRecognizer(tap)
     }
     
     // MARK: Public and private functions
     func getAdditionalInfo(additionalInfoText: String) {
         additionalInfo = additionalInfoText
+    }
+    
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
     private func showAlert(message: String) {

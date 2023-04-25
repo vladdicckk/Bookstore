@@ -382,15 +382,15 @@ extension FirebaseManager {
                 var kind: MessageKind?
 
                 if type == "photo" {
-                    guard let imageUrl = URL(string: content), let placeholder = UIImage(systemName: "plus") else {
+                    guard let imageUrl = URL(string: content) else {
                         print("errrrrrrr")
                         let senderObj = Sender(photoURL: "", senderId: "", displayName: "")
                         return Message(sender: senderObj, messageId: "", sentDate: Date(), kind: .text(""))
                     }
-                    let media = Media(url: imageUrl, placeholderImage: placeholder, size: CGSize(width: 300, height: 300))
+                    let media = Media(url: imageUrl, placeholderImage: UIImage(), size: CGSize(width: 300, height: 300))
                     kind = .photo(media)
                 } else if type == "video" {
-                    guard let videoUrl = URL(string: content), let placeholder = UIImage(systemName: "plus") else {
+                    guard let videoUrl = URL(string: content), let placeholder = UIImage(named: "empty") else {
                         print("errrrrrrr")
                         let senderObj = Sender(photoURL: "", senderId: "", displayName: "")
                         return Message(sender: senderObj, messageId: "", sentDate: Date(), kind: .text(""))

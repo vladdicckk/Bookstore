@@ -67,7 +67,12 @@ struct Location: LocationItem {
     var size: CGSize
 }
 
-class ChatViewController: MessagesViewController, MessageCellDelegate, MessagesDataSource, MessagesLayoutDelegate, MessagesDisplayDelegate , InputBarAccessoryViewDelegate, UIImagePickerControllerDelegate &  UINavigationControllerDelegate {
+protocol UnhideInputBar {
+    func unhideInputBar()
+}
+
+class ChatViewController: MessagesViewController, UnhideInputBar, MessageCellDelegate, MessagesDataSource, MessagesLayoutDelegate, MessagesDisplayDelegate , InputBarAccessoryViewDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+    
     static var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -75,7 +80,6 @@ class ChatViewController: MessagesViewController, MessageCellDelegate, MessagesD
         formatter.locale = .current
         return formatter
     }()
-    let activityIndicator = UIActivityIndicatorView(style: .medium)
     
     var application: Application?
     let firestoreManager = FirestoreManager()
@@ -84,6 +88,10 @@ class ChatViewController: MessagesViewController, MessageCellDelegate, MessagesD
     var conversationId: String?
     var avatarImageCounter = 0
     var chatProfileImageURL: URL?
+    var chatUserImage: UIImage?
+    var chatOtherUserImage: UIImage?
+    var otherUserData: User?
+    var otherBookstoreData: Bookstore?
     
     private var messages = [Message]()
     private var selfSender: Sender? {
@@ -91,25 +99,9 @@ class ChatViewController: MessagesViewController, MessageCellDelegate, MessagesD
         let safeEmail = FirebaseManager.safeEmail(email: email)
         return Sender(photoURL: "", senderId: safeEmail, displayName: "Me")
     }
-//    override func loadView() {
-//            view = UIView()
-//            view.backgroundColor = UIColor(white: 0, alpha: 0.7)
-//
-//            spinner.translatesAutoresizingMaskIntoConstraints = false
-//            spinner.startAnimating()
-//            view.addSubview(spinner)
-//
-//            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-//        }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(activityIndicator)
-        activityIndicator.startAnimating()
-
-        activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         loadFirstMessages()
         setupInputButton()
         setupBackroundImage()
@@ -121,12 +113,32 @@ class ChatViewController: MessagesViewController, MessageCellDelegate, MessagesD
         messagesCollectionView.messagesDisplayDelegate = self
         messagesCollectionView.messageCellDelegate = self
         messageInputBar.delegate = self
+        
+        
+        let textAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor(red: 0.3, green: 0.1, blue: 0.2, alpha: 1),
+            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 20)
+        ]
+        
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        
         if let application = application {
             messageInputBar.inputTextView.text = "\(application.userInfo) \n\n Title: \(application.book.title) Author: \(application.book.author) Price: \(application.book.price) Publish year: \(application.book.publishYear) With preference: \(application.type) Additional info: \(application.additionalInfo) Created: \(application.date)"
             self.application = nil
         }
         
-        activityIndicator.stopAnimating()
+        //Looks for single or multiple taps.
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        
+        //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
+        //tap.cancelsTouchesInView = false
+        
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -139,6 +151,7 @@ class ChatViewController: MessagesViewController, MessageCellDelegate, MessagesD
             self?.messagesCollectionView.reloadData()
             self?.messagesCollectionView.scrollToLastItem()
         }
+        avatarImageCounter = 0
         messageInputBar.isHidden = false
         tabBarController?.tabBar.isHidden = true
     }
@@ -153,7 +166,7 @@ class ChatViewController: MessagesViewController, MessageCellDelegate, MessagesD
     
     private func configureViewBlur() {
         let backgroundBlur: UIVisualEffectView = {
-            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.prominent)
+            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let blurView = UIVisualEffectView(effect: blurEffect)
             blurView.alpha = 0.4
             blurView.translatesAutoresizingMaskIntoConstraints = false
@@ -222,10 +235,13 @@ class ChatViewController: MessagesViewController, MessageCellDelegate, MessagesD
         actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { [weak self] _ in
             if UIImagePickerController.isSourceTypeAvailable(.camera) {
                 let picker = UIImagePickerController()
-                picker.sourceType = .camera
-                picker.delegate = self
                 picker.allowsEditing = true
-                self?.present(picker, animated: true)
+                picker.sourceType = UIImagePickerController.SourceType.camera
+                picker.cameraCaptureMode = .photo
+                picker.modalPresentationStyle = .fullScreen
+                self?.present(picker,
+                        animated: true,
+                        completion: nil)
             } else {
                 let alert = UIAlertController(title: "Error", message: "Device has no camera", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: {[weak self] _ in
@@ -311,6 +327,38 @@ class ChatViewController: MessagesViewController, MessageCellDelegate, MessagesD
                     return
                 }
                 self?.messages = success
+                var counter = 0
+                
+                if let messages = self?.messages {
+                    for message in messages {
+                        let senderObj = Sender(photoURL: "", senderId: message.sender.senderId, displayName: message.sender.displayName)
+                        var newMessage = Message(sender: senderObj, messageId: message.messageId, sentDate: message.sentDate, kind: message.kind)
+                        if message.kind.messageKindString == "photo" {
+                            switch newMessage.kind {
+                            case .photo(let item):
+                                guard let url = item.url else { fatalError() }
+                                DispatchQueue.global().async {
+                                    // Fetch Image Data
+                                    if let data = try? Data(contentsOf: url) {
+                                        DispatchQueue.main.async {
+                                            // Create Image and Update Image View
+                                            guard let image = UIImage(data: data) else { return }
+                                            newMessage.kind = .photo(Media(url: url, placeholderImage: image, size: CGSize(width: 300, height: 300)))
+                                            self?.messages.remove(at: counter)
+                                            self?.messages.append(newMessage)
+                                            self?.messagesCollectionView.reloadData()
+                                        }
+                                    }
+                                }
+                            default:
+                                break
+                            }
+                        } else {
+                            counter += 1
+                        }
+                    }
+                }
+                
                 DispatchQueue.main.async {
                     self?.messagesCollectionView.reloadDataAndKeepOffset()
                     if shouldScrollToBottom {
@@ -353,6 +401,7 @@ class ChatViewController: MessagesViewController, MessageCellDelegate, MessagesD
                     FirebaseManager.shared.sendMessage(otherUserEmail: otherUserEmail, name: name, to: convId, message: message, email: currentUserEmail, completion: { [weak self]  res in
                         if res {
                             self?.messages.append(message)
+                            self?.listenForMessages(id: self?.conversationId ?? "s", shouldScrollToBottom: true)
                             self?.messagesCollectionView.reloadData()
                             print("Photo message sent successfully")
                         } else {
@@ -377,6 +426,7 @@ class ChatViewController: MessagesViewController, MessageCellDelegate, MessagesD
                     FirebaseManager.shared.sendMessage(otherUserEmail: otherUserEmail, name: name, to: convId, message: message, email: currentUserEmail, completion: {[weak self]  res in
                         if res {
                             self?.messages.append(message)
+                            self?.listenForMessages(id: self?.conversationId ?? "ad", shouldScrollToBottom: true)
                             self?.messagesCollectionView.reloadData()
                             print("Video message sent successfully")
                         } else {
@@ -527,53 +577,62 @@ class ChatViewController: MessagesViewController, MessageCellDelegate, MessagesD
         
         if isFromCurrentSender(message: message) {
             if appDelegate().currentUser != nil {
-                guard let email = appDelegate().currentEmail else { return }
-                firestoreManager.getUserInfo(email: email, completion: { [weak self] user in
-                    let storyBoard: UIStoryboard = UIStoryboard(name: "Chat", bundle: nil)
-                    let vc = storyBoard.instantiateViewController(withIdentifier: "ChatProfileViewController") as! ChatProfileViewController
-                    vc.user = user
-                    vc.chatProfileImageURL = self?.chatProfileImageURL
-                    self?.present(vc, animated: true, completion: {[weak self] in
-                        self?.messageInputBar.isHidden = true
-                    })
+                guard let user = appDelegate().currentUser else { return }
+                let storyBoard: UIStoryboard = UIStoryboard(name: "Chat", bundle: nil)
+                let vc = storyBoard.instantiateViewController(withIdentifier: "ChatProfileViewController") as! ChatProfileViewController
+                vc.user = user
+                firestoreManager.downloadUserAvatar(email: appDelegate().currentEmail ?? "", completion: { image in
+                    vc.chatProfileImage = image
+                    vc.delegate = self
+                    DispatchQueue.main.async {
+                        self.present(vc, animated: true, completion: {[weak self] in
+                            self?.messageInputBar.isHidden = true
+                        })
+                    }
                 })
             } else {
-                guard let email = appDelegate().currentEmail else { return }
-                firestoreManager.getBookstoreDataWithEmail(email: email, completion: { [weak self] bookstore in
-                    let storyBoard: UIStoryboard = UIStoryboard(name: "Chat", bundle: nil)
-                    let vc = storyBoard.instantiateViewController(withIdentifier: "ChatProfileViewController") as! ChatProfileViewController
-                    vc.bookstore = bookstore
-                    vc.chatProfileImageURL = self?.chatProfileImageURL
-                    self?.present(vc, animated: true, completion: {[weak self] in
-                        self?.messageInputBar.isHidden = true
-                    })
+                guard let bookstore = appDelegate().currentBookstoreOwner else { return }
+                let storyBoard: UIStoryboard = UIStoryboard(name: "Chat", bundle: nil)
+                let vc = storyBoard.instantiateViewController(withIdentifier: "ChatProfileViewController") as! ChatProfileViewController
+                vc.bookstore = bookstore
+                firestoreManager.downloadBookstoreAvatar(email: appDelegate().currentEmail ?? "", completion: { image in
+                    vc.chatProfileImage = image
+                    vc.delegate = self
+                    DispatchQueue.main.async {
+                        self.present(vc, animated: true, completion: {[weak self] in
+                            self?.messageInputBar.isHidden = true
+                        })
+                    }
                 })
             }
         } else {
-            firestoreManager.getUserInfo(email: otherUserEmail, completion: { [weak self] user in
-                if user.email != "" {
+            if let otherUserData = otherUserData {
+                let storyBoard: UIStoryboard = UIStoryboard(name: "Chat", bundle: nil)
+                let vc = storyBoard.instantiateViewController(withIdentifier: "ChatProfileViewController") as! ChatProfileViewController
+                vc.user = otherUserData
+                vc.chatProfileImage = chatOtherUserImage
+                vc.delegate = self
+                present(vc, animated: true, completion: {[weak self] in
+                    self?.messageInputBar.isHidden = true
+                })
+            } else {
+                if let bookstore = otherBookstoreData {
                     let storyBoard: UIStoryboard = UIStoryboard(name: "Chat", bundle: nil)
                     let vc = storyBoard.instantiateViewController(withIdentifier: "ChatProfileViewController") as! ChatProfileViewController
-                    vc.user = user
-                    vc.chatProfileImageURL = self?.chatProfileImageURL
-                    self?.present(vc, animated: true, completion: {[weak self] in
+                    vc.bookstore = bookstore
+                    vc.chatProfileImage = chatOtherUserImage
+                    vc.delegate = self
+                    present(vc, animated: true, completion: {[weak self] in
                         self?.messageInputBar.isHidden = true
                     })
-                } else {
-                    self?.firestoreManager.getBookstoreDataWithEmail(email: otherUserEmail, completion: { bookstore in
-                        let storyBoard: UIStoryboard = UIStoryboard(name: "Chat", bundle: nil)
-                        let vc = storyBoard.instantiateViewController(withIdentifier: "ChatProfileViewController") as! ChatProfileViewController
-                        vc.bookstore = bookstore
-                        vc.chatProfileImageURL = self?.chatProfileImageURL
-                        self?.present(vc, animated: true, completion: {[weak self] in
-                            self?.messageInputBar.isHidden = true
-                        })
-                    })
                 }
-            })
+            }
         }
     }
     
+    func unhideInputBar() {
+        messageInputBar.isHidden = false
+    }
     
     func didTapCellTopLabel(in cell: MessageKit.MessageCollectionViewCell) {
         
@@ -661,149 +720,15 @@ class ChatViewController: MessagesViewController, MessageCellDelegate, MessagesD
         }
     }
     
-    func configureMediaMessageImageView(_ imageView: UIImageView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-        switch message.kind {
-        case .photo(let media):
-            guard let url = media.url else { return }
-            imageView.sd_setImage(with: url, completed: {  (image: UIImage?, error: Error?, cacheType: SDImageCacheType, imageURL: URL?) in
-                imageView.image = image
-                messagesCollectionView.reloadDataAndKeepOffset()
-                print(error?.localizedDescription ?? "")
-            })
-        case .video(let media):
-            print(media.url?.absoluteString ?? "")
-        default:
-            break
-        }
-    }
-    
     func configureAvatarView(_ avatarView: MessageKit.AvatarView, for message: MessageKit.MessageType, at indexPath: IndexPath, in messagesCollectionView: MessageKit.MessagesCollectionView) {
-        sleep(1)
         avatarImageCounter += 1
-        guard avatarImageCounter <= 400 else { return }
-        guard var otherUserEmail = otherUserEmail else { return }
-        var notSafeOtherUserEmail = ""
-        var counter = 0
-        for ch in otherUserEmail {
-            if ch == "-" {
-                if counter == 0 {
-                    notSafeOtherUserEmail.append("@")
-                } else {
-                    notSafeOtherUserEmail.append(".")
-                }
-                counter += 1
-            } else {
-                notSafeOtherUserEmail.append(ch)
-            }
-        }
-        otherUserEmail = notSafeOtherUserEmail
-        
+        guard avatarImageCounter <= 20 else { return }
         if isFromCurrentSender(message: message) {
-            if appDelegate().currentUser != nil {
-                guard let email = appDelegate().currentEmail else { return }
-                firestoreManager.getUserInfo(email: email, completion: { user in
-                    let path = "images.\(user.username)_Avatar.png"
-                    StorageManager.shared.downloadURL(for: path, completion: { [weak self] res in
-                        switch res {
-                        case .success(let res):
-                            self?.chatProfileImageURL = res
-                            DispatchQueue.global().async {
-                                // Fetch Image Data
-                                if let data = try? Data(contentsOf: res) {
-                                    DispatchQueue.main.async {
-                                        // Create Image and Update Image View
-                                        avatarView.image = UIImage(data: data)
-                                    }
-                                }
-                            }
-                        case .failure(let err):
-                            print(err)
-                        }
-                    })
-                })
-            } else {
-                guard let email = appDelegate().currentEmail else { return }
-                firestoreManager.getBookstoreDataWithEmail(email: email, completion: { bookstore in
-                    let path = "images.\(bookstore.name)_Avatar.png"
-                    StorageManager.shared.downloadURL(for: path, completion: { [weak self] res in
-                        switch res {
-                        case .success(let res):
-                            self?.chatProfileImageURL = res
-                            DispatchQueue.global().async {
-                                // Fetch Image Data
-                                if let data = try? Data(contentsOf: res) {
-                                    DispatchQueue.main.async {
-                                        // Create Image and Update Image View
-                                        avatarView.image = UIImage(data: data)
-                                    }
-                                }
-                            }
-                        case .failure(let err):
-                            print(err)
-                        }
-                    })
-                })
-            }
+            avatarView.image = chatUserImage
         } else {
-            firestoreManager.getUserInfo(email: otherUserEmail, completion: { [weak self] user in
-                let path = "images.\(user.username)_Avatar.png"
-                if user.email != "" {
-                    StorageManager.shared.downloadURL(for: path, completion: { [weak self] res in
-                        switch res {
-                        case .success(let res):
-                            self?.chatProfileImageURL = res
-                            DispatchQueue.global().async {
-                                // Fetch Image Data
-                                if let data = try? Data(contentsOf: res) {
-                                    DispatchQueue.main.async {
-                                        // Create Image and Update Image View
-                                        avatarView.image = UIImage(data: data)
-                                    }
-                                }
-                            }
-                        case .failure(let err):
-                            print(err.localizedDescription)
-                        }
-                    })
-                } else {
-                    self?.firestoreManager.getBookstoreDataWithEmail(email: otherUserEmail, completion: { bookstore in
-                        let path = "images.\(bookstore.name)_Avatar.png"
-                        StorageManager.shared.downloadURL(for: path, completion: { [weak self] res in
-                            switch res {
-                            case .success(let res):
-                                self?.chatProfileImageURL = res
-                                DispatchQueue.global().async {
-                                    // Fetch Image Data
-                                    if let data = try? Data(contentsOf: res) {
-                                        DispatchQueue.main.async {
-                                            // Create Image and Update Image View
-                                            avatarView.image = UIImage(data: data)
-                                        }
-                                    }
-                                }
-                            case .failure(let err):
-                                print(err)
-                            }
-                        })
-                    })
-                }
-            })
+            avatarView.image = chatOtherUserImage
         }
     }
-    
-//    func configureMediaMessageImageView(_ imageView: UIImageView, for message: MessageKit.MessageType, at indexPath: IndexPath, in messagesCollectionView: MessageKit.MessagesCollectionView) {
-//        guard let message = message as? Message else { return }
-//        switch message.kind {
-//        case .photo(let media):
-//            guard let imageUrl = media.url else { return }
-//            imageView.sd_setImage(with: imageUrl)
-//        case .video(let media):
-//            guard let imageUrl = media.url else { return }
-//            imageView.sd_setImage(with: imageUrl)
-//        default:
-//            break
-//        }
-//    }
     
     func typingIndicatorViewTopInset(in messagesCollectionView: MessageKit.MessagesCollectionView) -> CGFloat {
         return 25
@@ -823,22 +748,6 @@ class ChatViewController: MessagesViewController, MessageCellDelegate, MessagesD
     func numberOfSections(in messagesCollectionView: MessageKit.MessagesCollectionView) -> Int {
         return messages.count
     }
-    
-    func locationCellSetup(indexPath: IndexPath) {
-        switch messages[indexPath.row].kind {
-        case .location(let loc):
-            let map = MKMapView()
-            messagesCollectionView.addSubview(map)
-            let pin = MKPointAnnotation()
-            pin.coordinate = CLLocationCoordinate2D(latitude: loc.location.coordinate.latitude, longitude: loc.location.coordinate.longitude)
-            map.addAnnotation(pin)
-            guard let bounds = messagesCollectionView.cellForItem(at: indexPath)?.bounds else { return }
-            map.frame = bounds
-        default:
-            break
-        }
-    }
-    
 }
 
 extension UIImage {

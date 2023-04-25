@@ -36,7 +36,7 @@ class SortedBooksInfoViewController: UIViewController, UICollectionViewDataSourc
         collectionView.dataSource = self
         collectionView.delegate = self
         setSearchBar()
-        
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         
         if !(isAppendingRecommended ?? false) {
             saveRecommendedBooksButton.isHidden = true
@@ -61,6 +61,19 @@ class SortedBooksInfoViewController: UIViewController, UICollectionViewDataSourc
         }
         view.backgroundColor = UIColor(patternImage: UIImage(named: "librariesBackground")!)
         collectionView.backgroundColor = .clear
+        //Looks for single or multiple taps.
+        let tap = UIPanGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        
+        //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
+        //tap.cancelsTouchesInView = false
+        
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+        searchBar.resignFirstResponder()
     }
     
     private func showAlert(point: CGPoint) {
@@ -139,7 +152,7 @@ class SortedBooksInfoViewController: UIViewController, UICollectionViewDataSourc
         
         cell.backgroundView = cell.cellContentViewBackgroundBlur(cell: cell, radius: 5)
         cell.configure(with: books[indexPath.row].title, author: books[indexPath.row].author, genre: books[indexPath.row].genre, publishYear: books[indexPath.row].publishYear)
-        cell.setup()
+        cell.setup(collectionViewWidth: collectionView.width)
         cell.deleteButton.addTarget(self, action: #selector(deleteBookInfo), for: .touchUpInside)
         if appDelegate().currentBookstoreOwner == nil || isAppendingRecommended == true {
             if #available(iOS 16.0, *) {
@@ -171,7 +184,6 @@ class SortedBooksInfoViewController: UIViewController, UICollectionViewDataSourc
         if isAppendingRecommended {
             let cell = collectionView.cellForItem(at: indexPath)
             if cell?.layer.borderWidth == 5.0 || cell?.layer.borderColor == UIColor.red.cgColor {
-                
                 cell?.layer.borderWidth = 2
                 cell?.layer.borderColor = UIColor.systemBrown.cgColor
             } else {
@@ -198,6 +210,8 @@ class SortedBooksInfoViewController: UIViewController, UICollectionViewDataSourc
             bookInfoViewVC.additionalInfo = books[indexPath.row].additionalInfo
             bookInfoViewVC.genre = books[indexPath.row].genre
             bookInfoViewVC.price = books[indexPath.row].price
+            
+            bookInfoViewVC.modalPresentationStyle = .overFullScreen
             present(bookInfoViewVC, animated: true)
         }
     }

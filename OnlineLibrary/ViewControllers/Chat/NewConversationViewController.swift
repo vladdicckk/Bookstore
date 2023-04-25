@@ -42,11 +42,25 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
         searchBar.becomeFirstResponder()
         view.addSubview(tableView)
         view.addSubview(noResultLabel)
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .clear
         navigationController?.navigationBar.topItem?.titleView = searchBar
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelButtonTapped))
         tableView.register(NewConversationTableViewCell.self, forCellReuseIdentifier: "NewConversationTableViewCell")
         setupTableView()
+        configureViewBlur()
+        
+        //Looks for single or multiple taps.
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        
+        //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
+        //tap.cancelsTouchesInView = false
+        
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
     override func viewDidLayoutSubviews() {
@@ -106,6 +120,30 @@ class NewConversationViewController: UIViewController, UISearchBarDelegate, UITa
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    
+    private func configureViewBlur() {
+        let backgroundBlur: UIVisualEffectView = {
+            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
+            let blurView = UIVisualEffectView(effect: blurEffect)
+            blurView.alpha = 0.8
+            blurView.translatesAutoresizingMaskIntoConstraints = false
+            blurView.layer.cornerRadius = 16
+            blurView.backgroundColor = .systemBrown
+            blurView.clipsToBounds = true
+            return blurView
+        }()
+        
+        view.addSubview(backgroundBlur)
+        view.sendSubviewToBack(backgroundBlur)
+        backgroundBlur.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            backgroundBlur.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundBlur.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundBlur.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundBlur.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

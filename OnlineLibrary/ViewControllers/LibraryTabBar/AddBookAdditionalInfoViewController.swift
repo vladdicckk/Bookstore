@@ -28,6 +28,13 @@ class AddBookAdditionalInfoViewController: UIViewController {
         super.viewDidLoad()
         additionalInfoTextView.text = additionalInfoText
         additionalInfoTextViewSettings()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        
+        //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
+        //tap.cancelsTouchesInView = false
+        
+        view.addGestureRecognizer(tap)
     }
     
     // MARK: Public and private functions
@@ -37,6 +44,15 @@ class AddBookAdditionalInfoViewController: UIViewController {
         
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        if additionalInfoTextView.isFirstResponder {
+            view.endEditing(true)
+        } else {
+            additionalInfoTextView.becomeFirstResponder()
+        }
     }
     
     private func additionalInfoTextViewSettings() {
@@ -63,8 +79,8 @@ class AddBookAdditionalInfoViewController: UIViewController {
     }
     
     override func updateViewConstraints() {
-        self.view.frame.size.height = UIScreen.main.bounds.height - additionalInfoTextView.bounds.height - 50
-        self.view.frame.origin.y = 150
+        self.view.frame.size.height = additionalInfoTextView.height + 100
+        self.view.frame.origin.y = view.width/2
         self.view.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 10.0)
         self.view.roundCorners(corners: [.topLeft, .topRight], radius: 15.0)
         super.updateViewConstraints()

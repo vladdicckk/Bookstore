@@ -51,7 +51,7 @@ class SortByLocationViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     override func updateViewConstraints() {
-        self.view.frame.size.height = UIScreen.main.bounds.height - 600
+        view.frame.size.height = tableView.height
         self.view.frame.origin.y = 150
         self.view.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 10.0)
         super.updateViewConstraints()

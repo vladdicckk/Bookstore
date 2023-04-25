@@ -52,6 +52,27 @@ class FirestoreManager {
         }
     }
     
+    func downloadBookstoreAvatar(email: String, completion: @escaping (_ avatar: UIImage) -> Void) {
+        if email != "" {
+            db.collection("Owners").document(email).getDocument(completion: { res, err in
+                let avatarURL = "\(res?.get("AvatarImageURL") ?? "")"
+                let url = URL(string: avatarURL)
+                guard let url = url else { return }
+                URLSession.shared.dataTask(with: url, completionHandler: { data, _ , err in
+                    guard let data = data, err == nil else { return }
+                    
+                    let image = UIImage(data: data)
+                    if let image = image {
+                        print("\(image)")
+                        completion(image)
+                    } else {
+                        print("error downloading image")
+                    }
+                }).resume()
+            })
+        }
+    }
+    
     func checkForBookstoreExisting(email: String, _ completion: @escaping (_ exists: Bool) -> Void) {
         let bookstores = db.collection("Owners")
         bookstores.document(email).getDocument { query, err in
@@ -986,7 +1007,7 @@ class FirestoreManager {
     }
     
     func sendApplication(email: String, application: Application, completion: @escaping (_ success: Bool) -> Void) {
-        db.collection("Owners").document(email).updateData(["Applications.\(application.book.title)" : ["UserInfo" : application.userInfo, "UserEmail" : application.user.email, "Username" : application.user.username, "BookstoreEmail" : application.bookstore.email, "Bookstore name" : application.bookstore.name, "Date" : application.date, "Status" : application.status, "Type" : application.type, "Additional info" : application.additionalInfo, "BookInfo" : ["title" : application.book.title, "author" :  application.book.author, "publishYear" :  "\(application.book.publishYear)", "genre" :  application.book.genre, "pagesCount" :  "\(application.book.pagesCount)", "language" :  application.book.language, "price" :  "\(application.book.price)", "additionalInfo" :  application.book.additionalInfo]]]) { err in
+        db.collection("Owners").document(email).updateData(["Applications.\(application.book.title)" : ["UserInfo" : application.userInfo, "UserEmail" : application.user.email, "Username" : application.user.username, "BookstoreEmail" : application.bookstore.email, "Bookstore name" : application.bookstore.name, "Date" : application.date, "Status" : application.status, "Type" : application.type, "Additional info" : application.additionalInfo, "BookInfo" : ["title" : application.book.title, "author" :  application.book.author, "publishYear" :  "\(application.book.publishYear)", "genre" :  application.book.genre, "pagesCount" :  "\(application.book.pagesCount)", "language" :  application.book.language, "price" :  "\(application.book.price)", "additionalInfo" :  application.book.additionalInfo]] as [String : Any]]) { err in
             if let err = err {
                 completion(false)
                 print("Error updating document: \(err)")
@@ -996,7 +1017,7 @@ class FirestoreManager {
             }
         }
         
-        db.collection("Users").document(application.user.email).updateData(["Applications.\(application.book.title)" : ["UserInfo" : application.userInfo, "UserEmail" : application.user.email, "Username" : application.user.username, "BookstoreEmail" : application.bookstore.email, "Bookstore name" : application.bookstore.name, "Date" : application.date, "Status" : application.status, "Type" : application.type, "Additional info" : application.additionalInfo, "bookstoreName" : application.bookstore.name, "BookInfo" : ["title" : application.book.title, "author" :  application.book.author, "publishYear" :  "\(application.book.publishYear)", "genre" :  application.book.genre, "pagesCount" :  "\(application.book.pagesCount)", "language" :  application.book.language, "price" :  "\(application.book.price)", "additionalInfo" :  application.book.additionalInfo]]]) { err in
+        db.collection("Users").document(application.user.email).updateData(["Applications.\(application.book.title)" : ["UserInfo" : application.userInfo, "UserEmail" : application.user.email, "Username" : application.user.username, "BookstoreEmail" : application.bookstore.email, "Bookstore name" : application.bookstore.name, "Date" : application.date, "Status" : application.status, "Type" : application.type, "Additional info" : application.additionalInfo, "bookstoreName" : application.bookstore.name, "BookInfo" : ["title" : application.book.title, "author" :  application.book.author, "publishYear" :  "\(application.book.publishYear)", "genre" :  application.book.genre, "pagesCount" :  "\(application.book.pagesCount)", "language" :  application.book.language, "price" :  "\(application.book.price)", "additionalInfo" :  application.book.additionalInfo]] as [String : Any]]) { err in
             if let err = err {
                 completion(false)
                 print("Error updating document: \(err)")
@@ -1025,9 +1046,8 @@ class FirestoreManager {
         }
     }
     
-    func editUserData(phoneNumber: String, address: String, email: String, username: String) {
+    func editUserData(phoneNumber: String, address: String, email: String) {
         db.collection("Users").document(email).setData(["location": address,
-                                                        "phoneNumber": phoneNumber,
-                                                        "username": username], merge: true)
+                                                        "phoneNumber": phoneNumber], merge: true)
     }
 }

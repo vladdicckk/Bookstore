@@ -19,15 +19,18 @@ class ConversationTableViewCell: UITableViewCell {
     @IBOutlet weak var sentMessageImageView: UIImageView!
     
     func configure(with model: Conversation) {
-        
+//        NSLayoutConstraint.activate([userImageView.heightAnchor.constraint(equalToConstant: height)])
         userImageView.contentMode = .scaleAspectFill
-        userImageView.layer.cornerRadius = 48
+        userImageView.layer.cornerRadius = height/2
         userImageView.layer.masksToBounds = true
         userImageView.layer.borderColor = UIColor.lightGray.cgColor
         userImageView.layer.borderWidth = 1
+        
         sentMessageImageView.contentMode = .scaleAspectFill
+        
         sentMessageImageView.layer.cornerRadius = 10
         sentMessageImageView.layer.masksToBounds = true
+        
         if model.latestMessage.message.contains("https://") && model.latestMessage.message.contains("video") {
             userMessageLabel.text = "Video"
         } else if model.latestMessage.message.contains("https://") {
@@ -49,6 +52,7 @@ class ConversationTableViewCell: UITableViewCell {
         lastMessageDateLabel.text = model.latestMessage.date
         lastMessageDateLabel.text = lastMessageDateLabel.text?.replacingOccurrences(of: "_", with: "-")
         userNameLabel.text = model.name
+        userNameLabel.textColor = .black
         
         let otherUserEmail = model.otherUserEmail
         var newOtherUserEmail = ""
@@ -101,12 +105,13 @@ class ConversationTableViewCell: UITableViewCell {
                 })
             }
         })
+        
         let backgroundBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let blurView = UIVisualEffectView(effect: blurEffect)
             blurView.alpha = 0.65
             blurView.translatesAutoresizingMaskIntoConstraints = false
-            blurView.layer.cornerRadius = width/10
+            blurView.layer.cornerRadius = height/2
             blurView.layer.borderWidth = 1.5
             blurView.layer.borderColor = UIColor(red: 0.3, green: 0.1, blue: 0.2, alpha: 1).cgColor
             blurView.backgroundColor = .systemBrown
@@ -119,7 +124,7 @@ class ConversationTableViewCell: UITableViewCell {
             let blurView = UIVisualEffectView(effect: blurEffect)
             blurView.alpha = 0.9
             blurView.translatesAutoresizingMaskIntoConstraints = false
-            blurView.layer.cornerRadius = width/10
+            blurView.layer.cornerRadius = height/2
             blurView.layer.borderWidth = 1.5
             blurView.layer.borderColor = UIColor(red: 0.3, green: 0.1, blue: 0.2, alpha: 1).cgColor
             blurView.backgroundColor = .systemBrown
@@ -127,9 +132,9 @@ class ConversationTableViewCell: UITableViewCell {
             return blurView
         }()
         
-        self.backgroundView = backgroundBlur
-        self.selectedBackgroundView?.backgroundColor = .clear
-        self.selectedBackgroundView = selectedBackgroundBlur
+        backgroundView = backgroundBlur
+        selectedBackgroundView?.backgroundColor = .clear
+        selectedBackgroundView = selectedBackgroundBlur
     }
 }
 

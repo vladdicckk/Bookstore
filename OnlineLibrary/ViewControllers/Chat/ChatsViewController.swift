@@ -35,6 +35,8 @@ class ChatsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var conversations: [Conversation]?
     var application: Application?
+    var chatUserImage: UIImage?
+    var chatOtherUserImage: UIImage?
     
     private let firestoreManager = FirestoreManager()
     private let noConversationsLabel: UILabel = {
@@ -50,6 +52,11 @@ class ChatsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(patternImage: UIImage(named: "chatsBackground") ?? UIImage())
+        let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        title = "Conversations"
+        navigationController?.navigationBar.prefersLargeTitles = true
         tableView.backgroundColor = .clear
         let rightButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(didTapComposeButton))
         rightButton.style = .done
@@ -95,7 +102,7 @@ class ChatsViewController: UIViewController {
     
     private func configureViewBlur() {
         let backgroundBlur: UIVisualEffectView = {
-            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.prominent)
+            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let blurView = UIVisualEffectView(effect: blurEffect)
             blurView.alpha = 0.4
             blurView.translatesAutoresizingMaskIntoConstraints = false
@@ -235,14 +242,115 @@ class ChatsViewController: UIViewController {
         let email = result.email
         let vc = ChatViewController(with: email, id: nil)
         vc.isNewConversation = true
-        vc.application = application
-        self.application = nil
+        var otherUserEmail = ""
+        if application != nil {
+            vc.application = application
+            otherUserEmail = application?.bookstore.email ?? ""
+        } else {
+            otherUserEmail = result.email
+        }
         vc.title = name
-        vc.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(vc, animated: true)
+        
+        var newOtherUserEmail = ""
+        var counter = 0
+        for ch in otherUserEmail {
+            if ch == "-" {
+                if counter == 0 {
+                    newOtherUserEmail.append("@")
+                } else {
+                    newOtherUserEmail.append(".")
+                }
+                counter += 1
+            } else {
+                newOtherUserEmail.append(ch)
+            }
+        }
+        firestoreManager.getUserInfo(email: newOtherUserEmail, completion: { [weak self] user in
+            if user.email != "" {
+                vc.otherUserData = user
+                let path = "images.\(user.username)_Avatar.png"
+                StorageManager.shared.downloadURL(for: path, completion: { [weak self] res in
+                    switch res {
+                    case .success(let res):
+                        vc.chatUserImage = self?.chatUserImage
+                        vc.chatOtherUserImage = self?.chatOtherUserImage
+                        vc.chatProfileImageURL = res
+                        self?.application = nil
+                        vc.navigationItem.largeTitleDisplayMode = .never
+                        self?.validateUserImage(completion: { img in
+                            vc.chatUserImage = img
+                            self?.navigationController?.pushViewController(vc, animated: true)
+                        })
+                    case .failure(let err):
+                        print(err.localizedDescription)
+                    }
+                })
+            } else {
+                self?.firestoreManager.getBookstoreDataWithEmail(email: newOtherUserEmail, completion: { [weak self] bookstore in
+                    if bookstore.email != "" {
+                        vc.otherBookstoreData = bookstore
+                        let path = "images.\(bookstore.name)_Avatar.png"
+                        StorageManager.shared.downloadURL(for: path, completion: { [weak self] res in
+                            switch res {
+                            case .success(let res):
+                                vc.chatUserImage = self?.chatUserImage
+                                vc.chatOtherUserImage = self?.chatOtherUserImage
+                                vc.chatProfileImageURL = res
+                                self?.application = nil
+                                vc.navigationItem.largeTitleDisplayMode = .never
+                                self?.validateUserImage(completion: { img in
+                                    vc.chatUserImage = img
+                                    self?.navigationController?.pushViewController(vc, animated: true)
+                                })
+                            case .failure(let err):
+                                print(err)
+                            }
+                        })
+                    } else {
+                        fatalError("2 types of user can`t be empty")
+                    }
+                })
+            }
+        })
     }
     
-    // MARK: - fix id error
+    private func validateUserImage(completion: @escaping (UIImage) -> Void) {
+        if let user = appDelegate().currentUser {
+            let path = "images.\(user.username)_Avatar.png"
+            StorageManager.shared.downloadURL(for: path, completion: { res in
+                switch res {
+                case .success(let res):
+                    URLSession.shared.dataTask(with: res) { (data, response, error) in
+                        guard let data = data else { return }
+                        DispatchQueue.main.async {
+                            guard let chatUserImage = UIImage(data: data) else { return }
+                            completion(chatUserImage)
+                        }
+                    }.resume()
+                case .failure(let err):
+                    print(err.localizedDescription)
+                }
+            })
+        } else if let bookstore = appDelegate().currentBookstoreOwner {
+            let path = "images.\(bookstore.name)_Avatar.png"
+            StorageManager.shared.downloadURL(for: path, completion: { res in
+                switch res {
+                case .success(let res):
+                    URLSession.shared.dataTask(with: res) { (data, response, error) in
+                        guard let data = data else { return }
+                        DispatchQueue.main.async {
+                            guard let chatUserImage = UIImage(data: data) else { return }
+                            completion(chatUserImage)
+                        }
+                    }.resume()
+                    
+                case .failure(let err):
+                    print(err.localizedDescription)
+                }
+            })
+        }
+    }
+    
     private func setupHandlers() {
         guard let application = application else {
             print("application nil")
@@ -269,7 +377,8 @@ class ChatsViewController: UIViewController {
                     } else {
                         vc.title = application.bookstore.name
                     }
-                    
+                    vc.chatUserImage = chatUserImage
+                    vc.chatOtherUserImage = chatOtherUserImage
                     vc.application = application
                     vc.navigationItem.largeTitleDisplayMode = .never
                     self.application = nil
@@ -289,7 +398,8 @@ class ChatsViewController: UIViewController {
                         } else {
                             vc.title = application.bookstore.name
                         }
-                        
+                        vc.chatUserImage = chatUserImage
+                        vc.chatOtherUserImage = chatOtherUserImage
                         vc.application = application
                         vc.navigationItem.largeTitleDisplayMode = .never
                         self.application = nil
@@ -317,8 +427,6 @@ extension ChatsViewController: UITableViewDelegate, UITableViewDataSource {
         guard let model = conversations?[indexPath.row] else { return cell }
         
         cell.selectedBackgroundView?.backgroundColor = .clear
-        cell.selectedBackgroundView?.layer.cornerRadius = 16
-        cell.layer.cornerRadius = 16
         cell.backgroundColor = .clear
         cell.selectionStyle = .blue
         cell.configure(with: model)
@@ -330,6 +438,74 @@ extension ChatsViewController: UITableViewDelegate, UITableViewDataSource {
         let vc = ChatViewController(with: model.otherUserEmail, id: model.id)
         vc.title = model.name
         vc.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(vc, animated: true)
+        
+        let otherUserEmail = model.otherUserEmail
+        var newOtherUserEmail = ""
+        var counter = 0
+        for ch in otherUserEmail {
+            if ch == "-" {
+                if counter == 0 {
+                    newOtherUserEmail.append("@")
+                } else {
+                    newOtherUserEmail.append(".")
+                }
+                counter += 1
+            } else {
+                newOtherUserEmail.append(ch)
+            }
+        }
+        firestoreManager.getUserInfo(email: newOtherUserEmail, completion: { [weak self] user in
+            if user.email != "" {
+                vc.otherUserData = user
+                let path = "images.\(user.username)_Avatar.png"
+                StorageManager.shared.downloadURL(for: path, completion: { [weak self] res in
+                    switch res {
+                    case .success(let res):
+                        vc.chatUserImage = self?.chatUserImage
+                        vc.chatProfileImageURL = res
+                        URLSession.shared.dataTask(with: res) { (data, response, error) in
+                            guard let data = data else { return }
+                            DispatchQueue.main.async {
+                                vc.chatOtherUserImage = UIImage(data: data)
+                            }
+                        }.resume()
+                        self?.validateUserImage(completion: { img in
+                            vc.chatUserImage = img
+                            self?.navigationController?.pushViewController(vc, animated: true)
+                        })
+                    case .failure(let err):
+                        print(err.localizedDescription)
+                    }
+                })
+            } else {
+                self?.firestoreManager.getBookstoreDataWithEmail(email: newOtherUserEmail, completion: { [weak self] bookstore in
+                    if bookstore.email != "" {
+                        vc.otherBookstoreData = bookstore
+                        let path = "images.\(bookstore.name)_Avatar.png"
+                        StorageManager.shared.downloadURL(for: path, completion: { [weak self] res in
+                            switch res {
+                            case .success(let res):
+                                vc.chatUserImage = self?.chatUserImage
+                                vc.chatProfileImageURL = res
+                                URLSession.shared.dataTask(with: res) { (data, response, error) in
+                                    guard let data = data else { return }
+                                    DispatchQueue.main.async {
+                                        vc.chatOtherUserImage = UIImage(data: data)
+                                    }
+                                }.resume()
+                                self?.validateUserImage(completion: { img in
+                                    vc.chatUserImage = img
+                                    self?.navigationController?.pushViewController(vc, animated: true)
+                                })
+                            case .failure(let err):
+                                print(err)
+                            }
+                        })
+                    } else {
+                        fatalError("2 types of user can`t be empty")
+                    }
+                })
+            }
+        })
     }
 }

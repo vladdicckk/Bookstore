@@ -9,16 +9,6 @@ import UIKit
 import FirebaseAuth
 import FirebaseFirestore
 
-private enum UserType {
-    case client
-    case bookstore
-}
-
-private enum Result<User, Bookstore> {
-    case client(User)
-    case bookstore(Bookstore)
-}
-
 class ViewController: UIViewController {
     // MARK: Outlets
     @IBOutlet weak var greetingView: UIView!
@@ -34,10 +24,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        checkConnection()
         navigationController?.isNavigationBarHidden = true
         navigationController?.navigationBar.backgroundColor = UIColor.clear
         mainView.backgroundColor = UIColor(patternImage: UIImage(named: "background")!)
+        checkConnection()
         greetingViewSettings()
     }
     
@@ -47,21 +37,6 @@ class ViewController: UIViewController {
     }
     
     // MARK: Private functions
-    private func fetchActualUserInfo(userType: UserType, dataCompletion: @escaping (Result<User, Bookstore>) -> Void) {
-        switch userType {
-        case .bookstore:
-            guard let name = appDelegate().currentBookstoreOwner?.name else { return }
-            firestoreManager.getBookstoreData(name: name, completion: { bookstore in
-                dataCompletion(.bookstore(bookstore))
-            })
-        case .client:
-            guard let email = appDelegate().currentUser?.email else { return }
-            firestoreManager.getUserInfo(email: email, completion: { user in
-                dataCompletion(.client(user))
-            })
-        }
-    }
-    
     private func checkConnection() {
         monitor.startMonitoring(completion: {[weak self] isConnected in
             if !isConnected {
@@ -75,9 +50,8 @@ class ViewController: UIViewController {
     
     private func validateSignIn() {
         if FirebaseAuth.Auth.auth().currentUser == nil {
-            guard let vc = storyboard?.instantiateViewController(withIdentifier: "SignInViewController") else { return }
-            vc.modalPresentationStyle = .fullScreen
-            present(vc, animated: false)
+            guard let navVc = storyboard?.instantiateViewController(withIdentifier: "signNavVc") as? UINavigationController else { return }
+            UIApplication.shared.keyWindow?.rootViewController = navVc
         } else if appDelegate().currentUser == nil && appDelegate().currentBookstoreOwner == nil {
             firestoreManager.checkForUserExisting(email: FirebaseAuth.Auth.auth().currentUser?.email ?? "", { [ weak self ] exists in
                 if exists {
@@ -158,79 +132,47 @@ class ViewController: UIViewController {
     }
     
     @IBAction func homeButtonTapped(_ sender: Any) {
-        sleep(UInt32(0.3))
-        if appDelegate().currentUser != nil {
-            fetchActualUserInfo(userType: .client, dataCompletion: { [weak self] res in
-                switch res {
-                case .client(let client):
-                    self?.appDelegate().currentUser = client
-                default:
-                    break
-                }
-                guard let user = self?.appDelegate().currentUser else { return }
-                self?.firestoreManager.getUsersApplications(email: user.email, completion: {[weak self] arr in
-                    self?.firestoreManager.downloadUserAvatar(email: user.email, completion: { image in
-                        DispatchQueue.main.async {[weak self] in
-                            let vc: UserProfileViewController = self?.storyboard?.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
-                            
-                            vc.currentImage = image
-                            vc.email = user.email
-                            vc.firstName = user.firstName
-                            vc.lastName = user.lastName
-                            vc.age = user.age
-                            vc.username = user.username
-                            vc.phoneNumber = user.phoneNumber
-                            vc.address = user.location
-                            vc.arr = arr
-                            UIApplication.shared.keyWindow?.rootViewController = vc
-                        }
-                    })
+        if appDelegate().currentUser?.email != nil {
+            guard let email = appDelegate().currentEmail else { return }
+            
+            firestoreManager.getUsersApplications(email: email, completion: {[weak self] arr in
+                self?.firestoreManager.downloadUserAvatar(email: email, completion: { image in
+                    DispatchQueue.main.async {[weak self] in
+                        let vc: UserProfileViewController = self?.storyboard?.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
+                        
+                        vc.currentImage = image
+                        vc.arr = arr
+                        UIApplication.shared.keyWindow?.rootViewController = vc
+                    }
                 })
+                
             })
         } else if appDelegate().currentBookstoreOwner != nil {
-            fetchActualUserInfo(userType: .bookstore, dataCompletion: { [weak self] res in
-                switch res {
-                case .bookstore(let bookstore):
-                    self?.appDelegate().currentBookstoreOwner = bookstore
-                default:
-                    break
-                }
-                let tabBC: UITabBarController = self?.storyboard?.instantiateViewController(withIdentifier: "LibraryTabBarController") as! UITabBarController
-                let nav = tabBC.viewControllers?[0] as! UINavigationController
-                let nav_1 = tabBC.viewControllers?[3] as! UINavigationController
-                let nav_2 = tabBC.viewControllers?[2] as! UINavigationController
-                
-                let bookstoreVC = nav.topViewController as! LibraryViewController
-                let applicationsVC = nav_1.topViewController as! ApplicationsListViewController
-                let favouritesVC = nav_2.topViewController as! FavouritesViewController
-                
-                guard let owner = self?.appDelegate().currentBookstoreOwner else { return }
-                self?.firestoreManager.getRecommendedBooks(email: owner.email, completion: {[weak self] arr in
-                    self?.firestoreManager.configureRandomBooksOfRandomGenre(email: owner.email, completion: { randArr in
-                        self?.firestoreManager.configureRecentlyAddedBooks(email: owner.email, completion: { recentlyAddedArr in
-                            self?.firestoreManager.getApplications(email: owner.email, completion: { appls in
-                                favouritesVC.recommendedBooksArr = arr
-                                favouritesVC.randomBooksArr = randArr
-                                favouritesVC.recentlyAddedBooksArr = recentlyAddedArr
-                                
-                                applicationsVC.applicationsArr = appls
-                                
-                                bookstoreVC.phoneNumber = owner.phoneNumber
-                                bookstoreVC.address = owner.location
-                                bookstoreVC.bookstoreName = owner.name
-                                bookstoreVC.preference = owner.preference
-                                bookstoreVC.email = owner.email
-                                bookstoreVC.bookstoreOwnersName = owner.ownersName
-                                bookstoreVC.additionalInfoText = owner.additionalInfo
-                                
-                                UIApplication.shared.keyWindow?.rootViewController = tabBC
-                            })
+            let tabBC: UITabBarController = storyboard?.instantiateViewController(withIdentifier: "LibraryTabBarController") as! UITabBarController
+            let nav_1 = tabBC.viewControllers?[3] as! UINavigationController
+            let nav_2 = tabBC.viewControllers?[2] as! UINavigationController
+            
+            let applicationsVC = nav_1.topViewController as! ApplicationsListViewController
+            let favouritesVC = nav_2.topViewController as! FavouritesViewController
+            
+            guard let email = appDelegate().currentEmail else { return }
+            
+            firestoreManager.getRecommendedBooks(email: email, completion: {[weak self] arr in
+                self?.firestoreManager.configureRandomBooksOfRandomGenre(email: email, completion: { randArr in
+                    self?.firestoreManager.configureRecentlyAddedBooks(email: email, completion: { recentlyAddedArr in
+                        self?.firestoreManager.getApplications(email: email, completion: { appls in
+                            favouritesVC.recommendedBooksArr = arr
+                            favouritesVC.randomBooksArr = randArr
+                            favouritesVC.recentlyAddedBooksArr = recentlyAddedArr
+                            
+                            applicationsVC.applicationsArr = appls
+                            
+                            
+                            UIApplication.shared.keyWindow?.rootViewController = tabBC
                         })
                     })
                 })
             })
-        } else {
-            print("Current user nil")
         }
     }
 }

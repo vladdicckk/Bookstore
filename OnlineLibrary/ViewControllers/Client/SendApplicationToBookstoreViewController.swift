@@ -42,7 +42,7 @@ class SendApplicationToBookstoreViewController: UIViewController, UIPickerViewDe
     private func prefillUserInfo() {
         guard let user = appDelegate().currentUser else { print("user data empty")
             return }
-        usersInfoTextView.text = "Name: \(user.firstName) Surname: \(user.lastName) Age: \(user.age) \nE-mail address: \(user.email) \nLocation: \(user.location) \nPhone number: \(user.phoneNumber)"
+        usersInfoTextView.text = "Name: \(user.firstName) Surname: \(user.lastName) Age: \(user.age) \nE-mail: \(user.email) \nLocation: \(user.location) \nPhone number: \(user.phoneNumber)"
     }
     
     private func viewSetup() {
@@ -77,13 +77,87 @@ class SendApplicationToBookstoreViewController: UIViewController, UIPickerViewDe
         present(alert, animated: true, completion: nil)
     }
     
+    private func validateChatUserImage(isCurrentUser: Bool, username: String, name: String, completion: @escaping (UIImage) -> Void) {
+        let emptyImage = UIImage(named: "empty")
+        if isCurrentUser {
+            if let user = appDelegate().currentUser {
+                let path = "images.\(user.username)_Avatar.png"
+                StorageManager.shared.downloadURL(for: path, completion: { res in
+                    switch res {
+                    case .success(let res):
+                        URLSession.shared.dataTask(with: res) { (data, response, error) in
+                            guard let data = data else { return }
+                            DispatchQueue.main.async {
+                                guard let chatUserImage = UIImage(data: data) else { return }
+                                completion(chatUserImage)
+                            }
+                        }.resume()
+                    case .failure(let err):
+                        print(err.localizedDescription)
+                    }
+                })
+            } else if let bookstore = appDelegate().currentBookstoreOwner {
+                let path = "images.\(bookstore.name)_Avatar.png"
+                StorageManager.shared.downloadURL(for: path, completion: { res in
+                    switch res {
+                    case .success(let res):
+                        URLSession.shared.dataTask(with: res) { (data, response, error) in
+                            guard let data = data else { return }
+                            DispatchQueue.main.async {
+                                guard let chatUserImage = UIImage(data: data) else { return }
+                                completion(chatUserImage)
+                            }
+                        }.resume()
+                        
+                    case .failure(let err):
+                        print(err.localizedDescription)
+                    }
+                })
+            }
+        } else {
+            if username != "" {
+                let path = "images.\(username)_Avatar.png"
+                StorageManager.shared.downloadURL(for: path, completion: { res in
+                    switch res {
+                    case .success(let res):
+                        URLSession.shared.dataTask(with: res) { (data, response, error) in
+                            guard let data = data else { return }
+                            DispatchQueue.main.async {
+                                guard let chatUserImage = UIImage(data: data) else { return }
+                                completion(chatUserImage)
+                            }
+                        }.resume()
+                    case .failure(let err):
+                        print(err.localizedDescription)
+                    }
+                })
+            } else {
+                let path = "images.\(name)_Avatar.png"
+                StorageManager.shared.downloadURL(for: path, completion: { res in
+                    switch res {
+                    case .success(let res):
+                        URLSession.shared.dataTask(with: res) { (data, response, error) in
+                            guard let data = data else { return }
+                            DispatchQueue.main.async {
+                                guard let chatUserImage = UIImage(data: data) else { return }
+                                completion(chatUserImage)
+                            }
+                        }.resume()
+                    case .failure(let err):
+                        print(err.localizedDescription)
+                    }
+                })
+            }
+        }
+    }
+    
     // Send application and open chat
     @IBAction func sendApplicationButtonTapped(_ sender: UIButton) {
         guard let bookstore = appDelegate().currentReviewingOwnersProfile else { print("bookstore data empty")
             return }
         guard let book = book else { print("book data empty")
             return }
-        guard let user = appDelegate().currentUser else { print("book data empty")
+        guard let user = appDelegate().currentUser else { print("user data empty")
             return }
         
         guard let email = appDelegate().currentEmail else { print("email empty")
@@ -105,14 +179,20 @@ class SendApplicationToBookstoreViewController: UIViewController, UIPickerViewDe
         let instaniatedNavVC = storyBoard.instantiateViewController(withIdentifier: "ChatNavVC") as? UINavigationController
         
         let safeEmail = FirebaseManager.safeEmail(email: email)
-        FirebaseManager.shared.getAllConversations(for: safeEmail, completion: { res in
+        FirebaseManager.shared.getAllConversations(for: safeEmail, completion: { [weak self] res in
             switch res {
             case .success(let convs):
                 let navVc = instaniatedNavVC
                 let vc = navVc?.topViewController as! ChatsViewController
-                vc.application = application
-                vc.conversations = convs
-                UIApplication.shared.keyWindow?.rootViewController = navVc
+                self?.validateChatUserImage(isCurrentUser: true, username: "", name: "", completion: { userImage in
+                    vc.chatUserImage = userImage
+                    self?.validateChatUserImage(isCurrentUser: false, username: "", name: application.bookstore.name, completion: { bookstoreImage in
+                        vc.chatOtherUserImage = bookstoreImage
+                        vc.application = application
+                        vc.conversations = convs
+                        UIApplication.shared.keyWindow?.rootViewController = navVc
+                    })
+                })
             case .failure(let error):
                 print(error)
             }
@@ -124,7 +204,7 @@ class SendApplicationToBookstoreViewController: UIViewController, UIPickerViewDe
             return }
         guard let book = book else { print("book data empty")
             return }
-        guard let user = appDelegate().currentUser else { print("book data empty")
+        guard let user = appDelegate().currentUser else { print("user data empty")
             return }
         
         let formatter = DateFormatter()

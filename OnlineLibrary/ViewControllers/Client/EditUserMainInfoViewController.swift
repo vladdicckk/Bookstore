@@ -9,7 +9,7 @@ import UIKit
 import FirebaseFirestore
 
 protocol MainInfoSendingDelegateProtocol {
-    func sendMainInfoDataToFirstViewController(phoneNumber: String, location: String, username: String)
+    func sendMainInfoDataToFirstViewController(phoneNumber: String, location: String)
 }
 
 class EditUserMainInfoViewController: UIViewController {
@@ -17,7 +17,6 @@ class EditUserMainInfoViewController: UIViewController {
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var editPhoneNumberTextField: UITextField!
     @IBOutlet weak var editAddressTextField: UITextField!
-    @IBOutlet weak var editUsernameTextField: UITextField!
     
     // MARK: Parameters
     let firestoreManager = FirestoreManager()
@@ -32,7 +31,6 @@ class EditUserMainInfoViewController: UIViewController {
         super.viewDidLoad()
         editPhoneNumberTextField.text = oldPhoneNumber
         editAddressTextField.text = oldAddress
-        editUsernameTextField.text = oldUsername
         mainViewProperties()
     }
     
@@ -80,25 +78,10 @@ class EditUserMainInfoViewController: UIViewController {
         if delegate != nil {
             let phoneNumber: String  = editPhoneNumberTextField.text ?? ""
             let location: String  = editAddressTextField.text ?? ""
-            let username: String  = editUsernameTextField.text ?? ""
-            firestoreManager.checkForUsernameExisting(username: username, {[weak self] exists in
-                if username != self?.oldUsername {
-                    if !exists {
-                        self?.firestoreManager.editUserData(phoneNumber: phoneNumber, address: location, email: userEmail, username: username)
-                        
-                        self?.delegate?.sendMainInfoDataToFirstViewController(phoneNumber: phoneNumber, location: location, username: username)
-                        self?.dismiss(animated: true, completion: nil)
-                    } else {
-                        self?.showAlert(message: "Username already exists")
-                        self?.dismiss(animated: true)
-                    }
-                } else {
-                    self?.firestoreManager.editUserData(phoneNumber: phoneNumber, address: location, email: userEmail, username: username)
-                    
-                    self?.delegate?.sendMainInfoDataToFirstViewController(phoneNumber: phoneNumber, location: location, username: username)
-                    self?.dismiss(animated: true, completion: nil)
-                }
-            })
+            firestoreManager.editUserData(phoneNumber: phoneNumber, address: location, email: userEmail)
+            
+            delegate?.sendMainInfoDataToFirstViewController(phoneNumber: phoneNumber, location: location)
+            dismiss(animated: true, completion: nil)
         }
     }
 }

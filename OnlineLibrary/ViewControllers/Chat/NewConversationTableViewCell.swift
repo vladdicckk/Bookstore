@@ -39,7 +39,6 @@ class NewConversationTableViewCell: UITableViewCell {
         contentView.frame = CGRect(x: 0, y: 0, width: 350, height: 100)
         userImageView.frame = CGRect(x: 10, y: 0, width: 100, height: 100)
         userNameLabel.frame = CGRect(x: Int(userImageView.right) + 10, y: 10, width: Int(contentView.width - 20 - userImageView.width), height: Int((contentView.height - 20)))
-        
     }
     
     required init?(coder: NSCoder) {

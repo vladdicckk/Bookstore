@@ -28,7 +28,10 @@ class FavouritesViewController: UIViewController, RecommendedBooksArr {
         super.viewDidLoad()
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.clockwise"), style: .done, target: self, action: #selector(refreshData))
-        self.title = "Favourites"
+        title = "Favourites"
+        let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
         mainView.backgroundColor = UIColor(patternImage: UIImage(named: "libraryBackground")!)
         setupCollectionView()
         setupMainView()

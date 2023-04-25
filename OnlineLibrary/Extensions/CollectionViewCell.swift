@@ -19,6 +19,6 @@ extension UICollectionViewCell {
             blurView.clipsToBounds = true
             return blurView
         }()
-        return  backgroundBlur
+        return backgroundBlur
     }
 }

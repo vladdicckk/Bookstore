@@ -53,13 +53,11 @@ class RandomGenreCollectionViewCell: UICollectionViewCell, BookConfigurable {
     }
     
     private func style() {
-        
-        
         nameLabel.font = UIFont.preferredFont(forTextStyle: .headline)
-        nameLabel.textColor = .label
-        
         subtitleLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        subtitleLabel.textColor = .secondaryLabel
+        
+        subtitleLabel.textColor = .black
+        nameLabel.textColor = .black
     }
     
     func configure(with book: BookInfo) {

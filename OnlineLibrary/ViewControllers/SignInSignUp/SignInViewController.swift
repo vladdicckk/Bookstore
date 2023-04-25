@@ -41,9 +41,22 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         loginTextField.text = "email@email.coms"
         //"email@email.coms""myUsername"
         passwordTextField.text = "testBookstor"
-        
+        passwordTextField.delegate = self
+        upperView.backgroundColor = UIColor(red: 198/255, green: 198/255, blue: 200/255, alpha: 1)
         upperView.setCorner(radius: 16)
         lowerView.setCorner(radius: 16)
+        //Looks for single or multiple taps.
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        
+        //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
+        //tap.cancelsTouchesInView = false
+        
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
     // MARK: - Private and public functions
@@ -55,34 +68,11 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         present(alert, animated: true, completion: nil)
     }
     
-    // MARK: - USING ONLY FOR DEVELOPMENT, REMOVE ON RELEASE!
-    private func signUp(email: String, password: String, completion: @escaping (_ success: Bool) -> Void) {
-        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: { res, err in
-            guard err == nil, res != nil else {
-                print("Error sign up: \(err?.localizedDescription ?? "")")
-                completion(false)
-                return
-            }
-            completion(true)
-        })
-    }
-    
     private func singIn(email: String, password: String, completion: @escaping (_ success: Bool) -> Void) {
-        FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password, completion: { [weak self] resSignIn, err in
-            guard let strongSelf = self else {
-                completion(false)
-                print("Self is unavailable")
-                return
-            }
+        FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password, completion: { resSignIn, err in
             guard err == nil, resSignIn != nil else {
                 print("Error sign in: \(err?.localizedDescription ?? "")")
-                strongSelf.signUp(email: email, password: password, completion: { success in
-                    if success {
-                        completion(true)
-                    } else {
-                        completion(false)
-                    }
-                })
+                completion(false)
                 return
             }
             completion(true)
@@ -102,16 +92,10 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
                             if success {
                                 FirebaseManager.shared.userExists(with: bookstoreData.email, completion: { [weak self] exists in
                                     if !exists {
-                                        let userInfo = ChatAppUser(name: bookstoreData.ownersName, surname: "", email: bookstoreData.email)
-                                        FirebaseManager.shared.insertUser(with: userInfo, completion: { success in
-                                            if success {
-                                                self?.appDelegate().currentEmail = bookstoreData.email
-                                                self?.dismiss(animated: false)
-                                            }
-                                        })
                                     } else {
                                         self?.appDelegate().currentEmail = bookstoreData.email
-                                        self?.dismiss(animated: false)
+                                        guard let navVc = self?.storyboard?.instantiateViewController(withIdentifier: "navController") as? UINavigationController else { return }
+                                        UIApplication.shared.keyWindow?.rootViewController = navVc
                                     }
                                 })
                             } else {
@@ -133,16 +117,10 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
                                     if success {
                                         FirebaseManager.shared.userExists(with: bookstoreData_2.email, completion: { [weak self] exists in
                                             if !exists {
-                                                let userInfo = ChatAppUser(name: bookstoreData_2.ownersName, surname: "", email: bookstoreData_2.email)
-                                                FirebaseManager.shared.insertUser(with: userInfo, completion: { success in
-                                                    if success {
-                                                        self?.appDelegate().currentEmail = bookstoreData_2.email
-                                                        self?.dismiss(animated: false)
-                                                    }
-                                                })
                                             } else {
                                                 self?.appDelegate().currentEmail = bookstoreData_2.email
-                                                self?.dismiss(animated: false)
+                                                guard let navVc = self?.storyboard?.instantiateViewController(withIdentifier: "navController") as? UINavigationController else { return }
+                                                UIApplication.shared.keyWindow?.rootViewController = navVc
                                             }
                                         })
                                     } else {
@@ -164,16 +142,10 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
                                             if success {
                                                 FirebaseManager.shared.userExists(with: userData.email, completion: { [weak self] exists in
                                                     if !exists {
-                                                        let userInfo = ChatAppUser(name: userData.firstName, surname: userData.lastName, email: userData.email)
-                                                        FirebaseManager.shared.insertUser(with: userInfo, completion: { success in
-                                                            if success {
-                                                                self?.appDelegate().currentEmail = userData.email
-                                                                self?.dismiss(animated: false)
-                                                            }
-                                                        })
                                                     } else {
                                                         self?.appDelegate().currentEmail = userData.email
-                                                        self?.dismiss(animated: false)
+                                                        guard let navVc = self?.storyboard?.instantiateViewController(withIdentifier: "navController") as? UINavigationController else { return }
+                                                        UIApplication.shared.keyWindow?.rootViewController = navVc
                                                     }
                                                 })
                                             } else {
@@ -195,16 +167,10 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
                                                     if success {
                                                         FirebaseManager.shared.userExists(with: userData_2.email, completion: { [weak self] exists in
                                                             if !exists {
-                                                                let userInfo = ChatAppUser(name: userData_2.firstName, surname: userData_2.lastName, email: userData_2.email)
-                                                                FirebaseManager.shared.insertUser(with: userInfo, completion: { success in
-                                                                    if success {
-                                                                        self?.appDelegate().currentEmail = userData_2.email
-                                                                        self?.dismiss(animated: false)
-                                                                    }
-                                                                })
                                                             } else {
                                                                 self?.appDelegate().currentEmail = userData_2.email
-                                                                self?.dismiss(animated: false)
+                                                                guard let navVc = self?.storyboard?.instantiateViewController(withIdentifier: "navController") as? UINavigationController else { return }
+                                                                UIApplication.shared.keyWindow?.rootViewController = navVc
                                                             }
                                                         })
                                                     } else {
@@ -235,6 +201,10 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
             signInButton.isEnabled = true
         }
         return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.resignFirstResponder()
     }
 }
 

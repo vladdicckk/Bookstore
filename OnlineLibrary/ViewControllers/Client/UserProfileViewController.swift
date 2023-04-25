@@ -11,14 +11,11 @@ import FirebaseFirestoreSwift
 import FirebaseStorage
 import FirebaseAuth
 
-class UserProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MainInfoSendingDelegateProtocol, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+class UserProfileViewController: UIViewController, MainInfoSendingDelegateProtocol, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     // MARK: Outlets
-    @IBOutlet weak var applicationsView: UIView!
     @IBOutlet weak var upperView: UIView!
     @IBOutlet weak var editMainInfoButton: UIButton!
-    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var userInfoView: UIView!
-    @IBOutlet weak var tradingHistoryLabel: UILabel!
     @IBOutlet weak var greetingLabel: UILabel!
     @IBOutlet weak var usernameInfoLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
@@ -28,7 +25,6 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var ageLabel: UILabel!
     @IBOutlet weak var usersImageView: UIImageView!
     @IBOutlet weak var logoutButton: UIButton!
-    
     @IBOutlet weak var openChatsButton: UIButton!
     
     // MARK: Properties
@@ -49,13 +45,36 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     // MARK: Lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TradingHistoryCell")
+        if appDelegate().currentReviewingUsersProfile == nil {
+            DispatchQueue.main.async {
+                self.fetchActualUserInfo(dataCompletion: { [weak self] res in
+                    self?.appDelegate().currentUser = res
+                    self?.firstName = res.firstName
+                    self?.lastName = res.lastName
+                    self?.age = res.age
+                    self?.email = res.email
+                    self?.phoneNumber = res.phoneNumber
+                    self?.username = res.username
+                    self?.address = res.location
+                    self?.userInfoConfiguration()
+                })
+            }
+        } else {
+            userInfoConfiguration()
+        }
+        
         navigationController?.isNavigationBarHidden = true
         imageViewProperties()
-        userInfoConfiguration()
         viewProperties()
-
-        firestoreManager.getUserAvatarURL(email: self.email!, completion: {[weak self]  url in
+        NSLayoutConstraint.activate([upperView.widthAnchor.constraint(equalToConstant: view.width/1.75)])
+        var emailForImageDownloading = "."
+        if appDelegate().currentReviewingUsersProfile != nil {
+            emailForImageDownloading = email ?? "."
+        } else {
+            emailForImageDownloading = appDelegate().currentEmail ?? "."
+        }
+        
+        firestoreManager.getUserAvatarURL(email: emailForImageDownloading, completion: {[weak self] url in
             DispatchQueue.global().async {
                 // Fetch Image Data
                 if let data = try? Data(contentsOf: url) {
@@ -88,8 +107,17 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
      }
     
     // MARK: Private and public functions
+    private func fetchActualUserInfo(dataCompletion: @escaping (User) -> Void) {
+        guard let email = appDelegate().currentEmail else { return }
+        firestoreManager.getUserInfo(email: email, completion: { user in
+            dataCompletion(user)
+        })
+    }
+    
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
-        importPicture()
+        if appDelegate().currentReviewingUsersProfile == nil {
+            importPicture()
+        }
     }
     
     @objc func importPicture() {
@@ -101,13 +129,11 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     
     private func imageViewProperties() {
         usersImageView.layer.borderWidth = 2.5
-        usersImageView.layer.masksToBounds = false
         usersImageView.layer.borderColor = UIColor.gray.cgColor
-        usersImageView.layer.cornerRadius = usersImageView.frame.height/2
-        usersImageView.sizeToFit()
-        usersImageView.clipsToBounds = true
-        usersImageView.contentMode = .center
         usersImageView.backgroundColor = .gray
+        usersImageView.contentMode = .scaleAspectFill
+        usersImageView.layer.cornerRadius = 121.5/2
+        usersImageView.layer.masksToBounds = true
     }
     
     func setProfileImage(imageToResize: UIImage, onImageView: UIImageView) -> UIImage {
@@ -132,7 +158,10 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     private func userInfoConfiguration() {
-        greetingLabel.text = "Hello, \(appDelegate().currentUser?.firstName ?? "")"
+        greetingLabel.text = "Hello, \(appDelegate().currentUser?.firstName ?? appDelegate().currentBookstoreOwner?.ownersName ?? "")"
+        if greetingLabel.text == "Hello, " {
+            greetingLabel.text = "User profile"
+        }
         usernameInfoLabel.text = username
         emailLabel.text = email
         addressLabel.text = address
@@ -141,10 +170,9 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         ageLabel.text = "\(age ?? 0)"
     }
 
-    func sendMainInfoDataToFirstViewController(phoneNumber: String, location: String, username: String) {
+    func sendMainInfoDataToFirstViewController(phoneNumber: String, location: String) {
         phoneNumberLabel.text = phoneNumber
         addressLabel.text = location
-        usernameInfoLabel.text = username
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -153,7 +181,6 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
             editProfileInfoVC.userEmail = email
             editProfileInfoVC.oldPhoneNumber = phoneNumberLabel.text
             editProfileInfoVC.oldAddress = addressLabel.text
-            editProfileInfoVC.oldUsername = usernameInfoLabel.text
             editProfileInfoVC.delegate = self
         }
     }
@@ -165,13 +192,11 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         
         upperViewProperties()
         greetingLabelProperties()
-        tradingHistoryLabelProperties()
-        applicationsViewProperties()
     }
 
     private func createLightBlurEffect(alpha: Double, view: UIView, clipsToBounds: Bool) {
         let backgroundBlur: UIVisualEffectView = {
-            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.regular)
+            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
             let blurView = UIVisualEffectView(effect: blurEffect)
             blurView.alpha = alpha
             blurView.translatesAutoresizingMaskIntoConstraints = false
@@ -192,13 +217,6 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         ])
     }
     
-    private func applicationsViewProperties() {
-        applicationsView.layer.cornerRadius = 16
-        applicationsView.backgroundColor = .clear
-         
-        createLightBlurEffect(alpha: 0.925, view: applicationsView, clipsToBounds: true)
-    }
-    
     private func upperViewProperties() {
         upperView.layer.cornerRadius = 16
         upperView.backgroundColor = .clear
@@ -210,18 +228,16 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         greetingLabel.font = UIFont.boldSystemFont(ofSize: 25)
         greetingLabel.textColor = UIColor(red: 0.3, green: 0.1, blue: 0.4, alpha: 1)
     }
-
-    private func tradingHistoryLabelProperties() {
-        tradingHistoryLabel.font = UIFont.boldSystemFont(ofSize: 27)
-        tradingHistoryLabel.textColor = UIColor(red: 0.4, green: 0.15, blue: 0.5, alpha: 1)
-    }
     
     // MARK: - Actions
-    
     @IBAction func openChatsButtonTapped(_ sender: Any) {
+        appDelegate().currentReviewingUsersProfile = nil
+        
         let chatStoryboard = UIStoryboard(name: "Chat", bundle: nil)
-        let vc: UINavigationController = chatStoryboard.instantiateViewController(withIdentifier: "ChatNavVC") as! UINavigationController
-        UIApplication.shared.keyWindow?.rootViewController = vc
+        let navVc: UINavigationController = chatStoryboard.instantiateViewController(withIdentifier: "ChatNavVC") as! UINavigationController
+        let vc = navVc.topViewController as! ChatsViewController
+        vc.chatUserImage = usersImageView.image
+        UIApplication.shared.keyWindow?.rootViewController = navVc
     }
     
     @IBAction func logoutButtonTapped(_ sender: Any) {
@@ -247,71 +263,9 @@ class UserProfileViewController: UIViewController, UITableViewDelegate, UITableV
         UIApplication.shared.keyWindow?.rootViewController = vc
     }
     
-    // MARK: UITableViewDataSource & UITableViewDelegate functions
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        arr?.count ?? 0
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TradingHistoryCell", for: indexPath)
-        var content = cell.defaultContentConfiguration()
-        guard let arr = arr else { return cell }
-        content.textProperties.color = UIColor(red: 0.3, green: 0.1, blue: 0.2, alpha: 1)
-        content.textProperties.font = UIFont.boldSystemFont(ofSize: 17)
-        content.text = "Book title: \(arr[indexPath.row].book.title), Author: \(arr[indexPath.row].book.author)"
-        if arr[indexPath.row].type != "" {
-            if arr[indexPath.row].status {
-                content.secondaryText = "\(arr[indexPath.row].type). Status: Success"
-            } else {
-                content.secondaryText = "\(arr[indexPath.row].type). Status: Failure"
-            }
-        } else {
-            if arr[indexPath.row].status {
-                content.secondaryText = "Status: Success"
-            } else {
-                content.secondaryText = "Status: Failure"
-            }
-        }
-        
-        let backgroundTableViewBlur: UIVisualEffectView = {
-            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
-            let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 0.8
-            blurView.translatesAutoresizingMaskIntoConstraints = false
-            blurView.layer.cornerRadius = 16
-            blurView.backgroundColor = .clear
-            blurView.clipsToBounds = true
-            return blurView
-        }()
-        
-        tableView.backgroundView = backgroundTableViewBlur
-        
-        let backgroundBlur: UIVisualEffectView = {
-            let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
-            let blurView = UIVisualEffectView(effect: blurEffect)
-            blurView.alpha = 1
-            blurView.translatesAutoresizingMaskIntoConstraints = false
-            blurView.layer.cornerRadius = 16
-            blurView.backgroundColor = .clear
-            blurView.clipsToBounds = true
-            return blurView
-        }()
-        
-        cell.backgroundView = backgroundBlur
-        cell.selectedBackgroundView = cell.backgroundView
-        cell.selectedBackgroundView?.backgroundColor = .clear
-        cell.selectedBackgroundView?.layer.cornerRadius = 16
-        cell.layer.cornerRadius = 16
-        cell.backgroundColor = .clear
-        cell.contentConfiguration = content
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let arr = arr else { return }
-        let vc: ApplicationViewController = storyboard?.instantiateViewController(withIdentifier: "ApplicationViewController") as! ApplicationViewController
-        vc.application = arr[indexPath.row]
+    @IBAction func showApplications(_ sender: Any) {
+        let vc = storyboard?.instantiateViewController(withIdentifier: "UserTradingHistoryViewController") as! UserTradingHistoryViewController
+        vc.arr = arr
         present(vc, animated: true)
     }
     

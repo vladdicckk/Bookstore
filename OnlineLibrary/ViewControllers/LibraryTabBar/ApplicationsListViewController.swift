@@ -15,18 +15,34 @@ class ApplicationsListViewController: UIViewController, UITableViewDelegate, UIT
     
     // MARK: Parameters
     let db = Firestore.firestore()
+    var tap2: UITapGestureRecognizer?
     var applicationsArr: [ApplicationMainInfo]?
     var applicationsArrTemp: [ApplicationMainInfo]?
     var firestoreManager = FirestoreManager()
+    var currentRow = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableViewProperties()
         searchBarProperties()
         applicationsArrTemp = applicationsArr
+        searchBar.change(textColor: .black)
+        tableView.keyboardDismissMode = UIScrollView.KeyboardDismissMode.onDrag
         view.backgroundColor = UIColor(patternImage: UIImage(named: "libraryBackground")!)
         navigationController?.navigationBar.prefersLargeTitles = true
-        self.title = "Applications"
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        title = "Applications"
+        let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+    }
+    
+    @objc func dismisskeyboardOrAndOpenApplicationVC() {
+        view.endEditing(true)
+    }
+    
+    func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
+        view.endEditing(true)
     }
     
     private func searchBarProperties() {
@@ -55,9 +71,9 @@ class ApplicationsListViewController: UIViewController, UITableViewDelegate, UIT
         }
         searchBar.addSubview(backgroundBlur)
         searchBar.sendSubviewToBack(backgroundBlur)
-        backgroundBlur.translatesAutoresizingMaskIntoConstraints = false
         searchBar.layer.cornerRadius = 15
-
+        
+        backgroundBlur.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             backgroundBlur.topAnchor.constraint(equalTo: searchBar.topAnchor, constant: 0),
@@ -65,8 +81,8 @@ class ApplicationsListViewController: UIViewController, UITableViewDelegate, UIT
             backgroundBlur.trailingAnchor.constraint(equalTo: searchBar.trailingAnchor, constant: 0),
             backgroundBlur.bottomAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0)
         ])
-        searchBar.backgroundColor = .clear
         
+        searchBar.backgroundColor = .clear
     }
     
     private func tableViewProperties() {
@@ -106,6 +122,7 @@ class ApplicationsListViewController: UIViewController, UITableViewDelegate, UIT
         var content = cell.defaultContentConfiguration()
         content.textProperties.font = .boldSystemFont(ofSize: 22)
         content.textProperties.color = UIColor(red: 0.3, green: 0.1, blue: 0.2, alpha: 1)
+        content.secondaryTextProperties.color = .black
         
         cell.backgroundView = backgroundBlur
         cell.selectedBackgroundView = cell.backgroundView
@@ -125,8 +142,10 @@ class ApplicationsListViewController: UIViewController, UITableViewDelegate, UIT
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let applicationsArr = applicationsArr else { return }
-        let vc: ApplicationViewController = self.storyboard?.instantiateViewController(withIdentifier: "ApplicationViewController") as! ApplicationViewController
+        view.endEditing(true)
+        let vc: ApplicationViewController = storyboard?.instantiateViewController(withIdentifier: "ApplicationViewController") as! ApplicationViewController
         vc.application = applicationsArr[indexPath.row]
+        vc.modalPresentationStyle = .overFullScreen
         present(vc, animated: true)
     }
     
@@ -156,3 +175,14 @@ class ApplicationsListViewController: UIViewController, UITableViewDelegate, UIT
         }
     }
 }
+extension UISearchBar {
+
+func change(textColor : UIColor?) {
+
+    for view : UIView in (self.subviews[0]).subviews {
+
+        if let textField = view as? UITextField {
+            textField.textColor = textColor
+        }
+    }
+} }

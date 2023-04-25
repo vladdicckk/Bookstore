@@ -21,34 +21,42 @@ class ApplicationViewController: UIViewController {
     @IBOutlet weak var successLabel: UILabel!
     @IBOutlet weak var switchStatus: UISwitch!
     @IBOutlet weak var failureLabel: UILabel!
-  
-    
     
     // MARK: Parameters
     var application: ApplicationMainInfo?
     var db = Firestore.firestore()
     let firestoreManager = FirestoreManager()
+    var isTextViewMustBeHidden: Bool?
     
     // MARK: Lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        if appDelegate().currentBookstoreOwner == nil || appDelegate().currentUser != nil {
+        view.backgroundColor = .clear
+        if appDelegate().currentReviewingUsersProfile != nil {
             successLabel.isHidden = true
             failureLabel.isHidden = true
             switchStatus.isHidden = true
         }
+        
+        if isTextViewMustBeHidden ?? false {
+            NSLayoutConstraint.activate([
+                mainView.heightAnchor.constraint(equalToConstant: mainInfoView.height + 50),
+                view.heightAnchor.constraint(equalToConstant: mainInfoView.height + 50)
+            ])
+            additionalInfoTextView.isHidden = true
+        }
+        
         additionalInfoTextView.isEditable = false
         configureApplicationInfo()
         setupMainView()
         setupTextView()
         setupMainInfoView()
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(dismissOnPan))
+        mainInfoView.addGestureRecognizer(pan)
     }
     
-    override func updateViewConstraints() {
-        view.frame.size.height = view.frame.size.height - 250
-        view.frame.origin.y = 150
-        view.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 10.0)
-        super.updateViewConstraints()
+    @objc func dismissOnPan() {
+        dismiss(animated: true)
     }
     
     // MARK: Private functions
@@ -56,7 +64,6 @@ class ApplicationViewController: UIViewController {
         additionalInfoTextView.text = "\(application?.additionalInfo ?? "") \nUserInfo: \(application?.userInfo ?? "")"
         bookstoreNameLabel.text = application?.bookstoreName
         dateLabel.text = "Date: \(application?.date ?? "")"
-        
         
         guard let status = application?.status else { return }
         

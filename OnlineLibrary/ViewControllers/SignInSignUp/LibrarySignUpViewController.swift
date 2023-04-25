@@ -31,7 +31,6 @@ class LibrarySignUpViewController: UIViewController, UIPickerViewDelegate, UIPic
     var preferences: [String] = ["Trading","Exchanging","Both"]
     var selectedIndex: Int = 0
     
-    
     // MARK: Lifecycle funcitons
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +39,16 @@ class LibrarySignUpViewController: UIViewController, UIPickerViewDelegate, UIPic
         lowerView.setCorner(radius: 16)
         tradingPreferenceTextField.text = "Trading"
         phoneNumberTextField.delegate = self
+        //Looks for single or multiple taps.
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        view.addGestureRecognizer(tap)
+    }
+    
+    //Calls this function when the tap is recognized.
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
     // MARK: Private functions
@@ -85,7 +94,7 @@ class LibrarySignUpViewController: UIViewController, UIPickerViewDelegate, UIPic
         rolesPicker = UIPickerView.init()
         rolesPicker.delegate = self
         rolesPicker.dataSource = self
-        rolesPicker.backgroundColor = UIColor.white
+        rolesPicker.backgroundColor = .systemBackground
         rolesPicker.autoresizingMask = .flexibleWidth
         rolesPicker.contentMode = .center
         rolesPicker.frame = CGRect.init(x: 0.0, y: UIScreen.main.bounds.size.height - 300, width: UIScreen.main.bounds.size.width, height: 300)

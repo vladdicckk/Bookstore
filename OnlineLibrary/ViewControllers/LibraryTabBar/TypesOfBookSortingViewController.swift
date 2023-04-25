@@ -48,9 +48,9 @@ class TypesOfBookSortingViewController: UIViewController, UITableViewDelegate, U
         }()
         
         tableView.backgroundColor = .clear
-        backgroundBlur.frame = self.tableView.bounds
-        self.tableView.backgroundView = backgroundBlur
+        tableView.backgroundView = backgroundBlur
         
+        backgroundBlur.frame = tableView.bounds
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -64,6 +64,11 @@ class TypesOfBookSortingViewController: UIViewController, UITableViewDelegate, U
         content.textProperties.color = UIColor(red: 0.3, green: 0.1, blue: 0.2, alpha: 1)
         content.textProperties.font = .boldSystemFont(ofSize: 18)
         content.text = sortTypes[indexPath.row]
+        guard let tabBar = tabBarController?.tabBar else { return cell }
+        NSLayoutConstraint.activate([
+            tableView.heightAnchor.constraint(equalToConstant: cell.height * 5),
+            tableView.bottomAnchor.constraint(equalTo: tabBar.topAnchor)
+        ])
         
         let backgroundBlur: UIVisualEffectView = {
             let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
@@ -152,15 +157,5 @@ class TypesOfBookSortingViewController: UIViewController, UITableViewDelegate, U
                 }
             })
         }
-        
     }
 }
-//if let containerView = additionalInfoTextView.superview {
-//            let gradient = CAGradientLayer(layer: containerView.layer)
-//            gradient.frame = containerView.bounds
-//            gradient.colors = [UIColor.clear.cgColor, UIColor.blue.cgColor]
-//            //the line above is update for swift 5
-//            gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
-//            gradient.endPoint = CGPoint(x: 0.0, y: 0.85)
-//            containerView.layer.mask = gradient
-//        }

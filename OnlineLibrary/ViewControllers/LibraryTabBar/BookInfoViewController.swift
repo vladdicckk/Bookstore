@@ -36,13 +36,18 @@ class BookInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(dismissOnPan))
+        bookInfoView.addGestureRecognizer(pan)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismisskeyboard))
+        bookInfoView.addGestureRecognizer(tap)
+        
         securityProperties()
         viewProperties()
         configureBookInfo()
     }
     
     // MARK: Private and public functions
-    func securityProperties() {
+    private func securityProperties() {
         if appDelegate().currentBookstoreOwner == nil {
             additionalInfoTextView.isEditable = false
         }
@@ -56,7 +61,15 @@ class BookInfoViewController: UIViewController {
         }
     }
     
-    func configureBookInfo() {
+    @objc func dismisskeyboard() {
+        additionalInfoTextView.resignFirstResponder()
+    }
+    
+    @objc func dismissOnPan() {
+        dismiss(animated: true)
+    }
+    
+    private func configureBookInfo() {
         bookTitleLabel.textColor = UIColor(red: 255/255, green: 238/255, blue: 169/255, alpha: 1)
         authorLabel.textColor = UIColor(red: 255/255, green: 238/255, blue: 169/255, alpha: 1)
         publishYearLabel.textColor = UIColor(red: 255/255, green: 238/255, blue: 169/255, alpha: 1)
@@ -173,12 +186,6 @@ class BookInfoViewController: UIViewController {
         createDarkBlurEffect(alpha: 0.75, view: bookInfoView)
     }
     
-    override func updateViewConstraints() {
-        self.view.frame.size.height = UIScreen.main.bounds.height - 150
-        self.view.frame.origin.y = 150
-        self.view.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 10.0)
-        super.updateViewConstraints()
-    }
     @IBAction func openApplicationCreatingButtonTaapped(_ sender: Any) {
         let vc: SendApplicationToBookstoreViewController = storyboard?.instantiateViewController(withIdentifier: "SendApplicationToBookstoreViewController") as! SendApplicationToBookstoreViewController
         vc.modalTransitionStyle = .coverVertical

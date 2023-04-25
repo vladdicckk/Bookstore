@@ -39,12 +39,14 @@ class SectionHeader: UICollectionReusableView {
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10)
         ])
+        
         stackView.setCustomSpacing(100, after: separator)
+        
         style()
     }
     
     private func style() {
-        titleLabel.textColor = .label
+        titleLabel.textColor = UIColor(red: 0.3, green: 0.1, blue: 0.2, alpha: 1)
         titleLabel.font = UIFontMetrics.default.scaledFont(for: UIFont.systemFont(ofSize: 22, weight: .bold))
         subtitleLabel.font = UIFont.systemFont(ofSize: 13)
         subtitleLabel.textColor = .black
