@@ -56,7 +56,16 @@ class UserProfileViewController: UIViewController, MainInfoSendingDelegateProtoc
                     self?.phoneNumber = res.phoneNumber
                     self?.username = res.username
                     self?.address = res.location
-                    self?.userInfoConfiguration()
+                    self?.greetingLabel.text = "Hello, \(self?.appDelegate().currentUser?.firstName ?? self?.appDelegate().currentBookstoreOwner?.ownersName ?? "")"
+                    if self?.greetingLabel.text == "Hello, " {
+                        self?.greetingLabel.text = "User profile"
+                    }
+                    self?.usernameInfoLabel.text = self?.username
+                    self?.emailLabel.text = self?.email
+                    self?.addressLabel.text = self?.address
+                    self?.phoneNumberLabel.text = self?.phoneNumber
+                    self?.firstAndLastNamesLabel.text = "\(self?.firstName ?? "") \(self?.lastName ?? "")"
+                    self?.ageLabel.text = "\(self?.age ?? 0)"
                 })
             }
         } else {
