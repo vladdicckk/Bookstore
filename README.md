@@ -21,7 +21,6 @@ func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = ChatViewController(with: model.otherUserEmail, id: model.id)
         vc.title = model.name
         vc.navigationItem.largeTitleDisplayMode = .never
-        
         let otherUserEmail = model.otherUserEmail
         var newOtherUserEmail = ""
         var counter = 0
@@ -93,6 +92,7 @@ func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     }
 
 // download current and other sender profile images
+
 private func validateUserImage(completion: @escaping (UIImage) -> Void) {
         if let user = appDelegate().currentUser {
             let path = "images.\(user.username)_Avatar.png"
@@ -122,7 +122,6 @@ private func validateUserImage(completion: @escaping (UIImage) -> Void) {
                             completion(chatUserImage)
                         }
                     }.resume()
-                    
                 case .failure(let err):
                     print(err.localizedDescription)
                 }
@@ -131,6 +130,7 @@ private func validateUserImage(completion: @escaping (UIImage) -> Void) {
     }
 
 // check is message from current sender or from other user
+
 func isFromCurrentSender(message: MessageType) -> Bool {
         if FirebaseManager.safeEmail(email: message.sender.senderId) == otherUserEmail {
             return false
@@ -140,6 +140,7 @@ func isFromCurrentSender(message: MessageType) -> Bool {
     }
 
 // configuring user avatar
+
 func configureAvatarView(_ avatarView: MessageKit.AvatarView, for message: MessageKit.MessageType, at indexPath: IndexPath, in messagesCollectionView: MessageKit.MessagesCollectionView) {
         avatarImageCounter += 1
         guard avatarImageCounter <= 20 else { return }
