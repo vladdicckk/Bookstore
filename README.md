@@ -14,8 +14,6 @@
 
 # ВИХІДНІ КОДИ
 
-// set required data and open chat with user
-
 func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let model = conversations?[indexPath.row] else { return }
         let vc = ChatViewController(with: model.otherUserEmail, id: model.id)
