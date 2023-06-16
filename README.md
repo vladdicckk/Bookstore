@@ -14,6 +14,8 @@
 
 # ВИХІДНІ КОДИ
 
+Set required data and open chat with user
+```
 func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let model = conversations?[indexPath.row] else { return }
         let vc = ChatViewController(with: model.otherUserEmail, id: model.id)
@@ -88,9 +90,9 @@ func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             }
         })
     }
-
+```
 // download current and other sender profile images
-
+```
 private func validateUserImage(completion: @escaping (UIImage) -> Void) {
         if let user = appDelegate().currentUser {
             let path = "images.\(user.username)_Avatar.png"
@@ -126,19 +128,19 @@ private func validateUserImage(completion: @escaping (UIImage) -> Void) {
             })
         }
     }
-
+```
 // check is message from current sender or from other user
-
+```
 func isFromCurrentSender(message: MessageType) -> Bool {
         if FirebaseManager.safeEmail(email: message.sender.senderId) == otherUserEmail {
             return false
         } else {
             return true
         }
-    }
-
+}
+```
 // configuring user avatar
-
+```
 func configureAvatarView(_ avatarView: MessageKit.AvatarView, for message: MessageKit.MessageType, at indexPath: IndexPath, in messagesCollectionView: MessageKit.MessagesCollectionView) {
         avatarImageCounter += 1
         guard avatarImageCounter <= 20 else { return }
@@ -147,5 +149,5 @@ func configureAvatarView(_ avatarView: MessageKit.AvatarView, for message: Messa
         } else {
             avatarView.image = chatOtherUserImage
         }
-    }
-
+}
+```
