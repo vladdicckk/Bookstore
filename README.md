@@ -91,7 +91,7 @@ func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         })
     }
 ```
-// download current and other sender profile images
+Download current and other sender profile images
 ```
 private func validateUserImage(completion: @escaping (UIImage) -> Void) {
         if let user = appDelegate().currentUser {
@@ -129,7 +129,7 @@ private func validateUserImage(completion: @escaping (UIImage) -> Void) {
         }
     }
 ```
-// check is message from current sender or from other user
+Check is message from current sender or from other user
 ```
 func isFromCurrentSender(message: MessageType) -> Bool {
         if FirebaseManager.safeEmail(email: message.sender.senderId) == otherUserEmail {
@@ -139,7 +139,7 @@ func isFromCurrentSender(message: MessageType) -> Bool {
         }
 }
 ```
-// configuring user avatar
+Configuring user avatar
 ```
 func configureAvatarView(_ avatarView: MessageKit.AvatarView, for message: MessageKit.MessageType, at indexPath: IndexPath, in messagesCollectionView: MessageKit.MessagesCollectionView) {
         avatarImageCounter += 1
