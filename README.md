@@ -1,19 +1,19 @@
 # My bookstore
-«Кваліфікаційна робота на підтвердження ступеня фахового молодшого бакалавра (ВСП «ППФК НТУ «ХПІ»).
-Мобільний додаток є АІС, в якому буде реалізовано адміністративна та користувацька частина. В користувацькій частині має бути можливість пошуку книг                   
-та книжкових магазинів за фільтром, вибір типу сортування книг,  надсилання заявки на покупку чи обмін книги, редагування інформації на своєму профілі. В адміністра- 
-тивній частині має бути доступ до адміністрування кожного книжкового магазину окремо, додавання рекомендованих книг власником магазину, їх відображення на сторінці бібліотеки, а також рандомних книг рандомного жанру і останніх доданих, редагування інформації в профілі.
-Використати інструментарій: Swift, Firebase.
+<br>«Кваліфікаційна робота на підтвердження ступеня фахового молодшого бакалавра (ВСП «ППФК НТУ «ХПІ»).
+<br>Мобільний додаток є АІС, в якому буде реалізовано адміністративна та користувацька частина. В користувацькій частині має бути можливість пошуку книг                   
+<br>та книжкових магазинів за фільтром, вибір типу сортування книг,  надсилання заявки на покупку чи обмін книги, редагування інформації на своєму профілі. В адміністра- 
+<br>тивній частині має бути доступ до адміністрування кожного книжкового магазину окремо, додавання рекомендованих книг власником магазину, їх відображення на сторінці бібліотеки, а також рандомних книг рандомного жанру і останніх доданих, редагування інформації в профілі.
+<br>Використати інструментарій: Swift, Firebase.
 
-# Діаграма структури бази даних
-<img width="460" alt="Screenshot 2023-06-16 at 12 35 59" src="https://github.com/vladdicckk/Bookstore/assets/92015183/676ec8d7-7f60-471a-ba08-09b9c4cc7c1d">
+## Діаграма структури бази даних
+<br><img width="460" alt="Screenshot 2023-06-16 at 12 35 59" src="https://github.com/vladdicckk/Bookstore/assets/92015183/676ec8d7-7f60-471a-ba08-09b9c4cc7c1d">
 
-# Діаграма послідовності
-<img width="503" alt="Screenshot 2023-06-16 at 12 38 39" src="https://github.com/vladdicckk/Bookstore/assets/92015183/784ebc23-3f5a-4258-a9cb-bb717ece1668">
+## Діаграма послідовності
+<br><img width="503" alt="Screenshot 2023-06-16 at 12 38 39" src="https://github.com/vladdicckk/Bookstore/assets/92015183/784ebc23-3f5a-4258-a9cb-bb717ece1668">
 
-# Вихідні коди
+## Вихідні коди
 
-Set required data and open chat with user
+<br>Set required data and open chat with user
 ```
 func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let model = conversations?[indexPath.row] else { return }
@@ -90,7 +90,7 @@ func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         })
     }
 ```
-Download current and other sender profile images
+<br>Download current and other sender profile images
 ```
 private func validateUserImage(completion: @escaping (UIImage) -> Void) {
         if let user = appDelegate().currentUser {
@@ -128,7 +128,7 @@ private func validateUserImage(completion: @escaping (UIImage) -> Void) {
         }
     }
 ```
-Check is message from current sender or from other user
+<br>Check is message from current sender or from other user
 ```
 func isFromCurrentSender(message: MessageType) -> Bool {
         if FirebaseManager.safeEmail(email: message.sender.senderId) == otherUserEmail {
@@ -138,7 +138,7 @@ func isFromCurrentSender(message: MessageType) -> Bool {
         }
 }
 ```
-Configuring user avatar
+<br>Configuring user avatar
 ```
 func configureAvatarView(_ avatarView: MessageKit.AvatarView, for message: MessageKit.MessageType, at indexPath: IndexPath, in messagesCollectionView: MessageKit.MessagesCollectionView) {
         avatarImageCounter += 1
