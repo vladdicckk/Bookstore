@@ -6,8 +6,11 @@
 //
 
 import UIKit
+import FirebaseFirestore
+import FirebaseStorage
+import SDWebImage
 
-class BookInfoViewController: UIViewController {
+class BookInfoViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     // MARK: Outlets
     @IBOutlet weak var bookAdditionalInfoTextView: UITextView!
     @IBOutlet weak var mainInfoView: UIView!
@@ -20,6 +23,7 @@ class BookInfoViewController: UIViewController {
     @IBOutlet weak var publishYearLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var bookTitleLabel: UILabel!
+    @IBOutlet weak var bookImageView: UIImageView!
     @IBOutlet weak var openApplicationCreatingButton: UIButton!
     
     // MARK: Parameters
@@ -32,21 +36,62 @@ class BookInfoViewController: UIViewController {
     var genre: String?
     var price: Double?
     
+    let firestoreManager = FirestoreManager()
+    let storage = Storage.storage().reference()
+    let db = Firestore.firestore()
+    
     // MARK: Lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(dismissOnPan))
-        bookInfoView.addGestureRecognizer(pan)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismisskeyboard))
-        bookInfoView.addGestureRecognizer(tap)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(pickImage(tapGestureRecognizer:)))
+        bookImageView.addGestureRecognizer(tap)
         
         securityProperties()
         viewProperties()
         configureBookInfo()
+        setBookstoreImage()
+        imageViewProperties()
     }
     
     // MARK: Private and public functions
+    private func setBookstoreImage() {
+        var bookstoreName: String
+        
+        if appDelegate().currentReviewingOwnersProfile == nil {
+            bookstoreName = appDelegate().currentBookstoreOwner?.name ?? "."
+        } else {
+            bookstoreName = appDelegate().currentReviewingOwnersProfile?.name ?? "."
+        }
+        bookstoreName = bookstoreName.replacingOccurrences(of: " ", with: "_")
+        guard let bookTitle, let author else { return }
+        let path = "images.\(bookstoreName)\(bookTitle)\(author).png"
+        StorageManager.shared.downloadURL(for: path, completion: { [weak self] res in
+            switch res {
+            case .success(let url):
+                DispatchQueue.main.async {
+                    self?.bookImageView.sd_setImage(with: url)
+                }
+            case .failure(_):
+                print("book image not downloaded")
+                self?.bookImageView.image = UIImage(named: "empty")
+            }
+        })
+    }
+    
+    private func imageViewProperties() {
+        bookImageView.layer.borderWidth = 2.5
+        bookImageView.layer.masksToBounds = false
+        bookImageView.layer.borderColor = UIColor.gray.cgColor
+        bookImageView.layer.cornerRadius = bookImageView.frame.width/2
+        
+        bookImageView.sizeToFit()
+        bookImageView.clipsToBounds = true
+        bookImageView.contentMode = .scaleAspectFill
+        bookImageView.backgroundColor = .gray
+    }
+    
     private func securityProperties() {
         if appDelegate().currentBookstoreOwner == nil {
             additionalInfoTextView.isEditable = false
@@ -61,12 +106,48 @@ class BookInfoViewController: UIViewController {
         }
     }
     
+    @objc func pickImage(tapGestureRecognizer: UITapGestureRecognizer) {
+        if appDelegate().currentReviewingOwnersProfile == nil {
+            importImage()
+        } else {
+            var bookstoreName: String
+            
+            if appDelegate().currentReviewingOwnersProfile == nil {
+                bookstoreName = appDelegate().currentBookstoreOwner?.name ?? "."
+            } else {
+                bookstoreName = appDelegate().currentReviewingOwnersProfile?.name ?? "."
+            }
+            bookstoreName = bookstoreName.replacingOccurrences(of: " ", with: "_")
+            guard let bookTitle, let author else { return }
+            let path = "images.\(bookstoreName)\(bookTitle)\(author).png"
+            StorageManager.shared.downloadURL(for: path, completion: { [weak self] res in
+                switch res {
+                case .success(let url):
+                    DispatchQueue.main.async {
+                        let vc = PhotoViewerViewController(with: url)
+                        self?.present(vc, animated: true)
+                    }
+                case .failure(_):
+                    print("book image url not downloaded")
+                }
+            })
+        }
+    }
+    
     @objc func dismisskeyboard() {
         additionalInfoTextView.resignFirstResponder()
     }
     
     @objc func dismissOnPan() {
         dismiss(animated: true)
+    }
+    
+    private func importImage() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.allowsEditing = true
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.delegate = self
+        present(imagePicker, animated: true)
     }
     
     private func configureBookInfo() {
@@ -193,5 +274,35 @@ class BookInfoViewController: UIViewController {
         vc.storyboardPrevious = self.storyboard
         vc.book = BookInfo(title: bookTitle ?? "", author: author ?? "", publishYear: publishYear ?? 0, genre: genre ?? "", pagesCount: pagesCount ?? 0, language: language ?? "", price: price ?? 0, additionalInfo: additionalInfo ?? "", addingDate: "")
         present(vc, animated: true)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.editedImage] as? UIImage else { return }
+        guard let data = setProfileImage(imageToResize: image, onImageView: bookImageView).pngData() else { return }
+        
+        dismiss(animated: true)
+        
+        self.bookImageView.image = setProfileImage(imageToResize: image, onImageView: bookImageView)
+        guard var bookstoreName = appDelegate().currentBookstoreOwner?.name, let bookTitle, let author else { return }
+        
+        bookstoreName = bookstoreName.replacingOccurrences(of: " ", with: "_")
+        storage.child("images.\(bookstoreName)\(bookTitle)\(author).png").putData(data, completion: { [weak self] _, err in
+            guard err == nil else {
+                print("Failed to upload")
+                return
+            }
+            
+            self?.storage.child("images.\(bookstoreName)\(bookTitle)\(author).png").downloadURL(completion: { url, err in
+                guard let url = url, err == nil else { return }
+                let urlString = url.absoluteString
+
+                guard let email = self?.appDelegate().currentEmail else {
+                    print("Empty email")
+                    return
+                }
+
+                self?.db.collection("Owners").document(email).setData(["BookImageUrl" : urlString], merge: true)
+            })
+        })
     }
 }

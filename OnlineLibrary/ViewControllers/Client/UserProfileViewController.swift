@@ -145,27 +145,6 @@ class UserProfileViewController: UIViewController, MainInfoSendingDelegateProtoc
         usersImageView.layer.masksToBounds = true
     }
     
-    func setProfileImage(imageToResize: UIImage, onImageView: UIImageView) -> UIImage {
-        let width = imageToResize.size.width
-        let height = imageToResize.size.height
-
-        var scaleFactor: CGFloat
-
-        if width > height {
-            scaleFactor = onImageView.frame.size.height / height;
-        }
-        else {
-            scaleFactor = onImageView.frame.size.width / width;
-        }
-
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(width * scaleFactor, height * scaleFactor), false, 0.0)
-        imageToResize.draw(in: CGRectMake(0, 0, width * scaleFactor, height * scaleFactor))
-        let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-
-        return resizedImage ?? UIImage()
-    }
-    
     private func userInfoConfiguration() {
         greetingLabel.text = "Hello, \(appDelegate().currentUser?.firstName ?? appDelegate().currentBookstoreOwner?.ownersName ?? "")"
         if greetingLabel.text == "Hello, " {

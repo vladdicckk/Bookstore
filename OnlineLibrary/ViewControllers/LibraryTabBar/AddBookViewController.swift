@@ -41,12 +41,12 @@ class AddBookViewController: UIViewController, AdditionalInfoProtocol {
         languageTextField.text = "TestLanguage"
         priceTextField.text = "2.31"
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         
         //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
         //tap.cancelsTouchesInView = false
         
-        lowerView.addGestureRecognizer(tap)
+        view.addGestureRecognizer(pan)
     }
     
     // MARK: Public and private functions

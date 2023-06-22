@@ -16,7 +16,7 @@ class SendApplicationToBookstoreViewController: UIViewController, UIPickerViewDe
     @IBOutlet weak var usersInfoTextView: UITextView!
     @IBOutlet weak var preferenceTextField: UITextField!
     @IBOutlet weak var sendButton: UIButton!
-    
+    @IBOutlet weak var sendToChatButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     
     // MARK: Parameters
@@ -34,7 +34,7 @@ class SendApplicationToBookstoreViewController: UIViewController, UIPickerViewDe
         super.viewDidLoad()
         viewSetup()
         prefillUserInfo()
-        
+        sendToChatButton.isHidden = true
         preferenceTextField.text = "Trading"
         preferenceTextField.isEnabled = false
     }
@@ -78,7 +78,6 @@ class SendApplicationToBookstoreViewController: UIViewController, UIPickerViewDe
     }
     
     private func validateChatUserImage(isCurrentUser: Bool, username: String, name: String, completion: @escaping (UIImage) -> Void) {
-        let emptyImage = UIImage(named: "empty")
         if isCurrentUser {
             if let user = appDelegate().currentUser {
                 let path = "images.\(user.username)_Avatar.png"

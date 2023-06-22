@@ -3,7 +3,7 @@
     <device id="retina6_72" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -426,10 +426,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="331" placeholderIntrinsicHeight="623" translatesAutoresizingMaskIntoConstraints="NO" id="DTA-7i-6k7">
-                                <rect key="frame" x="48.666666666666657" y="79" width="327" height="535.66666666666663"/>
+                                <rect key="frame" x="48.666666666666657" y="79" width="333" height="535.66666666666663"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wie-0e-kXR">
-                                        <rect key="frame" x="128.33333333333334" y="527.66666666666663" width="70" height="0.0"/>
+                                        <rect key="frame" x="131.33333333333334" y="527.66666666666663" width="70" height="0.0"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="gray" title="Create">
                                             <fontDescription key="titleFontDescription" type="system" pointSize="15"/>
@@ -439,10 +439,10 @@
                                         </connections>
                                     </button>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" placeholderIntrinsicWidth="235" placeholderIntrinsicHeight="448" translatesAutoresizingMaskIntoConstraints="NO" id="HHO-3K-kLn">
-                                        <rect key="frame" x="49" y="87.000000000000028" width="229" height="412.66666666666674"/>
+                                        <rect key="frame" x="49" y="87.000000000000028" width="235" height="412.66666666666674"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="235" placeholderIntrinsicHeight="448" translatesAutoresizingMaskIntoConstraints="NO" id="AZt-GM-KvN">
-                                                <rect key="frame" x="0.0" y="0.0" width="229" height="448"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="235" height="448"/>
                                                 <subviews>
                                                     <textField opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="235" placeholderIntrinsicHeight="34" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Publish year" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eZP-7L-0W9">
                                                         <rect key="frame" x="0.0" y="138" width="235" height="34"/>
@@ -552,13 +552,13 @@
                                         </connections>
                                     </scrollView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" placeholderIntrinsicWidth="276" placeholderIntrinsicHeight="63" text="Enter required info below:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="enB-YC-49P">
-                                        <rect key="frame" x="27.333333333333343" y="8" width="272" height="63"/>
+                                        <rect key="frame" x="27.333333333333343" y="8" width="278" height="63"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cED-eV-BEu">
-                                        <rect key="frame" x="17" y="507.66666666666663" width="293" height="0.0"/>
+                                        <rect key="frame" x="17" y="507.66666666666663" width="299" height="0.0"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="gray" title="Book additional info/Book title and author for exchanging">
                                             <fontDescription key="titleFontDescription" type="system" pointSize="10"/>
@@ -586,10 +586,10 @@
                                 </constraints>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n7D-JF-xfO">
-                                <rect key="frame" x="20" y="675.66666666666663" width="384" height="82"/>
+                                <rect key="frame" x="20" y="675.66666666666663" width="390" height="82"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="388" placeholderIntrinsicHeight="66" text="There you can add new book to your store" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="85I-id-vey">
-                                        <rect key="frame" x="0.0" y="8" width="384" height="66"/>
+                                        <rect key="frame" x="0.0" y="8" width="390" height="66"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="65.670000000000002" id="llF-Zf-p3c"/>
                                         </constraints>
@@ -846,7 +846,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="249.5" placeholderIntrinsicHeight="60" text="Welcome to online bookstore" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dze-D8-xI1">
                                         <rect key="frame" x="8.0000000000000142" y="8" width="249.33333333333337" height="60"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
-                                        <color key="textColor" red="1" green="0.93333333333333335" blue="0.6634285090924098" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="textColor" red="1" green="0.93333333333333335" blue="0.66274509803921566" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="96" placeholderIntrinsicHeight="31" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VDb-Th-ExN">
@@ -855,7 +855,7 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Open my profile">
                                             <fontDescription key="titleFontDescription" type="boldSystem" pointSize="8"/>
-                                            <color key="baseForegroundColor" systemColor="tintColor"/>
+                                            <color key="baseForegroundColor" red="1" green="0.93333333333333335" blue="0.66274509803921566" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="baseBackgroundColor" red="0.34222540260000001" green="0.074462853369999998" blue="0.22763767839999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </buttonConfiguration>
                                         <connections>
@@ -868,7 +868,7 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="filled" title="To bookstores">
                                             <fontDescription key="titleFontDescription" type="boldSystem" pointSize="9"/>
-                                            <color key="baseForegroundColor" systemColor="tintColor"/>
+                                            <color key="baseForegroundColor" red="1" green="0.93333333333333335" blue="0.66274509803921566" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="baseBackgroundColor" red="0.34222540259361267" green="0.074462853372097015" blue="0.22763767838478088" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </buttonConfiguration>
                                         <connections>
@@ -1025,7 +1025,7 @@
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="45" text="address" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C0k-wL-rzd">
                                         <rect key="frame" x="195" y="59" width="187" height="45"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" red="0.34131971001625061" green="0.077176518738269806" blue="0.22826641798019409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1046,25 +1046,25 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="45" id="pLv-03-gEU"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" red="0.34131971001625061" green="0.077176518738269806" blue="0.22826641798019409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="187" placeholderIntrinsicHeight="22" text="number" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mPf-Tm-TDL">
                                         <rect key="frame" x="195" y="141" width="187" height="45"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" red="0.34131971001625061" green="0.077176518738269806" blue="0.22826641798019409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="751" placeholderIntrinsicWidth="390" placeholderIntrinsicHeight="31" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6pZ-PC-1Te">
                                         <rect key="frame" x="8" y="222" width="374" height="8"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.34131971001625061" green="0.077176518738269806" blue="0.22826641798019409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="752" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="45" text="Set your name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VIx-ud-lsC">
                                         <rect key="frame" x="8" y="59" width="187" height="45"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" red="0.34131971001625061" green="0.077176518738269806" blue="0.22826641798019409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1080,9 +1080,9 @@
                                         <color key="tintColor" red="0.65608438820000003" green="0.25303833390000002" blue="0.017848484309999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="filled" title="To start">
-                                            <fontDescription key="titleFontDescription" type="boldSystem" pointSize="15"/>
-                                            <color key="baseForegroundColor" red="0.30514775490000001" green="0.0055412648770000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <color key="baseBackgroundColor" systemColor="systemGray2Color"/>
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="15"/>
+                                            <color key="baseForegroundColor" systemColor="systemBackgroundColor"/>
+                                            <color key="baseBackgroundColor" red="0.30588235294117649" green="0.0039215686274509803" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </buttonConfiguration>
                                         <connections>
                                             <action selector="toBookstoresButtonTapped:" destination="nMM-dB-F1P" eventType="touchUpInside" id="HFI-ex-edC"/>
@@ -1103,7 +1103,7 @@
                                         <color key="tintColor" red="0.65608438820000003" green="0.31881535630000002" blue="0.032116345910000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Log Out">
-                                            <fontDescription key="titleFontDescription" type="boldSystem" pointSize="15"/>
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="16"/>
                                             <color key="baseForegroundColor" red="0.30514775490000001" green="0.0055412648770000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <color key="baseBackgroundColor" systemColor="systemGray2Color"/>
                                         </buttonConfiguration>
@@ -1170,10 +1170,14 @@
                                     <constraint firstAttribute="trailing" secondItem="TFe-mc-Plk" secondAttribute="trailing" constant="8" id="zgx-0h-yTq"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="398" placeholderIntrinsicHeight="47" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zi5-s9-Vcs">
-                                <rect key="frame" x="16" y="489" width="398" height="47"/>
+                            <button opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="398" placeholderIntrinsicHeight="30" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zi5-s9-Vcs">
+                                <rect key="frame" x="16" y="489" width="398" height="30"/>
+                                <color key="tintColor" red="0.30588235289999999" green="0.0055412648770000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Additional info"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Additional info">
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="baseBackgroundColor" red="0.30588235289999999" green="0.0039215686269999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="additionalInfoButtonTapped:" destination="nMM-dB-F1P" eventType="touchUpInside" id="8YB-ka-q58"/>
                                 </connections>
@@ -1197,22 +1201,6 @@
                                     <constraint firstAttribute="bottom" secondItem="XYn-6N-FfU" secondAttribute="bottom" id="tdt-jH-CqO"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="107" placeholderIntrinsicHeight="16" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JS6-7q-hgO">
-                                <rect key="frame" x="161.66666666666666" y="544" width="106.99999999999997" height="16"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="16" id="iRX-Oe-vI6"/>
-                                </constraints>
-                                <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Open chats">
-                                    <fontDescription key="titleFontDescription" type="boldSystem" pointSize="14"/>
-                                    <color key="baseForegroundColor" red="0.30514775490000001" green="0.0055412648770000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    <color key="baseBackgroundColor" systemColor="systemGray2Color"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="opennChatsButtonTapped:" destination="nMM-dB-F1P" eventType="touchUpInside" id="HQI-MO-8MW"/>
-                                </connections>
-                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cMZ-3o-hKH">
                                 <rect key="frame" x="95" y="568" width="240" height="273"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1220,13 +1208,28 @@
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="273" id="Cqy-SS-WNx"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="107" placeholderIntrinsicHeight="16" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JS6-7q-hgO">
+                                <rect key="frame" x="161.66666666666666" y="527" width="106.99999999999997" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="iRX-Oe-vI6"/>
+                                </constraints>
+                                <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Open chats">
+                                    <fontDescription key="titleFontDescription" type="system" pointSize="14"/>
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="baseBackgroundColor" red="0.30588235294117649" green="0.0039215686274509803" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="opennChatsButtonTapped:" destination="nMM-dB-F1P" eventType="touchUpInside" id="HQI-MO-8MW"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="lZJ-QH-uXs"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="5Iv-pf-B7r" firstAttribute="centerX" secondItem="72X-08-bnl" secondAttribute="centerX" id="7G3-zN-hKv"/>
                             <constraint firstItem="zi5-s9-Vcs" firstAttribute="top" secondItem="5Iv-pf-B7r" secondAttribute="bottom" constant="8" id="DMO-BQ-pF9"/>
-                            <constraint firstItem="cMZ-3o-hKH" firstAttribute="top" secondItem="JS6-7q-hgO" secondAttribute="bottom" constant="8" symbolic="YES" id="FE9-q1-eU6"/>
                             <constraint firstItem="lZJ-QH-uXs" firstAttribute="trailing" secondItem="cMZ-3o-hKH" secondAttribute="trailing" constant="95" id="FGl-Vm-fbT"/>
                             <constraint firstItem="lZJ-QH-uXs" firstAttribute="bottom" secondItem="cMZ-3o-hKH" secondAttribute="bottom" constant="8" id="JKC-fG-K2G"/>
                             <constraint firstItem="lZJ-QH-uXs" firstAttribute="trailing" secondItem="zi5-s9-Vcs" secondAttribute="trailing" constant="16" id="TOb-Bv-AJB"/>
@@ -1237,6 +1240,7 @@
                             <constraint firstItem="JS6-7q-hgO" firstAttribute="centerX" secondItem="72X-08-bnl" secondAttribute="centerX" id="gLf-cg-kuj"/>
                             <constraint firstItem="5Iv-pf-B7r" firstAttribute="top" secondItem="rC3-Vr-HTa" secondAttribute="bottom" constant="8" id="hJf-50-QEl"/>
                             <constraint firstItem="5Iv-pf-B7r" firstAttribute="trailing" secondItem="lZJ-QH-uXs" secondAttribute="trailing" constant="-20" id="n0o-ha-CJz"/>
+                            <constraint firstItem="cMZ-3o-hKH" firstAttribute="top" secondItem="JS6-7q-hgO" secondAttribute="bottom" constant="25" id="qer-4Z-mgt"/>
                             <constraint firstItem="zi5-s9-Vcs" firstAttribute="leading" secondItem="lZJ-QH-uXs" secondAttribute="leading" constant="16" id="sAe-yo-n4Y"/>
                             <constraint firstItem="rC3-Vr-HTa" firstAttribute="top" secondItem="lZJ-QH-uXs" secondAttribute="top" id="vzY-sv-pul"/>
                         </constraints>
@@ -1342,7 +1346,7 @@
                                         </connections>
                                     </button>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" placeholderIntrinsicWidth="364" placeholderIntrinsicHeight="34" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Exchanging/Trading preferences" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w2t-bV-5bN">
-                                        <rect key="frame" x="33" y="57.666666666666629" width="364" height="34"/>
+                                        <rect key="frame" x="33" y="57.333333333333314" width="364" height="34"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" red="0.30514775490000001" green="0.0055412648770000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1500,7 +1504,7 @@
                                 <color key="tintColor" systemColor="systemBrownColor"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Log Out">
-                                    <fontDescription key="titleFontDescription" type="boldSystem" pointSize="15"/>
+                                    <fontDescription key="titleFontDescription" type="system" pointSize="15"/>
                                     <color key="baseForegroundColor" red="0.30514775490000001" green="0.0055412648770000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <color key="baseBackgroundColor" systemColor="systemGray2Color"/>
                                 </buttonConfiguration>
@@ -1517,9 +1521,9 @@
                                 <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="To start">
-                                    <fontDescription key="titleFontDescription" type="boldSystem" pointSize="15"/>
-                                    <color key="baseForegroundColor" red="0.30514775490000001" green="0.0055412648770000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    <color key="baseBackgroundColor" systemColor="systemGray2Color"/>
+                                    <fontDescription key="titleFontDescription" type="system" pointSize="15"/>
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="baseBackgroundColor" red="0.30588235289999999" green="0.0039215686269999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="toBookstoresButtonTapped:" destination="qTG-aA-P5k" eventType="touchUpInside" id="bMs-ui-9s0"/>
@@ -1545,19 +1549,19 @@
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="14" text="username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I8t-Ts-Bij">
                                         <rect key="frame" x="8" y="178.66666666666669" width="195" height="30"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.31372549020000001" green="0.086274509799999996" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="253" verticalCompressionResistancePriority="753" placeholderIntrinsicWidth="271" placeholderIntrinsicHeight="34" text="name, surname" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y44-6D-gie">
                                         <rect key="frame" x="8" y="78" width="271" height="34.333333333333343"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.31372549020000001" green="0.086274509799999996" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="249" placeholderIntrinsicWidth="111" placeholderIntrinsicHeight="35" text="age" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ImC-hc-7ug">
                                         <rect key="frame" x="287" y="77.666666666666686" width="111" height="35"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.31372549020000001" green="0.086274509799999996" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1569,7 +1573,7 @@
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="14" text="number" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ajq-oM-PCS">
                                         <rect key="frame" x="203" y="186.66666666666669" width="195" height="14"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.31372549020000001" green="0.086274509799999996" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1581,13 +1585,13 @@
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="34" text="e-mail" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyg-r3-AFQ">
                                         <rect key="frame" x="203" y="267" width="195" height="34"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.31372549020000001" green="0.086274509799999996" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" placeholderIntrinsicWidth="195" placeholderIntrinsicHeight="34" text="location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BtX-5X-boG">
                                         <rect key="frame" x="8" y="267" width="195" height="34"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.31372549020000001" green="0.086274509799999996" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1696,12 +1700,12 @@
                                     <constraint firstAttribute="width" constant="107.33" id="Fnh-vk-mjI"/>
                                     <constraint firstAttribute="height" constant="22" id="K5u-vV-qQO"/>
                                 </constraints>
-                                <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" red="0.30588235294117649" green="0.0039215686274509803" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Open chats">
-                                    <fontDescription key="titleFontDescription" type="boldSystem" pointSize="14"/>
-                                    <color key="baseForegroundColor" red="0.30514775490000001" green="0.0055412648770000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    <color key="baseBackgroundColor" systemColor="systemGray2Color"/>
+                                    <fontDescription key="titleFontDescription" type="system" pointSize="14"/>
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="baseBackgroundColor" red="0.30588235289999999" green="0.0039215686269999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="openChatsButtonTapped:" destination="qTG-aA-P5k" eventType="touchUpInside" id="kxo-8V-W49"/>
@@ -1709,8 +1713,12 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a0L-Oc-t1F">
                                 <rect key="frame" x="12" y="629" width="406" height="35"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Show Trading History"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Show Trading History">
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="baseBackgroundColor" red="0.30588235289999999" green="0.0039215686269999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="showApplications:" destination="qTG-aA-P5k" eventType="touchUpInside" id="7l9-nx-9a6"/>
                                 </connections>
@@ -1948,10 +1956,15 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="138" placeholderIntrinsicHeight="35" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1lL-8V-ZdR">
+                            <button opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="138" placeholderIntrinsicHeight="35" enabled="NO" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1lL-8V-ZdR">
                                 <rect key="frame" x="146" y="863" width="138" height="35"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Send to chat"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Send to chat">
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="baseBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="sendApplicationButtonTapped:" destination="DRr-BU-Hk6" eventType="touchUpInside" id="hcy-MH-pyH"/>
                                 </connections>
@@ -2057,6 +2070,7 @@
                         <outlet property="preferenceLabel" destination="fzw-z2-guV" id="pNK-qi-vhi"/>
                         <outlet property="preferenceTextField" destination="H0g-T0-h21" id="YHm-dv-ycg"/>
                         <outlet property="sendButton" destination="iOJ-nu-8m9" id="JcY-bK-ucF"/>
+                        <outlet property="sendToChatButton" destination="1lL-8V-ZdR" id="IoN-WN-bK7"/>
                         <outlet property="upperView" destination="ajb-Eb-bz8" id="rID-Hh-LJS"/>
                         <outlet property="usersInfoTextView" destination="z21-Sg-3be" id="HTz-NN-XdN"/>
                     </connections>
@@ -2463,8 +2477,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OBb-K7-S52">
                                 <rect key="frame" x="20" y="79" width="390" height="799"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" placeholderIntrinsicWidth="282" placeholderIntrinsicHeight="329" translatesAutoresizingMaskIntoConstraints="NO" id="aTi-nW-9Xm">
-                                        <rect key="frame" x="24" y="24" width="342" height="329"/>
+                                    <view contentMode="scaleToFill" placeholderIntrinsicWidth="342" placeholderIntrinsicHeight="329" translatesAutoresizingMaskIntoConstraints="NO" id="aTi-nW-9Xm">
+                                        <rect key="frame" x="24" y="235" width="342" height="329"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" placeholderIntrinsicWidth="248" placeholderIntrinsicHeight="21" text="Book title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="me1-g8-RDa">
                                                 <rect key="frame" x="16" y="15" width="308" height="21"/>
@@ -2473,13 +2487,13 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" placeholderIntrinsicWidth="248" placeholderIntrinsicHeight="21" text="Author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PI7-ob-9Bj">
-                                                <rect key="frame" x="16" y="61.333333333333343" width="308" height="21"/>
+                                                <rect key="frame" x="16" y="61.333333333333314" width="308" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="248" placeholderIntrinsicHeight="21" text="Publish year" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zfb-D5-xfK">
-                                                <rect key="frame" x="16" y="107.66666666666666" width="308" height="21"/>
+                                                <rect key="frame" x="16" y="107.66666666666669" width="308" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -2497,13 +2511,13 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" placeholderIntrinsicWidth="248" placeholderIntrinsicHeight="21" text="Language" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8vd-mx-m6y">
-                                                <rect key="frame" x="16" y="246.66666666666669" width="308" height="21"/>
+                                                <rect key="frame" x="16" y="246.66666666666663" width="308" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" placeholderIntrinsicWidth="248" placeholderIntrinsicHeight="21" text="Pages count" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HPO-Va-red">
-                                                <rect key="frame" x="16" y="200.33333333333331" width="308" height="21"/>
+                                                <rect key="frame" x="16" y="200.33333333333337" width="308" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -2535,8 +2549,8 @@
                                             <constraint firstAttribute="trailing" secondItem="zfb-D5-xfK" secondAttribute="trailing" constant="18" id="xnv-gv-xOM"/>
                                         </constraints>
                                     </view>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" placeholderIntrinsicWidth="342" placeholderIntrinsicHeight="387" text="Book info/Book info prefered for exchange" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="7Um-5F-iO8">
-                                        <rect key="frame" x="24" y="361" width="342" height="387"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" placeholderIntrinsicWidth="342" placeholderIntrinsicHeight="161" text="Book info/Book info prefered for exchange" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="7Um-5F-iO8">
+                                        <rect key="frame" x="24" y="587" width="342" height="161"/>
                                         <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -2552,18 +2566,27 @@
                                             <action selector="openApplicationCreatingButtonTaapped:" destination="pMr-ph-Ju6" eventType="touchUpInside" id="kBr-a5-miB"/>
                                         </connections>
                                     </button>
+                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="100" placeholderIntrinsicHeight="100" translatesAutoresizingMaskIntoConstraints="NO" id="uRQ-tn-sfw">
+                                        <rect key="frame" x="132.66666666666666" y="67" width="124.99999999999997" height="125"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="125" id="9TD-q1-UZj"/>
+                                            <constraint firstAttribute="height" constant="125" id="ps0-Br-RcE"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="7Um-5F-iO8" firstAttribute="top" secondItem="aTi-nW-9Xm" secondAttribute="bottom" constant="8" symbolic="YES" id="1lB-0u-65l"/>
                                     <constraint firstItem="7Um-5F-iO8" firstAttribute="centerX" secondItem="OBb-K7-S52" secondAttribute="centerX" id="4oq-0Y-C5G"/>
+                                    <constraint firstItem="uRQ-tn-sfw" firstAttribute="centerX" secondItem="OBb-K7-S52" secondAttribute="centerX" id="AYJ-gs-vcW"/>
                                     <constraint firstItem="7Um-5F-iO8" firstAttribute="leading" secondItem="OBb-K7-S52" secondAttribute="leading" constant="24" id="Lce-Mc-YVO"/>
+                                    <constraint firstItem="uRQ-tn-sfw" firstAttribute="top" secondItem="OBb-K7-S52" secondAttribute="top" constant="67" id="MgA-ah-A4r"/>
                                     <constraint firstItem="kc8-yC-7fP" firstAttribute="top" secondItem="7Um-5F-iO8" secondAttribute="bottom" constant="8" id="Miy-kZ-UdX"/>
                                     <constraint firstItem="kc8-yC-7fP" firstAttribute="centerX" secondItem="OBb-K7-S52" secondAttribute="centerX" id="OpS-ln-4Yv"/>
+                                    <constraint firstItem="aTi-nW-9Xm" firstAttribute="top" secondItem="uRQ-tn-sfw" secondAttribute="bottom" constant="43" id="Rvl-hs-uXr"/>
                                     <constraint firstItem="aTi-nW-9Xm" firstAttribute="leading" secondItem="OBb-K7-S52" secondAttribute="leading" constant="24" id="VNV-qQ-mNT"/>
                                     <constraint firstItem="aTi-nW-9Xm" firstAttribute="centerX" secondItem="OBb-K7-S52" secondAttribute="centerX" id="bff-9c-k0p"/>
-                                    <constraint firstItem="aTi-nW-9Xm" firstAttribute="top" secondItem="OBb-K7-S52" secondAttribute="top" constant="24" id="d1o-p2-NVz"/>
                                     <constraint firstAttribute="trailing" secondItem="7Um-5F-iO8" secondAttribute="trailing" constant="24" id="fEE-WY-BBQ"/>
                                     <constraint firstAttribute="bottom" secondItem="kc8-yC-7fP" secondAttribute="bottom" constant="8" id="wbK-rW-Fi4"/>
+                                    <constraint firstItem="7Um-5F-iO8" firstAttribute="top" secondItem="aTi-nW-9Xm" secondAttribute="bottom" constant="23" id="yuk-Lv-iUu"/>
                                     <constraint firstAttribute="trailing" secondItem="aTi-nW-9Xm" secondAttribute="trailing" constant="24" id="zS5-Xn-Q1c"/>
                                 </constraints>
                             </view>
@@ -2582,6 +2605,7 @@
                         <outlet property="additionalInfoTextView" destination="7Um-5F-iO8" id="lHC-gX-ByL"/>
                         <outlet property="authorLabel" destination="PI7-ob-9Bj" id="yVt-Wa-lWO"/>
                         <outlet property="bookAdditionalInfoTextView" destination="7Um-5F-iO8" id="QHW-e3-TMb"/>
+                        <outlet property="bookImageView" destination="uRQ-tn-sfw" id="3s2-8I-EUK"/>
                         <outlet property="bookInfoView" destination="aTi-nW-9Xm" id="BQF-NO-lOh"/>
                         <outlet property="bookTitleLabel" destination="me1-g8-RDa" id="8qE-GK-fbD"/>
                         <outlet property="genreLabel" destination="qp1-Jd-Jbr" id="qeU-Pe-km0"/>
@@ -2889,7 +2913,7 @@
     <resources>
         <image name="book" catalog="system" width="128" height="99"/>
         <image name="folder.badge.plus" catalog="system" width="128" height="92"/>
-        <image name="pencil" catalog="system" width="32" height="32"/>
+        <image name="pencil" catalog="system" width="128" height="113"/>
         <image name="rectangle.grid.3x2" catalog="system" width="128" height="100"/>
         <namedColor name="incomingMessageLabel">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2920,9 +2944,6 @@
         </systemColor>
         <systemColor name="systemPinkColor">
             <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="tintColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

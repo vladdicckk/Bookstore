@@ -211,7 +211,6 @@ class SortedBooksInfoViewController: UIViewController, UICollectionViewDataSourc
             bookInfoViewVC.genre = books[indexPath.row].genre
             bookInfoViewVC.price = books[indexPath.row].price
             
-            bookInfoViewVC.modalPresentationStyle = .overFullScreen
             present(bookInfoViewVC, animated: true)
         }
     }

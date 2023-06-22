@@ -12,6 +12,6 @@ target 'OnlineLibrary' do
 	pod ‘FirebaseStorage'
 	pod 'Firebase/Auth'
 	pod 'Firebase/Database'
-	pod 'MessageKit', '~> 3.9.0'
+	pod 'MessageKit'
 	pod 'SDWebImage'
 end

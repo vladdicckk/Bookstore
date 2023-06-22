@@ -43,7 +43,7 @@ class LibraryViewController: UIViewController, UITextViewDelegate, MainSendingDe
     // MARK: Lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        tabBarController?.tabBar.tintColor = UIColor(red: 0.3, green: 0.1, blue: 0.2, alpha: 1)
         if appDelegate().currentReviewingOwnersProfile == nil {
             DispatchQueue.main.async {
                 self.fetchActualUserInfo(dataCompletion: { [weak self] bookstore in
@@ -172,27 +172,6 @@ class LibraryViewController: UIViewController, UITextViewDelegate, MainSendingDe
         imageView.clipsToBounds = true
         imageView.contentMode = .center
         imageView.backgroundColor = .gray
-    }
-    
-    func setProfileImage(imageToResize: UIImage, onImageView: UIImageView) -> UIImage {
-        let width = imageToResize.size.width
-        let height = imageToResize.size.height
-
-        var scaleFactor: CGFloat
-
-        if width > height {
-            scaleFactor = onImageView.frame.size.height / height;
-        }
-        else {
-            scaleFactor = onImageView.frame.size.width / width;
-        }
-
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(width * scaleFactor, height * scaleFactor), false, 0.0)
-        imageToResize.draw(in: CGRectMake(0, 0, width * scaleFactor, height * scaleFactor))
-        let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-
-        return resizedImage ?? UIImage()
     }
     
     func sendNameDataToFirstViewController(name: String) {
@@ -362,5 +341,28 @@ class LibraryViewController: UIViewController, UITextViewDelegate, MainSendingDe
 extension LibraryViewController: BookstoreAdditionalInfo {
     func setBookstoreAdditionalInfo(additionalInfo text: String) {
         additionalInfoText = text
+    }
+}
+
+extension UIViewController {
+    func setProfileImage(imageToResize: UIImage, onImageView: UIImageView) -> UIImage {
+        let width = imageToResize.size.width
+        let height = imageToResize.size.height
+
+        var scaleFactor: CGFloat
+
+        if width > height {
+            scaleFactor = onImageView.frame.size.height / height;
+        }
+        else {
+            scaleFactor = onImageView.frame.size.width / width;
+        }
+
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(width * scaleFactor, height * scaleFactor), false, 0.0)
+        imageToResize.draw(in: CGRectMake(0, 0, width * scaleFactor, height * scaleFactor))
+        let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return resizedImage ?? UIImage()
     }
 }

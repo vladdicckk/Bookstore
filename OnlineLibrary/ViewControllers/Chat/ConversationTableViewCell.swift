@@ -19,7 +19,6 @@ class ConversationTableViewCell: UITableViewCell {
     @IBOutlet weak var sentMessageImageView: UIImageView!
     
     func configure(with model: Conversation) {
-//        NSLayoutConstraint.activate([userImageView.heightAnchor.constraint(equalToConstant: height)])
         userImageView.contentMode = .scaleAspectFill
         userImageView.layer.cornerRadius = height/2
         userImageView.layer.masksToBounds = true

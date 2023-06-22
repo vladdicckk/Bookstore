@@ -105,6 +105,7 @@ class ChatViewController: MessagesViewController, UnhideInputBar, MessageCellDel
         loadFirstMessages()
         setupInputButton()
         setupBackroundImage()
+        blurNavBar()
         messageInputBar.inputTextView.backgroundColor = .systemBrown
         messageInputBar.contentView.backgroundColor = .systemBrown
         messageInputBar.backgroundView.backgroundColor = .systemBrown
@@ -114,9 +115,10 @@ class ChatViewController: MessagesViewController, UnhideInputBar, MessageCellDel
         messagesCollectionView.messageCellDelegate = self
         messageInputBar.delegate = self
         
+        navigationController?.navigationBar.tintColor = .black
         
         let textAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor(red: 0.3, green: 0.1, blue: 0.2, alpha: 1),
+            NSAttributedString.Key.foregroundColor: UIColor.red,
             NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 20)
         ]
         
@@ -129,9 +131,6 @@ class ChatViewController: MessagesViewController, UnhideInputBar, MessageCellDel
         
         //Looks for single or multiple taps.
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
-        
-        //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
-        //tap.cancelsTouchesInView = false
         
         view.addGestureRecognizer(tap)
     }
@@ -154,6 +153,14 @@ class ChatViewController: MessagesViewController, UnhideInputBar, MessageCellDel
         avatarImageCounter = 0
         messageInputBar.isHidden = false
         tabBarController?.tabBar.isHidden = true
+    }
+    
+    private func blurNavBar() {
+        guard let navigationController else { return }
+        let blurEffect = UIBlurEffect(style: .regular)
+        let visualEffectView = UIVisualEffectView(effect: blurEffect)
+        
+        
     }
     
     private func setupBackroundImage() {

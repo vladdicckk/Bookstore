@@ -57,6 +57,7 @@ class ChatsViewController: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         title = "Conversations"
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.tintColor = .black
         tableView.backgroundColor = .clear
         let rightButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(didTapComposeButton))
         rightButton.style = .done

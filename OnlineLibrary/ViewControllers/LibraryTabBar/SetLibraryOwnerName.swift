@@ -27,6 +27,7 @@ class SetLibraryOwnerName: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         mainViewProperties()
+        setNameTextField.becomeFirstResponder()
     }
     
     // MARK: Private and public functions
@@ -55,8 +56,8 @@ class SetLibraryOwnerName: UIViewController{
     }
     
     override func updateViewConstraints() {
-        self.view.frame.size.height = UIScreen.main.bounds.height - 800
-        self.view.frame.origin.y = 150
+        self.view.frame.size.height = self.setNameTextField.frame.size.height * 4
+        self.view.frame.origin.y = 300
         self.view.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 10.0)
         super.updateViewConstraints()
     }

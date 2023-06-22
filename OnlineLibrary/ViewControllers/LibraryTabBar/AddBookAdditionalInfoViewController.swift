@@ -22,6 +22,7 @@ class AddBookAdditionalInfoViewController: UIViewController {
     let db = Firestore.firestore()
     var additionalInfoText: String?
     var delegate: AdditionalInfoProtocol?
+    var defaultY: CGFloat?
     
     // MARK: Lifecycle functions
     override func viewDidLoad() {
@@ -33,11 +34,35 @@ class AddBookAdditionalInfoViewController: UIViewController {
         
         //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
         //tap.cancelsTouchesInView = false
+        // Додати спостерігача для події показу клавіатури
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        // Додати спостерігача для події приховування клавіатури
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         view.addGestureRecognizer(tap)
+        defaultY = view.frame.origin.y
     }
     
     // MARK: Public and private functions
+    @objc func keyboardWillShow(_ notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let keyboardHeight = keyboardSize.height
+            // Виконати необхідні дії з висотою клавіатури
+            print("Висота клавіатури: \(keyboardHeight)")
+            view.frame.origin.y -= keyboardHeight/3.75
+        }
+    }
+
+    @objc func keyboardWillHide(_ notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let keyboardHeight = keyboardSize.height
+            // Виконати необхідні дії з висотою клавіатури
+            print("Висота клавіатури: \(keyboardHeight)")
+            view.frame.origin.y = defaultY ?? 0
+        }
+    }
+    
     private func showAlert(message: String) {
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "Ok", style: .default)
