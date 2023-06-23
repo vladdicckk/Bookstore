@@ -29,7 +29,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         signInButton.isEnabled = false
         navigationController?.isNavigationBarHidden = false
-        loginTextField.attributedPlaceholder = NSAttributedString(string: "Your bookstore name, profile username or e-mail", attributes: [
+        loginTextField.attributedPlaceholder = NSAttributedString(string: "Your bookstore name, username or e-mail", attributes: [
             .foregroundColor: UIColor.lightGray,
             .font: UIFont.boldSystemFont(ofSize: 8.0)
         ])
@@ -38,18 +38,15 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
             .foregroundColor: UIColor.lightGray,
             .font: UIFont.boldSystemFont(ofSize: 10.0)
         ])
-        loginTextField.text = "email@email.coms"
+        
         //"email@email.coms""myUsername"
-        passwordTextField.text = "testBookstor"
+        //passwordTextField.text = "testBookstore""testUser"
         passwordTextField.delegate = self
         upperView.backgroundColor = UIColor(red: 198/255, green: 198/255, blue: 200/255, alpha: 1)
         upperView.setCorner(radius: 16)
         lowerView.setCorner(radius: 16)
         //Looks for single or multiple taps.
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
-        
-        //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
-        //tap.cancelsTouchesInView = false
         
         view.addGestureRecognizer(tap)
     }

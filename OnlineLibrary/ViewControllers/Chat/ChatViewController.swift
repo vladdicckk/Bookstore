@@ -118,7 +118,7 @@ class ChatViewController: MessagesViewController, UnhideInputBar, MessageCellDel
         navigationController?.navigationBar.tintColor = .black
         
         let textAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.red,
+            NSAttributedString.Key.foregroundColor: UIColor.black,
             NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 20)
         ]
         
